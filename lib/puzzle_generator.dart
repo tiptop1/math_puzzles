@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:decimal/decimal.dart';
 import 'package:math_puzzles/puzzle.dart';
 
 enum OperationType {
@@ -42,19 +43,17 @@ class RandomPuzzleGenerator {
 
   Puzzle _generateDoubleAdditionPuzzle(int maxResult, int precision) {
     // a + b = c
-    num a;
-    num b;
-    num c;
+    Decimal a;
+    Decimal b;
+    Decimal c;
     if (precision > 0) {
-      c = double.parse(
-          (randomGenerator.nextDouble() * maxResult).toStringAsFixed(precision));
-      a = double.parse(
-          (randomGenerator.nextDouble() * (c as int)).toStringAsFixed(precision));
+      c = Decimal.parse((randomGenerator.nextDouble() * maxResult).toStringAsFixed(precision));
+      a = Decimal.parse((randomGenerator.nextDouble() * c.toInt()).toStringAsFixed(precision));
     } else {
-      c = randomGenerator.nextInt(maxResult);
-      a = randomGenerator.nextInt(c);
+      c = Decimal.fromInt(randomGenerator.nextInt(maxResult));
+      a = Decimal.fromInt(randomGenerator.nextInt(c.toInt()));
     }
-    b = c - a;
+    b = Decimal.parse(c.toString()) - Decimal.parse(a.toString());
 
     return AdditionPuzzle('$a + $b', '$c');
   }
