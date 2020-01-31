@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:math_puzzles/puzzle.dart';
 import 'package:test/test.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
@@ -23,11 +24,11 @@ main() {
     String question = puzzle.question;
     expect(question, isNotNull);
 
-    double o1 = double.parse(getOperand(question, 0));
-    double o2 = double.parse(getOperand(question, 1));
-    double result = double.parse(puzzle.answer);
+    Decimal o1 = Decimal.parse(getOperand(question, 0));
+    Decimal o2 = Decimal.parse(getOperand(question, 1));
+    Decimal result = Decimal.parse(puzzle.answer);
 
-    expect(result, equals(o1 - o2));
+    expect(result, equals(o1 + o2));
   });
 }
 
