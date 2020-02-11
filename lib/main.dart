@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:math_puzzles/puzzle.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
+import 'package:math_puzzles/session.dart';
 
 void main() => runApp(MathPuzzleWidget());
 
@@ -11,15 +14,25 @@ class MathPuzzleWidget extends StatefulWidget {
 }
 
 class _MathPuzzleState extends State<MathPuzzleWidget> {
-  Puzzle _puzzle =
-      RandomPuzzleGenerator().generatePuzzle(OperationType.integerAddition);
-  bool _puzzleAnswered = false;
+  static RandomPuzzleGenerator _puzzleGenerator = RandomPuzzleGenerator();
 
-  _showQuestionCallback() {
+  Puzzle _puzzle = _puzzleGenerator.generatePuzzle(OperationType.integerAddition);
+  bool _puzzleAnswered = false;
+  Session _session = Session(10);
+
+  _correctAnswerCallback() {
     setState(() {
-      _puzzle =
-          RandomPuzzleGenerator().generatePuzzle(OperationType.integerAddition);
+      _puzzle = _puzzleGenerator.generatePuzzle(OperationType.integerAddition);
       _puzzleAnswered = false;
+      _session.increaseCorrectAnswersCount();
+    });
+  }
+
+  _incorrectAnswerCallback() {
+    setState(() {
+      _puzzle = _puzzleGenerator.generatePuzzle(OperationType.integerAddition);
+      _puzzleAnswered = false;
+      _session.increaseIncorrectAnswersCount();
     });
   }
 
@@ -33,13 +46,13 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(title: const Text('Mapth Puzzle')),
+          appBar: AppBar(title: const Text('Math Puzzle')),
           body: Column(
             children: [
               Text(
                   '${_puzzle.question} = ${_puzzleAnswered ? _puzzle.answer : '?'}'),
               AnswerButtonsWidget(
-                  _puzzleAnswered, _showAnswerCallback, _showQuestionCallback),
+                  _puzzleAnswered, _showAnswerCallback, _correctAnswerCallback, _incorrectAnswerCallback),
             ],
           )),
     );
@@ -49,10 +62,11 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
 class AnswerButtonsWidget extends StatelessWidget {
   final bool _puzzleAnswered;
   final Function _showAnswerCallback;
-  final Function _showQuestionCallback;
+  final Function _correctAnswerCallback;
+  final Function _incorrectAnswerCallback;
 
   AnswerButtonsWidget(this._puzzleAnswered, this._showAnswerCallback,
-      this._showQuestionCallback);
+      this._correctAnswerCallback, this._incorrectAnswerCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +79,9 @@ class AnswerButtonsWidget extends StatelessWidget {
     } else {
       widget = Row(
         children: [
-          RaisedButton(child: Text('Fail'), onPressed: _showQuestionCallback),
+          RaisedButton(child: Text('Fail'), onPressed: _incorrectAnswerCallback),
           RaisedButton(
-              child: Text('Correct'), onPressed: _showQuestionCallback),
+              child: Text('Correct'), onPressed: _correctAnswerCallback),
         ],
       );
     }
