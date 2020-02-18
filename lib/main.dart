@@ -1,10 +1,9 @@
-import 'dart:math';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
-
 import 'package:math_puzzles/puzzle.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:math_puzzles/session.dart';
+import 'localizations.dart';
 
 void main() => runApp(MathPuzzleWidget());
 
@@ -16,7 +15,8 @@ class MathPuzzleWidget extends StatefulWidget {
 class _MathPuzzleState extends State<MathPuzzleWidget> {
   static RandomPuzzleGenerator _puzzleGenerator = RandomPuzzleGenerator();
 
-  Puzzle _puzzle = _puzzleGenerator.generatePuzzle(OperationType.integerAddition);
+  Puzzle _puzzle =
+      _puzzleGenerator.generatePuzzle(OperationType.integerAddition);
   bool _puzzleAnswered = false;
   Session _session = Session(10);
 
@@ -45,14 +45,25 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('pl'),
+      ],
+      onGenerateTitle: (BuildContext context) =>
+          AppLocalizations.of(context).title,
       home: Scaffold(
-          appBar: AppBar(title: const Text('Math Puzzle')),
+          appBar: AppBar(title: Text('Math puzzles')),
           body: Column(
             children: [
               Text(
                   '${_puzzle.question} = ${_puzzleAnswered ? _puzzle.answer : '?'}'),
-              AnswerButtonsWidget(
-                  _puzzleAnswered, _showAnswerCallback, _correctAnswerCallback, _incorrectAnswerCallback),
+              AnswerButtonsWidget(_puzzleAnswered, _showAnswerCallback,
+                  _correctAnswerCallback, _incorrectAnswerCallback),
             ],
           )),
     );
@@ -73,15 +84,18 @@ class AnswerButtonsWidget extends StatelessWidget {
     Widget widget;
     if (!_puzzleAnswered) {
       widget = RaisedButton(
-        child: Text('Show answer'),
+        child: Text(AppLocalizations.of(context).showAnswer),
         onPressed: _showAnswerCallback,
       );
     } else {
       widget = Row(
         children: [
-          RaisedButton(child: Text('Fail'), onPressed: _incorrectAnswerCallback),
           RaisedButton(
-              child: Text('Correct'), onPressed: _correctAnswerCallback),
+              child: Text(AppLocalizations.of(context).incorrect),
+              onPressed: _incorrectAnswerCallback),
+          RaisedButton(
+              child: Text(AppLocalizations.of(context).correct),
+              onPressed: _correctAnswerCallback),
         ],
       );
     }
