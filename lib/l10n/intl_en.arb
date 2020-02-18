@@ -1,0 +1,23 @@
+{
+  "@@last_modified": "2020-02-11T16:54:53.109166",
+  "title": "Math Puzzles",
+  "@title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showAnswer": "Show answer",
+  "@showAnswer": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "correct": "Correct",
+  "@correct": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "incorrect": "Incorrect",
+  "@incorrect": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

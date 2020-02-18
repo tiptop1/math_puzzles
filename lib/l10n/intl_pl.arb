@@ -1,0 +1,23 @@
+{
+  "@@last_modified": "2020-02-11T16:54:53.109166",
+  "title": "Zagadki matematyczne",
+  "@title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showAnswer": "Poka\u017C\u00A0odpowied\u017A",
+  "@showAnswer": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "correct": "Poprawna",
+  "@correct": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "incorrect": "Niepoprawna",
+  "@incorrect": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
