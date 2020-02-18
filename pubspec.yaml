@@ -19,7 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
   decimal:
 
   # The following adds the Cupertino Icons font to your application.
@@ -30,6 +31,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   test:
+  intl_translation: ^0.17.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
