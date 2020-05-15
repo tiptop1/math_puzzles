@@ -9,7 +9,6 @@ class Configuration {
 
   Map<String, Object> parameters;
 
-
   List<PuzzleGenerator> availableGenerators = [
     // TODO: Do something with the Randoms
     IntegerAdditionPuzzleGenerator(new Random()),

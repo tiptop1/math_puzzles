@@ -4,9 +4,7 @@ import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:math_puzzles/session.dart';
 
-import 'localizations.dart';
-
-void main() => runApp(MathPuzzleWidget());
+import 'package:math_puzzles/localizations.dart';
 
 class MathPuzzleWidget extends StatefulWidget {
   @override
@@ -47,19 +45,18 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
     if (actionValue == _action_value_route) {
       // TOOD: Implement settings windows appear
     } else if (actionValue?.startsWith(_action_prefix_generator) ?? false) {
-      String generatorName = actionValue.substring(_action_prefix_generator.length);
-      String generatorEnabledParam = '$generatorName.${PuzzleGenerator.paramEnabledPostfix}';
-      _configuration.parameters[generatorEnabledParam] = !_configuration.parameters[generatorEnabledParam];
+      String generatorName =
+          actionValue.substring(_action_prefix_generator.length);
+      String generatorEnabledParam =
+          '$generatorName.${PuzzleGenerator.paramEnabledPostfix}';
+      _configuration.parameters[generatorEnabledParam] =
+          !_configuration.parameters[generatorEnabledParam];
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _configuration.load().then((conf) {
-      // Confiugration parameters loaded.
-      setState(() => {});
-    });
   }
 
   @override
