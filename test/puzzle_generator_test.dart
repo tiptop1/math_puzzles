@@ -1,14 +1,17 @@
+import 'dart:math';
+
 import 'package:decimal/decimal.dart';
 import 'package:math_puzzles/puzzle.dart';
-import 'package:test/test.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
+import 'package:test/test.dart';
 
 final RegExp operandRegexp = RegExp('\\d+(\.\\d+)?');
-RandomPuzzleGenerator generator = RandomPuzzleGenerator();
 
 main() {
+  Random _random = Random();
   test('generatePuzzle(OperationType.integerAddition)', () {
-    Puzzle puzzle = generator.generatePuzzle(OperationType.integerAddition);
+    PuzzleGenerator generator = IntegerAdditionPuzzleGenerator(_random);
+    Puzzle puzzle = generator.generate(generator.defaultParameters);
     String question = puzzle.question;
     expect(question, isNotNull);
 
@@ -20,7 +23,8 @@ main() {
   });
 
   test('generatePuzzle(OperationType.doubleAddition)', () {
-    Puzzle puzzle = generator.generatePuzzle(OperationType.doubleAddition);
+    PuzzleGenerator generator = DoubleAdditionPuzzleGenerator(_random);
+    Puzzle puzzle = generator.generate(generator.defaultParameters);
     String question = puzzle.question;
     expect(question, isNotNull);
 

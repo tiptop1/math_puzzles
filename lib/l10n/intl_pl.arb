@@ -19,5 +19,10 @@
   "@incorrect": {
     "type": "text",
     "placeholders": {}
+  },
+  "settings": "Ustawienia",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
   }
 }

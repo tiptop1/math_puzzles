@@ -27,6 +27,8 @@ class AppLocalizations {
   String get correct => Intl.message('Correct', name: 'correct');
 
   String get incorrect => Intl.message('Incorrect', name: 'incorrect');
+
+  String get settings => Intl.message('Settings', name: 'settings');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
