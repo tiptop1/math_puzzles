@@ -11,8 +11,8 @@ class Configuration {
 
   List<PuzzleGenerator> availableGenerators = [
     // TODO: Do something with the Randoms
-    IntegerAdditionPuzzleGenerator(new Random()),
-    DoubleAdditionPuzzleGenerator(new Random())
+    DoubleAdditionPuzzleGenerator(new Random()),
+    MultiplicationTablePuzzleGenerator(new Random())
   ];
 
   Configuration._internal() : parameters = {} {
