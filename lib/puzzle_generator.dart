@@ -12,8 +12,6 @@ abstract class PuzzleGenerator {
 
   Puzzle generate(Map<String, Object> parameters);
 
-  bool containsRequiredParameters(Map<String, Object> parameters);
-
   Object _getRequiredParameter(String name, Map<String, Object> parameters) {
     if (parameters.containsKey(name)) {
       return parameters[name];
@@ -25,7 +23,8 @@ abstract class PuzzleGenerator {
 
 class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'doubleAdditionalPuzzleGenerator';
-  static const String paramEnabled = '$_name.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramEnabled =
+      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
   static const String paramMaxResult = '$_name.maxResult';
   static const String paramPrecision = '$_name.precision';
 
@@ -37,12 +36,6 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
           DoubleAdditionPuzzleGenerator.paramMaxResult: 1000,
           DoubleAdditionPuzzleGenerator.paramPrecision: 2
         });
-
-  @override
-  bool containsRequiredParameters(Map<String, Object> parameters) =>
-      parameters != null &&
-      parameters.containsKey(DoubleAdditionPuzzleGenerator.paramMaxResult) &&
-      parameters.containsKey(DoubleAdditionPuzzleGenerator.paramPrecision);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -63,33 +56,24 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
   }
 }
 
-class IntegerAdditionPuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'integerAdditionPuzzleGenerator';
-  static const String paramEnabled = '$_name.${PuzzleGenerator.paramEnabledPostfix}';
-  static const String paramMaxResult = '$_name.maxResult';
+class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
+  static const String _name = 'MultiplicationTableGenerator';
+  static const String paramEnabled =
+      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramMultiplicationTimes = '$_name.multiplicationTimes';
 
   final Random _random;
 
-  IntegerAdditionPuzzleGenerator(this._random)
-      : super(IntegerAdditionPuzzleGenerator._name, {
-          IntegerAdditionPuzzleGenerator.paramEnabled: true,
-          IntegerAdditionPuzzleGenerator.paramMaxResult: 1000
+  MultiplicationTablePuzzleGenerator(this._random)
+      : super(MultiplicationTablePuzzleGenerator._name, {
+          MultiplicationTablePuzzleGenerator.paramEnabled: true,
+          MultiplicationTablePuzzleGenerator.paramMultiplicationTimes: 10
         });
 
   @override
-  bool containsRequiredParameters(Map<String, Object> parameters) =>
-      parameters != null &&
-      parameters.containsKey(IntegerAdditionPuzzleGenerator.paramMaxResult);
-
-  @override
   Puzzle generate(Map<String, Object> parameters) {
-    int maxResult = _getRequiredParameter(
-        IntegerAdditionPuzzleGenerator.paramMaxResult, parameters);
-    // a + b = c
-    int c = _random.nextInt(maxResult);
-    int a = _random.nextInt(c);
-    int b = c - a;
-
-    return Puzzle('$a + $b', '$c');
+    int a = _random.nextInt((_getRequiredParameter(MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, parameters) as int) + 1);
+    int b = _random.nextInt((_getRequiredParameter(MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, parameters) as int) + 1);
+    return Puzzle('$a + $b', '${a * b}');
   }
 }
