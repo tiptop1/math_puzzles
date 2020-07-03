@@ -26,7 +26,7 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
   static const String paramEnabled =
       '$_name.${PuzzleGenerator.paramEnabledPostfix}';
   static const String paramMaxResult = '$_name.maxResult';
-  static const String paramPrecision = '$_name.precision';
+  static const String paramFractionDigits = '$_name.fractionDigits';
 
   final Random _random;
 
@@ -34,23 +34,23 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
       : super(DoubleAdditionPuzzleGenerator._name, {
           DoubleAdditionPuzzleGenerator.paramEnabled: true,
           DoubleAdditionPuzzleGenerator.paramMaxResult: 1000,
-          DoubleAdditionPuzzleGenerator.paramPrecision: 2
+          DoubleAdditionPuzzleGenerator.paramFractionDigits: 0
         });
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
     int maxResult = _getRequiredParameter(
         DoubleAdditionPuzzleGenerator.paramMaxResult, parameters);
-    int precision = _getRequiredParameter(
-        DoubleAdditionPuzzleGenerator.paramPrecision, parameters);
+    int fractionDigits = _getRequiredParameter(
+        DoubleAdditionPuzzleGenerator.paramFractionDigits, parameters);
 
     // a + b = c
     Decimal c = Decimal.parse(
-        (_random.nextDouble() * maxResult).toStringAsFixed(precision));
+        (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
     Decimal a = Decimal.parse(
-        (_random.nextDouble() * c.toInt()).toStringAsFixed(precision));
+        (_random.nextDouble() * c.toInt()).toStringAsFixed(fractionDigits));
 
-    Decimal b = Decimal.parse(c.toString()) - Decimal.parse(a.toString());
+    Decimal b = c - a;
 
     return Puzzle('$a + $b', '$c');
   }
@@ -74,6 +74,6 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   Puzzle generate(Map<String, Object> parameters) {
     int a = _random.nextInt((_getRequiredParameter(MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, parameters) as int) + 1);
     int b = _random.nextInt((_getRequiredParameter(MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, parameters) as int) + 1);
-    return Puzzle('$a + $b', '${a * b}');
+    return Puzzle('$a * $b', '${a * b}');
   }
 }
