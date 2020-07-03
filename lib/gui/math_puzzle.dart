@@ -6,6 +6,8 @@ import 'package:math_puzzles/session.dart';
 
 import 'package:math_puzzles/localizations.dart';
 
+import '../puzzle.dart';
+
 class MathPuzzleWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -28,12 +30,14 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
   _correctAnswerCallback() {
     setState(() {
       _session.increaseCorrectAnswersCount();
+      _session.generateNewPuzzle();
     });
   }
 
   _incorrectAnswerCallback() {
     setState(() {
       _session.increaseIncorrectAnswersCount();
+      _session.generateNewPuzzle();
     });
   }
 
@@ -87,14 +91,6 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
               onSelected: _selectPopupMenuCallback,
               itemBuilder: (buildContext) {
                 return [
-                  ...(_configuration.availableGenerators
-                      .map((g) => CheckedPopupMenuItem<String>(
-                            value: '$_action_prefix_generator${g.name}',
-                            checked: _configuration.parameters[
-                                '${g.name}.${PuzzleGenerator.paramEnabledPostfix}'],
-                            child: Text(g.name),
-                          ))),
-                  PopupMenuDivider(),
                   PopupMenuItem<String>(
                       value: _action_value_route, child: Text('Settings')),
                 ];
@@ -104,9 +100,8 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
         ),
         body: Column(
           children: [
-            Text(
-                '${_session.currentPuzzle.question} = ${_session.puzzleAnswered ? _session.currentPuzzle.answer : '?'}'),
-            AnswerButtonsWidget(_session, _showAnswerCallback,
+            PuzzleWidget(_session.currentPuzzle, _session.puzzleAnswered),
+            AnswerButtonsWidget(_session.puzzleAnswered, _showAnswerCallback,
                 _correctAnswerCallback, _incorrectAnswerCallback),
           ],
         ),
@@ -116,18 +111,18 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
 }
 
 class AnswerButtonsWidget extends StatelessWidget {
-  final Session _session;
+  final bool _puzzleAnswered;
   final Function _showAnswerCallback;
   final Function _correctAnswerCallback;
   final Function _incorrectAnswerCallback;
 
-  AnswerButtonsWidget(this._session, this._showAnswerCallback,
+  AnswerButtonsWidget(this._puzzleAnswered, this._showAnswerCallback,
       this._correctAnswerCallback, this._incorrectAnswerCallback);
 
   @override
   Widget build(BuildContext context) {
     Widget widget;
-    if (!_session.puzzleAnswered) {
+    if (!_puzzleAnswered) {
       widget = RaisedButton(
         child: Text(AppLocalizations.of(context).showAnswer),
         onPressed: _showAnswerCallback,
@@ -145,5 +140,18 @@ class AnswerButtonsWidget extends StatelessWidget {
       );
     }
     return widget;
+  }
+}
+
+class PuzzleWidget extends StatelessWidget {
+  final bool _puzzleAnswered;
+  final Puzzle _puzzle;
+
+  PuzzleWidget(this._puzzle, this._puzzleAnswered);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+        '${_puzzle.question} = ${_puzzleAnswered ? _puzzle.answer : '?'}');
   }
 }
