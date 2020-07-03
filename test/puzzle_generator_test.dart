@@ -12,7 +12,7 @@ main() {
   test('DoubleAdditionPuzzleGenerator_integerAddition', () {
     PuzzleGenerator generator = DoubleAdditionPuzzleGenerator(_random);
     Map<String, dynamic> params = generator.defaultParameters;
-    params[DoubleAdditionPuzzleGenerator.paramPrecision] = 0;
+    params[DoubleAdditionPuzzleGenerator.paramFractionDigits] = 0;
     Puzzle puzzle = generator.generate(generator.defaultParameters);
     String question = puzzle.question;
     expect(question, isNotNull);
