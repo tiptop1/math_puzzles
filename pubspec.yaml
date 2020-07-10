@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  provider: ^4.0.0
   decimal:
   shared_preferences:
 
