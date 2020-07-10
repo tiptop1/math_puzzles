@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
