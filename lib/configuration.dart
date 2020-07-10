@@ -5,25 +5,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// The class load, keep and store application parameters
 class Configuration {
-  static Configuration _instance = Configuration._internal();
+  Map<String, dynamic> parameters = {};
 
-  Map<String, Object> parameters;
+  Configuration._internal();
 
-  List<PuzzleGenerator> availableGenerators = [
-    // TODO: Do something with the Randoms
-    DoubleAdditionPuzzleGenerator(new Random()),
-    MultiplicationTablePuzzleGenerator(new Random())
-  ];
-
-  Configuration._internal() : parameters = {} {
-    _initializeWithDefaultParameters();
-  }
-
-  static Configuration instance() => _instance;
-
-  Future<void> load() async {
+  static Future<Configuration> load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.getKeys().forEach((k) => parameters[k] = prefs.get(k));
+    Configuration config = Configuration._internal();
+
+    // Load into configuration parameters from SharedPreferences
+    Map<String, dynamic> configParams = config.parameters;
+    prefs.getKeys().forEach((k) => configParams[k] = prefs.get(k));
+
+    // Load into configuration default generator parameters if not already
+    // loaded from SharedPreferences
+    PuzzleGeneratorManager.generators.forEach((generator) {
+      Map<String, dynamic> defParams = generator.defaultParameters;
+      defParams.forEach((key, value) {
+        if (!configParams.containsKey(key)) {
+          configParams[key] = value;
+        }
+      });
+    });
+
+    return config;
   }
 
   void store() async {
@@ -42,10 +47,5 @@ class Configuration {
             'Value of key $k has unsupported type ${v?.runtimeType}.');
       }
     });
-  }
-
-  /// Initializes configuration with default parameters
-  void _initializeWithDefaultParameters() {
-    availableGenerators.forEach((g) => parameters.addAll(g.defaultParameters));
   }
 }
