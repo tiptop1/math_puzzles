@@ -72,8 +72,75 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
-    int a = _random.nextInt((_getRequiredParameter(MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, parameters) as int) + 1);
-    int b = _random.nextInt((_getRequiredParameter(MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, parameters) as int) + 1);
+    int a = _random.nextInt((_getRequiredParameter(
+            MultiplicationTablePuzzleGenerator.paramMultiplicationTimes,
+            parameters) as int) +
+        1);
+    int b = _random.nextInt((_getRequiredParameter(
+            MultiplicationTablePuzzleGenerator.paramMultiplicationTimes,
+            parameters) as int) +
+        1);
     return Puzzle('$a * $b', '${a * b}');
   }
+}
+
+class PuzzleGeneratorManager {
+  static Random _random = Random();
+  static List<PuzzleGenerator> generators = [
+    DoubleAdditionPuzzleGenerator(_random),
+    MultiplicationTablePuzzleGenerator(_random)
+  ];
+
+  int _generatorIndex = 0;
+  static PuzzleGeneratorManager _instance;
+
+  PuzzleGeneratorManager._internal();
+
+  static PuzzleGeneratorManager instance() {
+    if (_instance == null) {
+      _instance = PuzzleGeneratorManager._internal();
+    }
+    return _instance;
+  }
+
+  int _findNextGeneratorIndex() {
+    int index;
+    if (_generatorIndex == generators.length - 1) {
+      index = 0;
+    } else {
+      index = _generatorIndex + 1;
+    }
+    return index;
+  }
+
+  /// Returns next available generator.
+  PuzzleGenerator findNextGenerator(Map<String, dynamic> parameters) {
+    PuzzleGenerator nextGenerator;
+    if (generators.length == 0) {
+      nextGenerator = generators[0];
+    } else {
+      int nextGeneratorIndex;
+      do {
+        nextGeneratorIndex = _findNextGeneratorIndex();
+        PuzzleGenerator tmpGenerator = generators[nextGeneratorIndex];
+        if (_isGeneratorEnabled(tmpGenerator.name, parameters)) {
+          _generatorIndex = nextGeneratorIndex;
+          nextGenerator = tmpGenerator;
+          break;
+        }
+      } while (nextGeneratorIndex == _generatorIndex - 1);
+    }
+    return nextGenerator;
+  }
+
+  bool _isGeneratorEnabled(
+      String generatorName, Map<String, dynamic> parameters) {
+    bool enabled = true;
+    String paramName = '$generatorName.${PuzzleGenerator.paramEnabledPostfix}';
+    if (parameters.containsKey(paramName)) {
+      enabled = parameters[paramName];
+    }
+    return enabled;
+  }
+
 }
