@@ -21,21 +21,8 @@ class MathPuzzleWidget extends StatefulWidget {
 }
 
 class _MathPuzzleState extends State<MathPuzzleWidget> {
-  static const String _action_value_route = 'ACTION_ROUTE';
-  static const String _action_prefix_generator = 'GENERATOR:';
-
-  _selectPopupMenuCallback(String actionValue) {
-    if (actionValue == _action_value_route) {
-      // TOOD: Implement settings windows appear
-    } else if (actionValue?.startsWith(_action_prefix_generator) ?? false) {
-      String generatorName =
-          actionValue.substring(_action_prefix_generator.length);
-      String generatorEnabledParam =
-          '$generatorName.${PuzzleGenerator.paramEnabledPostfix}';
-      widget._configuration.parameters[generatorEnabledParam] =
-          !widget._configuration.parameters[generatorEnabledParam];
-    }
-  }
+  static const String rootRoute = "/";
+  static const String settingsRoute = "/settings";
 
   @override
   void initState() {
@@ -62,41 +49,67 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
       ],
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context).title,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Math puzzles'),
-          actions: <Widget>[
-            PopupMenuButton<String>(
-              onSelected: _selectPopupMenuCallback,
-              itemBuilder: (buildContext) {
-                return [
-                  PopupMenuItem<String>(
-                      value: _action_value_route, child: Text('Settings')),
-                ];
+      initialRoute: rootRoute,
+      routes: {
+        rootRoute: (context) =>
+            PuzzleRoute(widget._configuration, widget._session),
+        settingsRoute: (context) => SettingsRoute(),
+      },
+    );
+  }
+}
+
+class PuzzleRoute extends StatelessWidget {
+  final Configuration _configuration;
+  final Session _session;
+
+  PuzzleRoute(this._configuration, this._session);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Math puzzles'),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (value) => Navigator.pushNamed(context, value),
+            itemBuilder: (buildContext) {
+              return [
+                PopupMenuItem<String>(
+                    value: _MathPuzzleState.settingsRoute,
+                    child: Text('Settings')),
+              ];
+            },
+          )
+        ],
+      ),
+      body: ChangeNotifierProvider<PuzzleModel>(
+        create: (context) => PuzzleModel(PuzzleGeneratorManager.instance()
+            .findNextGenerator(_configuration.parameters)
+            .generate(_configuration.parameters)),
+        child: Column(
+          children: [
+            Consumer<PuzzleModel>(builder: (context, model, child) {
+              return PuzzleWidget(model);
+            }),
+            Consumer<PuzzleModel>(
+              builder: (context, model, child) {
+                return AnswerButtonsWidget(model, _configuration, _session);
               },
-            )
+            ),
           ],
-        ),
-        body: ChangeNotifierProvider<PuzzleModel>(
-          create: (context) => PuzzleModel(PuzzleGeneratorManager.instance()
-              .findNextGenerator(widget._configuration.parameters)
-              .generate(widget._configuration.parameters)),
-          child: Column(
-            children: [
-              Consumer<PuzzleModel>(builder: (context, model, child) {
-                return PuzzleWidget(model);
-              }),
-              Consumer<PuzzleModel>(
-                builder: (context, model, child) {
-                  return AnswerButtonsWidget(
-                      model, widget._configuration, widget._session);
-                },
-              ),
-            ],
-          ),
         ),
       ),
     );
+  }
+}
+
+class SettingsRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(automaticallyImplyLeading: true),
+        body: Center(child: Text("Settings form not implemented yet!")));
   }
 }
 
