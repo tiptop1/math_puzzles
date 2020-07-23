@@ -1,19 +1,25 @@
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
+import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/puzzle.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:test/test.dart';
 
+import 'puzzle_generator_test.reflectable.dart';
+
 final RegExp operandRegexp = RegExp('\\d+(\.\\d+)?');
 
 main() {
+  // Set up reflection support.
+  initializeReflectable();
   Random _random = Random();
   test('DoubleAdditionPuzzleGenerator_integerAddition', () {
     PuzzleGenerator generator = DoubleAdditionPuzzleGenerator(_random);
-    Map<String, dynamic> params = generator.defaultParameters;
-    params[DoubleAdditionPuzzleGenerator.paramFractionDigits] = 0;
-    Puzzle puzzle = generator.generate(generator.defaultParameters);
+    Map<String, dynamic> defaultParams =
+        Configuration.readDefaultParameters(generator);
+    defaultParams[DoubleAdditionPuzzleGenerator.paramFractionDigits] = 0;
+    Puzzle puzzle = generator.generate(defaultParams);
     String question = puzzle.question;
     expect(question, isNotNull);
 
@@ -26,7 +32,9 @@ main() {
 
   test('DoubleAdditionPuzzleGenerator_doubleAddition', () {
     PuzzleGenerator generator = DoubleAdditionPuzzleGenerator(_random);
-    Puzzle puzzle = generator.generate(generator.defaultParameters);
+    Map<String, dynamic> defaultParams =
+        Configuration.readDefaultParameters(generator);
+    Puzzle puzzle = generator.generate(defaultParams);
     String question = puzzle.question;
     expect(question, isNotNull);
 
@@ -39,7 +47,9 @@ main() {
 
   test('MultiplicationTablePuzzleGenerator', () {
     PuzzleGenerator generator = MultiplicationTablePuzzleGenerator(_random);
-    Puzzle puzzle = generator.generate(generator.defaultParameters);
+    Map<String, dynamic> defaultParams =
+        Configuration.readDefaultParameters(generator);
+    Puzzle puzzle = generator.generate(defaultParams);
     String question = puzzle.question;
     expect(question, isNotNull);
 
@@ -49,7 +59,6 @@ main() {
 
     expect(result, equals(a * b));
   });
-
 }
 
 String getOperand(String str, int index) {

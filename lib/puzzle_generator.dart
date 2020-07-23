@@ -1,14 +1,23 @@
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
+import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/puzzle.dart';
+import 'package:reflectable/capability.dart';
+import 'package:reflectable/reflectable.dart';
 
+class Reflector extends Reflectable {
+  const Reflector() : super(metadataCapability);
+}
+
+const reflector = Reflector();
+
+@reflector
 abstract class PuzzleGenerator {
   static const String paramEnabledPostfix = "enabled";
   final String name;
-  final Map<String, Object> defaultParameters;
 
-  PuzzleGenerator(this.name, this.defaultParameters);
+  const PuzzleGenerator(this.name);
 
   Puzzle generate(Map<String, Object> parameters);
 
@@ -21,6 +30,12 @@ abstract class PuzzleGenerator {
   }
 }
 
+@ParameterDefinition(DoubleAdditionPuzzleGenerator.paramEnabled, true)
+@ParameterDefinition(DoubleAdditionPuzzleGenerator.paramMaxResult, 1000,
+    validators: [ScopeParameterValidator(1, 10000)])
+@ParameterDefinition(DoubleAdditionPuzzleGenerator.paramFractionDigits, 0,
+    validators: [ScopeParameterValidator(0, 4)])
+@reflector
 class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'doubleAdditionalPuzzleGenerator';
   static const String paramEnabled =
@@ -30,12 +45,7 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
 
   final Random _random;
 
-  DoubleAdditionPuzzleGenerator(this._random)
-      : super(DoubleAdditionPuzzleGenerator._name, {
-          DoubleAdditionPuzzleGenerator.paramEnabled: true,
-          DoubleAdditionPuzzleGenerator.paramMaxResult: 1000,
-          DoubleAdditionPuzzleGenerator.paramFractionDigits: 0
-        });
+  DoubleAdditionPuzzleGenerator(this._random) : super(_name);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -56,6 +66,11 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
   }
 }
 
+@ParameterDefinition(MultiplicationTablePuzzleGenerator.paramEnabled, true)
+@ParameterDefinition(
+    MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
+    validators: [ScopeParameterValidator(10, 1000)])
+@reflector
 class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'MultiplicationTableGenerator';
   static const String paramEnabled =
@@ -65,10 +80,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   final Random _random;
 
   MultiplicationTablePuzzleGenerator(this._random)
-      : super(MultiplicationTablePuzzleGenerator._name, {
-          MultiplicationTablePuzzleGenerator.paramEnabled: true,
-          MultiplicationTablePuzzleGenerator.paramMultiplicationTimes: 10
-        });
+      : super(MultiplicationTablePuzzleGenerator._name);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -142,5 +154,4 @@ class PuzzleGeneratorManager {
     }
     return enabled;
   }
-
 }

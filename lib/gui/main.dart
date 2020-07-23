@@ -1,9 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/gui/initialization.dart';
+import 'package:math_puzzles/gui/main.reflectable.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';
 
-void main() => runApp(MainWidget());
+void main() {
+  // Set up reflection support.
+  initializeReflectable();
+  runApp(MainWidget());
+}
 
 class MainWidget extends StatefulWidget {
   @override

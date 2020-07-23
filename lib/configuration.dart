@@ -1,7 +1,41 @@
 import 'package:math_puzzles/puzzle_generator.dart';
+import 'package:reflectable/reflectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// The class load, keep and store application parameters
+/// The class could be used as annotation to define default configuration parameters.
+class ParameterDefinition {
+  final String name;
+  final dynamic defaultValue;
+  final List validators;
+
+  const ParameterDefinition(this.name, this.defaultValue,
+      {this.validators = const []});
+}
+
+/// Configuration parameter validator.
+abstract class ParameterValidator {
+  /// Error message.
+  final String message;
+
+  const ParameterValidator(this.message);
+
+  bool isValueValid(dynamic value);
+}
+
+/// Predefined value scope validator.
+class ScopeParameterValidator extends ParameterValidator {
+  final num minValue;
+  final num maxValue;
+
+  const ScopeParameterValidator(this.minValue, this.maxValue)
+      : super(
+            'Invalid parameter value - expected is between $minValue and $maxValue.');
+
+  @override
+  bool isValueValid(dynamic value) => minValue <= value && value <= maxValue;
+}
+
+/// The class load, keep and store application parameters.
 class Configuration {
   Map<String, dynamic> parameters = {};
 
@@ -18,7 +52,7 @@ class Configuration {
     // Load into configuration default generator parameters if not already
     // loaded from SharedPreferences
     PuzzleGeneratorManager.generators.forEach((generator) {
-      Map<String, dynamic> defParams = generator.defaultParameters;
+      Map<String, dynamic> defParams = readDefaultParameters(generator);
       defParams.forEach((key, value) {
         if (!configParams.containsKey(key)) {
           configParams[key] = value;
@@ -45,5 +79,17 @@ class Configuration {
             'Value of key $k has unsupported type ${v?.runtimeType}.');
       }
     });
+  }
+
+  static Map<String, dynamic> readDefaultParameters(PuzzleGenerator generator) {
+    TypeMirror typeMirror = reflector.reflectType(generator.runtimeType);
+    List<Object> metadata = typeMirror.metadata;
+    Map<String, dynamic> defaultParams = {};
+    for (Object obj in metadata) {
+      if (obj is ParameterDefinition) {
+        defaultParams[obj.name] = obj.defaultValue;
+      }
+    }
+    return defaultParams;
   }
 }
