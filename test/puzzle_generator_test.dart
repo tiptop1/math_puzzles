@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
-import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/puzzle.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:test/test.dart';
@@ -14,12 +13,15 @@ main() {
   // Set up reflection support.
   initializeReflectable();
   Random _random = Random();
-  test('DoubleAdditionPuzzleGenerator_integerAddition', () {
-    PuzzleGenerator generator = DoubleAdditionPuzzleGenerator(_random);
-    Map<String, dynamic> defaultParams =
-        Configuration.readDefaultParameters(generator);
-    defaultParams[DoubleAdditionPuzzleGenerator.paramFractionDigits] = 0;
-    Puzzle puzzle = generator.generate(defaultParams);
+  test('AdditionPuzzleGenerator_integerAddition', () {
+    PuzzleGenerator generator = AdditionPuzzleGenerator(_random);
+
+    Map<String, dynamic> paramValues = {
+      AdditionPuzzleGenerator.paramMaxResult: 1000,
+      AdditionPuzzleGenerator.paramFractionDigits: 0
+    };
+
+    Puzzle puzzle = generator.generate(paramValues);
     String question = puzzle.question;
     expect(question, isNotNull);
 
@@ -30,10 +32,14 @@ main() {
     expect(result, equals(o1 + o2));
   });
 
-  test('DoubleAdditionPuzzleGenerator_doubleAddition', () {
-    PuzzleGenerator generator = DoubleAdditionPuzzleGenerator(_random);
-    Map<String, dynamic> defaultParams =
-        Configuration.readDefaultParameters(generator);
+  test('AdditionPuzzleGenerator_doubleAddition', () {
+    PuzzleGenerator generator = AdditionPuzzleGenerator(_random);
+
+    Map<String, dynamic> defaultParams = {
+      AdditionPuzzleGenerator.paramMaxResult: 1000,
+      AdditionPuzzleGenerator.paramFractionDigits: 2
+    };
+
     Puzzle puzzle = generator.generate(defaultParams);
     String question = puzzle.question;
     expect(question, isNotNull);
@@ -47,8 +53,11 @@ main() {
 
   test('MultiplicationTablePuzzleGenerator', () {
     PuzzleGenerator generator = MultiplicationTablePuzzleGenerator(_random);
-    Map<String, dynamic> defaultParams =
-        Configuration.readDefaultParameters(generator);
+
+    Map<String, dynamic> defaultParams = {
+      MultiplicationTablePuzzleGenerator.paramMultiplicationTimes: 10
+    };
+
     Puzzle puzzle = generator.generate(defaultParams);
     String question = puzzle.question;
     expect(question, isNotNull);

@@ -85,8 +85,8 @@ class PuzzleRoute extends StatelessWidget {
       ),
       body: ChangeNotifierProvider<PuzzleModel>(
         create: (context) => PuzzleModel(PuzzleGeneratorManager.instance()
-            .findNextGenerator(_configuration.parameters)
-            .generate(_configuration.parameters)),
+            .findNextGenerator(_configuration.parameterValues)
+            .generate(_configuration.parameterValues)),
         child: Column(
           children: [
             Consumer<PuzzleModel>(builder: (context, model, child) {
@@ -146,15 +146,15 @@ class AnswerButtonsWidget extends StatelessWidget {
   void _correctAnswerCallback() {
     _session.increaseCorrectAnswersCount();
     _model.puzzle = PuzzleGeneratorManager.instance()
-        .findNextGenerator(_configuration.parameters)
-        .generate(_configuration.parameters);
+        .findNextGenerator(_configuration.parameterValues)
+        .generate(_configuration.parameterValues);
   }
 
   void _incorrectAnswerCallback() {
     _session.increaseIncorrectAnswersCount();
     _model.puzzle = PuzzleGeneratorManager.instance()
-        .findNextGenerator(_configuration.parameters)
-        .generate(_configuration.parameters);
+        .findNextGenerator(_configuration.parameterValues)
+        .generate(_configuration.parameterValues);
   }
 
   void _showAnswerCallback() {
