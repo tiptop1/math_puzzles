@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ParameterDefinition {
   final String name;
   final dynamic defaultValue;
-  final List validators;
+  final List<ParameterValidator> validators;
 
   const ParameterDefinition(this.name, this.defaultValue,
       {this.validators = const []});
@@ -35,9 +35,25 @@ class ScopeParameterValidator extends ParameterValidator {
   bool isValueValid(dynamic value) => minValue <= value && value <= maxValue;
 }
 
+class IntTypeValidator extends ParameterValidator {
+  const IntTypeValidator()
+      : super('Invalid parameter type - expected integer.');
+
+  @override
+  bool isValueValid(dynamic value) => value is int;
+}
+
+class BoolTypeValidator extends ParameterValidator {
+  const BoolTypeValidator() : super('Invalid parameter type - expected bool.');
+
+  @override
+  bool isValueValid(dynamic value) => value is bool;
+}
+
 /// The class load, keep and store application parameters.
 class Configuration {
-  Map<String, dynamic> parameters = {};
+  Map<String, dynamic> _parameterValues = {};
+  Map<String, ParameterDefinition> _parameterDefinitions = {};
 
   Configuration._internal();
 
@@ -46,16 +62,16 @@ class Configuration {
     Configuration config = Configuration._internal();
 
     // Load into configuration parameters from SharedPreferences
-    Map<String, dynamic> configParams = config.parameters;
-    prefs.getKeys().forEach((k) => configParams[k] = prefs.get(k));
+    Map<String, dynamic> parameterValues = config.parameterValues;
+    prefs.getKeys().forEach((k) => parameterValues[k] = prefs.get(k));
 
     // Load into configuration default generator parameters if not already
     // loaded from SharedPreferences
     PuzzleGeneratorManager.generators.forEach((generator) {
-      Map<String, dynamic> defParams = readDefaultParameters(generator);
+      Map<String, dynamic> defParams = _readDefaultParameterValues(generator);
       defParams.forEach((key, value) {
-        if (!configParams.containsKey(key)) {
-          configParams[key] = value;
+        if (!parameterValues.containsKey(key)) {
+          config.setParameterValue(key, value);
         }
       });
     });
@@ -65,15 +81,16 @@ class Configuration {
 
   void store() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    parameters.forEach((k, v) {
+    _parameterValues.forEach((k, v) {
+      dynamic value = v.defaultValue;
       if (v is int) {
-        prefs.setInt(k, v);
+        prefs.setInt(k, value);
       } else if (v is double) {
-        prefs.setDouble(k, v);
+        prefs.setDouble(k, value);
       } else if (v is bool) {
-        prefs.setBool(k, v);
+        prefs.setBool(k, value);
       } else if (v is String) {
-        prefs.setString(k, v);
+        prefs.setString(k, value);
       } else {
         throw Exception(
             'Value of key $k has unsupported type ${v?.runtimeType}.');
@@ -81,15 +98,39 @@ class Configuration {
     });
   }
 
-  static Map<String, dynamic> readDefaultParameters(PuzzleGenerator generator) {
+  Map<String, ParameterDefinition> get parameterDefinitions =>
+      Map.unmodifiable(_parameterDefinitions);
+
+  Map<String, dynamic> get parameterValues =>
+      Map.unmodifiable(_parameterValues);
+
+  void setParameterValue(String name, dynamic value) {
+    if (_parameterDefinitions.containsKey(name)) {
+      ParameterDefinition paramDef = _parameterDefinitions[name];
+      // TODO: Maybe value validation should be extracted for further common use.
+      for (ParameterValidator v in paramDef.validators) {
+        if (!v.isValueValid(value)) {
+          throw Exception(
+              'Parameter \'$name\' value $value validation fail with message: '
+                  '"${v.message}".');
+        }
+      }
+      _parameterValues[name] = value;
+    } else {
+      throw Exception('Definition for parameter \'$name\' unknown.');
+    }
+  }
+
+  static Map<String, dynamic> _readDefaultParameterValues(
+      PuzzleGenerator generator) {
     TypeMirror typeMirror = reflector.reflectType(generator.runtimeType);
     List<Object> metadata = typeMirror.metadata;
-    Map<String, dynamic> defaultParams = {};
+    Map<String, ParameterDefinition> defaultParams = {};
     for (Object obj in metadata) {
       if (obj is ParameterDefinition) {
         defaultParams[obj.name] = obj.defaultValue;
       }
     }
-    return defaultParams;
+    return Map.unmodifiable(defaultParams);
   }
 }
