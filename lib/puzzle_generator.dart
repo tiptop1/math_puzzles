@@ -30,13 +30,14 @@ abstract class PuzzleGenerator {
   }
 }
 
-@ParameterDefinition(DoubleAdditionPuzzleGenerator.paramEnabled, true)
-@ParameterDefinition(DoubleAdditionPuzzleGenerator.paramMaxResult, 1000,
-    validators: [ScopeParameterValidator(1, 10000)])
-@ParameterDefinition(DoubleAdditionPuzzleGenerator.paramFractionDigits, 0,
-    validators: [ScopeParameterValidator(0, 4)])
+@ParameterDefinition(AdditionPuzzleGenerator.paramEnabled, true,
+    validators: [BoolTypeValidator()])
+@ParameterDefinition(AdditionPuzzleGenerator.paramMaxResult, 1000,
+    validators: [IntTypeValidator(), ScopeParameterValidator(1, 10000)])
+@ParameterDefinition(AdditionPuzzleGenerator.paramFractionDigits, 0,
+    validators: [IntTypeValidator(), ScopeParameterValidator(0, 4)])
 @reflector
-class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
+class AdditionPuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'doubleAdditionalPuzzleGenerator';
   static const String paramEnabled =
       '$_name.${PuzzleGenerator.paramEnabledPostfix}';
@@ -45,14 +46,14 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
 
   final Random _random;
 
-  DoubleAdditionPuzzleGenerator(this._random) : super(_name);
+  AdditionPuzzleGenerator(this._random) : super(_name);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
     int maxResult = _getRequiredParameter(
-        DoubleAdditionPuzzleGenerator.paramMaxResult, parameters);
+        AdditionPuzzleGenerator.paramMaxResult, parameters);
     int fractionDigits = _getRequiredParameter(
-        DoubleAdditionPuzzleGenerator.paramFractionDigits, parameters);
+        AdditionPuzzleGenerator.paramFractionDigits, parameters);
 
     // a + b = c
     Decimal c = Decimal.parse(
@@ -66,10 +67,11 @@ class DoubleAdditionPuzzleGenerator extends PuzzleGenerator {
   }
 }
 
-@ParameterDefinition(MultiplicationTablePuzzleGenerator.paramEnabled, true)
+@ParameterDefinition(MultiplicationTablePuzzleGenerator.paramEnabled, true,
+    validators: [BoolTypeValidator()])
 @ParameterDefinition(
     MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
-    validators: [ScopeParameterValidator(10, 1000)])
+    validators: [IntTypeValidator(), ScopeParameterValidator(10, 1000)])
 @reflector
 class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'MultiplicationTableGenerator';
@@ -99,7 +101,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 class PuzzleGeneratorManager {
   static Random _random = Random();
   static List<PuzzleGenerator> generators = [
-    DoubleAdditionPuzzleGenerator(_random),
+    AdditionPuzzleGenerator(_random),
     MultiplicationTablePuzzleGenerator(_random)
   ];
 
