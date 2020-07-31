@@ -38,7 +38,7 @@ abstract class PuzzleGenerator {
     validators: [IntTypeValidator(), ScopeParameterValidator(0, 4)])
 @reflector
 class AdditionPuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'doubleAdditionalPuzzleGenerator';
+  static const String _name = 'additionalPuzzleGenerator';
   static const String paramEnabled =
       '$_name.${PuzzleGenerator.paramEnabledPostfix}';
   static const String paramMaxResult = '$_name.maxResult';
@@ -81,8 +81,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 
   final Random _random;
 
-  MultiplicationTablePuzzleGenerator(this._random)
-      : super(MultiplicationTablePuzzleGenerator._name);
+  MultiplicationTablePuzzleGenerator(this._random) : super(_name);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
