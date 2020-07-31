@@ -55,7 +55,15 @@ class Configuration {
   Map<String, dynamic> _parameterValues = {};
   Map<String, ParameterDefinition> _parameterDefinitions = {};
 
-  Configuration._internal();
+  /// Created empty configuration with parameter definitions, but without
+  /// parameter values
+  Configuration._internal() {
+    for (PuzzleGenerator gen in PuzzleGeneratorManager.generators) {
+      List<ParameterDefinition> paramDefs = _readParameterDefinitions(gen);
+      paramDefs.forEach(
+          (paramDef) => _parameterDefinitions[paramDef.name] = paramDef);
+    }
+  }
 
   static Future<Configuration> load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -63,7 +71,7 @@ class Configuration {
 
     // Load into configuration parameters from SharedPreferences
     Map<String, dynamic> parameterValues = config.parameterValues;
-    prefs.getKeys().forEach((k) => parameterValues[k] = prefs.get(k));
+    prefs.getKeys().forEach((k) => config.setParameterValue(k, prefs.get(k)));
 
     // Load into configuration default generator parameters if not already
     // loaded from SharedPreferences
@@ -112,7 +120,7 @@ class Configuration {
         if (!v.isValueValid(value)) {
           throw Exception(
               'Parameter \'$name\' value $value validation fail with message: '
-                  '"${v.message}".');
+              '"${v.message}".');
         }
       }
       _parameterValues[name] = value;
@@ -121,16 +129,30 @@ class Configuration {
     }
   }
 
+  static List<Object> _readMetadata(PuzzleGenerator generator) {
+    TypeMirror typeMirror = reflector.reflectType(generator.runtimeType);
+    return typeMirror.metadata;
+  }
+
   static Map<String, dynamic> _readDefaultParameterValues(
       PuzzleGenerator generator) {
-    TypeMirror typeMirror = reflector.reflectType(generator.runtimeType);
-    List<Object> metadata = typeMirror.metadata;
-    Map<String, ParameterDefinition> defaultParams = {};
-    for (Object obj in metadata) {
+    Map<String, dynamic> defaultParams = {};
+    for (Object obj in _readMetadata(generator)) {
       if (obj is ParameterDefinition) {
         defaultParams[obj.name] = obj.defaultValue;
       }
     }
     return Map.unmodifiable(defaultParams);
+  }
+
+  static List<ParameterDefinition> _readParameterDefinitions(
+      PuzzleGenerator generator) {
+    var defs = [];
+    for (Object obj in _readMetadata(generator)) {
+      if (obj is ParameterDefinition) {
+        defs.add(obj);
+      }
+    }
+    return List.unmodifiable(defs);
   }
 }
