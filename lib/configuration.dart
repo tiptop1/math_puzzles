@@ -1,6 +1,15 @@
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Parameter {
+  final dynamic _value;
+  final ParameterDefinition definition;
+
+  const Parameter(this._value, this.definition);
+
+  dynamic get value => _value;
+}
+
 /// The class could be used as annotation to define default configuration parameters.
 class ParameterDefinition {
   final String name;
@@ -51,16 +60,15 @@ class BoolTypeValidator extends ParameterValidator {
 
 /// The class load, keep and store application parameters.
 class Configuration {
-  final Map<String, dynamic> _parameterValues = {};
-  final Map<String, ParameterDefinition> _parameterDefinitions = {};
+  final Map<String, Parameter> _parameters = {};
 
   /// Created empty configuration with parameter definitions, but without
   /// parameter values
   Configuration._internal() {
     for (var gen in PuzzleGeneratorManager.generators) {
       var paramDefs = _readParameterDefinitions(gen);
-      paramDefs.forEach(
-          (paramDef) => _parameterDefinitions[paramDef.name] = paramDef);
+      paramDefs.forEach((paramDef) => _parameters[paramDef.name] =
+          Parameter(paramDef.defaultValue, paramDef));
     }
   }
 
@@ -69,16 +77,16 @@ class Configuration {
     var config = Configuration._internal();
 
     // Load into configuration parameters from SharedPreferences
-    var parameterValues = config.parameterValues;
+    var parameters = config.parameters;
     prefs.getKeys().forEach((k) => config.setParameterValue(k, prefs.get(k)));
 
     // Load into configuration default generator parameters if not already
     // loaded from SharedPreferences
     PuzzleGeneratorManager.generators.forEach((generator) {
       var defParams = _readDefaultParameterValues(generator);
-      defParams.forEach((key, value) {
-        if (!parameterValues.containsKey(key)) {
-          config.setParameterValue(key, value);
+      defParams.forEach((name, value) {
+        if (!parameters.containsKey(name)) {
+          config.setParameterValue(name, value);
         }
       });
     });
@@ -88,41 +96,38 @@ class Configuration {
 
   void store() async {
     var prefs = await SharedPreferences.getInstance();
-    _parameterValues.forEach((k, v) {
-      dynamic value = v.defaultValue;
-      if (v is int) {
-        prefs.setInt(k, value);
-      } else if (v is double) {
-        prefs.setDouble(k, value);
-      } else if (v is bool) {
-        prefs.setBool(k, value);
-      } else if (v is String) {
-        prefs.setString(k, value);
+    _parameters.forEach((name, param) {
+      dynamic value = param.value;
+      if (value is int) {
+        prefs.setInt(name, value);
+      } else if (value is double) {
+        prefs.setDouble(name, value);
+      } else if (value is bool) {
+        prefs.setBool(name, value);
+      } else if (value is String) {
+        prefs.setString(name, value);
       } else {
         throw Exception(
-            'Value of key $k has unsupported type ${v?.runtimeType}.');
+            'Parameter of name $name has unsupported type ${value?.runtimeType}.');
       }
     });
   }
 
-  Map<String, ParameterDefinition> get parameterDefinitions =>
-      Map.unmodifiable(_parameterDefinitions);
-
-  Map<String, dynamic> get parameterValues =>
-      Map.unmodifiable(_parameterValues);
+  Map<String, Parameter> get parameters => Map.unmodifiable(_parameters);
 
   void setParameterValue(String name, dynamic value) {
-    if (_parameterDefinitions.containsKey(name)) {
-      var paramDef = _parameterDefinitions[name];
+    if (_parameters.containsKey(name)) {
+      var parameter = _parameters[name];
+      var definition = parameter.definition;
       // TODO: Maybe value validation should be extracted for further common use.
-      for (var v in paramDef.validators) {
+      for (var v in definition.validators) {
         if (!v.isValueValid(value)) {
           throw Exception(
-              'Parameter \'$name\' value $value validation fail with message: '
-              '"${v.message}".');
+              "Parameter '$name' value $value validation fail with message: "
+              "'${v.message}'.");
         }
       }
-      _parameterValues[name] = value;
+      _parameters[name] = Parameter(value, parameter.definition);
     } else {
       throw Exception('Definition for parameter \'$name\' unknown.');
     }
@@ -135,23 +140,23 @@ class Configuration {
 
   static Map<String, dynamic> _readDefaultParameterValues(
       PuzzleGenerator generator) {
-    var defaultParams = {};
-    for (var obj in _readMetadata(generator)) {
-      if (obj is ParameterDefinition) {
-        defaultParams[obj.name] = obj.defaultValue;
+    var defaultValues = {};
+    for (var definition in _readMetadata(generator)) {
+      if (definition is ParameterDefinition) {
+        defaultValues[definition.name] = definition.defaultValue;
       }
     }
-    return Map.unmodifiable(defaultParams);
+    return Map.unmodifiable(defaultValues);
   }
 
   static List<ParameterDefinition> _readParameterDefinitions(
       PuzzleGenerator generator) {
-    var defs = [];
+    var definitions = [];
     for (var obj in _readMetadata(generator)) {
       if (obj is ParameterDefinition) {
-        defs.add(obj);
+        definitions.add(obj);
       }
     }
-    return List.unmodifiable(defs);
+    return List.unmodifiable(definitions);
   }
 }
