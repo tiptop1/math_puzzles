@@ -118,5 +118,5 @@ class PuzzleWidget extends StatelessWidget {
 }
 
 Map<String, dynamic> _toValues(Map<String, Parameter> parameters) {
-  parameters.map((name, parameter) => MapEntry(name, parameter.value));
+  return parameters.map((name, parameter) => MapEntry(name, parameter.value));
 }
