@@ -23,9 +23,12 @@ class ParameterDefinition {
 /// Configuration parameter validator.
 abstract class ParameterValidator {
   /// Error message.
-  final String message;
+  final String errorMessage;
 
-  const ParameterValidator(this.message);
+  const ParameterValidator(this.errorMessage);
+
+  /// If [value] valid return null othwrise errorMessage.
+  String validate(dynamic value) => isValueValid(value) ? null : errorMessage;
 
   bool isValueValid(dynamic value);
 }
@@ -124,7 +127,7 @@ class Configuration {
         if (!v.isValueValid(value)) {
           throw Exception(
               "Parameter '$name' value $value validation fail with message: "
-              "'${v.message}'.");
+              "'${v.errorMessage}'.");
         }
       }
       _parameters[name] = Parameter(value, parameter.definition);
