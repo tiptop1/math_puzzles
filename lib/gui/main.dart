@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/gui/initialization.dart';

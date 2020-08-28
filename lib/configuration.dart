@@ -1,5 +1,4 @@
 import 'package:math_puzzles/puzzle_generator.dart';
-import 'package:reflectable/reflectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The class could be used as annotation to define default configuration parameters.
@@ -52,31 +51,31 @@ class BoolTypeValidator extends ParameterValidator {
 
 /// The class load, keep and store application parameters.
 class Configuration {
-  Map<String, dynamic> _parameterValues = {};
-  Map<String, ParameterDefinition> _parameterDefinitions = {};
+  final Map<String, dynamic> _parameterValues = {};
+  final Map<String, ParameterDefinition> _parameterDefinitions = {};
 
   /// Created empty configuration with parameter definitions, but without
   /// parameter values
   Configuration._internal() {
-    for (PuzzleGenerator gen in PuzzleGeneratorManager.generators) {
-      List<ParameterDefinition> paramDefs = _readParameterDefinitions(gen);
+    for (var gen in PuzzleGeneratorManager.generators) {
+      var paramDefs = _readParameterDefinitions(gen);
       paramDefs.forEach(
           (paramDef) => _parameterDefinitions[paramDef.name] = paramDef);
     }
   }
 
   static Future<Configuration> load() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Configuration config = Configuration._internal();
+    var prefs = await SharedPreferences.getInstance();
+    var config = Configuration._internal();
 
     // Load into configuration parameters from SharedPreferences
-    Map<String, dynamic> parameterValues = config.parameterValues;
+    var parameterValues = config.parameterValues;
     prefs.getKeys().forEach((k) => config.setParameterValue(k, prefs.get(k)));
 
     // Load into configuration default generator parameters if not already
     // loaded from SharedPreferences
     PuzzleGeneratorManager.generators.forEach((generator) {
-      Map<String, dynamic> defParams = _readDefaultParameterValues(generator);
+      var defParams = _readDefaultParameterValues(generator);
       defParams.forEach((key, value) {
         if (!parameterValues.containsKey(key)) {
           config.setParameterValue(key, value);
@@ -88,7 +87,7 @@ class Configuration {
   }
 
   void store() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     _parameterValues.forEach((k, v) {
       dynamic value = v.defaultValue;
       if (v is int) {
@@ -114,9 +113,9 @@ class Configuration {
 
   void setParameterValue(String name, dynamic value) {
     if (_parameterDefinitions.containsKey(name)) {
-      ParameterDefinition paramDef = _parameterDefinitions[name];
+      var paramDef = _parameterDefinitions[name];
       // TODO: Maybe value validation should be extracted for further common use.
-      for (ParameterValidator v in paramDef.validators) {
+      for (var v in paramDef.validators) {
         if (!v.isValueValid(value)) {
           throw Exception(
               'Parameter \'$name\' value $value validation fail with message: '
@@ -130,14 +129,14 @@ class Configuration {
   }
 
   static List<Object> _readMetadata(PuzzleGenerator generator) {
-    TypeMirror typeMirror = reflector.reflectType(generator.runtimeType);
+    var typeMirror = reflector.reflectType(generator.runtimeType);
     return typeMirror.metadata;
   }
 
   static Map<String, dynamic> _readDefaultParameterValues(
       PuzzleGenerator generator) {
-    Map<String, dynamic> defaultParams = {};
-    for (Object obj in _readMetadata(generator)) {
+    var defaultParams = {};
+    for (var obj in _readMetadata(generator)) {
       if (obj is ParameterDefinition) {
         defaultParams[obj.name] = obj.defaultValue;
       }
@@ -148,7 +147,7 @@ class Configuration {
   static List<ParameterDefinition> _readParameterDefinitions(
       PuzzleGenerator generator) {
     var defs = [];
-    for (Object obj in _readMetadata(generator)) {
+    for (var obj in _readMetadata(generator)) {
       if (obj is ParameterDefinition) {
         defs.add(obj);
       }

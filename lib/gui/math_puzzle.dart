@@ -21,8 +21,8 @@ class MathPuzzleWidget extends StatefulWidget {
 }
 
 class _MathPuzzleState extends State<MathPuzzleWidget> {
-  static const String rootRoute = "/";
-  static const String settingsRoute = "/settings";
+  static const String rootRoute = '/';
+  static const String settingsRoute = '/settings';
 
   @override
   void initState() {
@@ -109,7 +109,7 @@ class SettingsRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(automaticallyImplyLeading: true),
-        body: Center(child: Text("Settings form not implemented yet!")));
+        body: Center(child: Text('Settings form not implemented yet!')));
   }
 }
 

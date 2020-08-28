@@ -14,7 +14,7 @@ const reflector = Reflector();
 
 @reflector
 abstract class PuzzleGenerator {
-  static const String paramEnabledPostfix = "enabled";
+  static const String paramEnabledPostfix = 'enabled';
   final String name;
 
   const PuzzleGenerator(this.name);
@@ -56,12 +56,12 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
         AdditionPuzzleGenerator.paramFractionDigits, parameters);
 
     // a + b = c
-    Decimal c = Decimal.parse(
+    var c = Decimal.parse(
         (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
-    Decimal a = Decimal.parse(
+    var a = Decimal.parse(
         (_random.nextDouble() * c.toInt()).toStringAsFixed(fractionDigits));
 
-    Decimal b = c - a;
+    var b = c - a;
 
     return Puzzle('$a + $b', '$c');
   }
@@ -85,11 +85,11 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
-    int a = _random.nextInt((_getRequiredParameter(
+    var a = _random.nextInt((_getRequiredParameter(
             MultiplicationTablePuzzleGenerator.paramMultiplicationTimes,
             parameters) as int) +
         1);
-    int b = _random.nextInt((_getRequiredParameter(
+    var b = _random.nextInt((_getRequiredParameter(
             MultiplicationTablePuzzleGenerator.paramMultiplicationTimes,
             parameters) as int) +
         1);
@@ -98,7 +98,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 }
 
 class PuzzleGeneratorManager {
-  static Random _random = Random();
+  static final Random _random = Random();
   static List<PuzzleGenerator> generators = [
     AdditionPuzzleGenerator(_random),
     MultiplicationTablePuzzleGenerator(_random)
@@ -110,9 +110,7 @@ class PuzzleGeneratorManager {
   PuzzleGeneratorManager._internal();
 
   static PuzzleGeneratorManager instance() {
-    if (_instance == null) {
-      _instance = PuzzleGeneratorManager._internal();
-    }
+    _instance ??= PuzzleGeneratorManager._internal();
     return _instance;
   }
 
@@ -129,13 +127,13 @@ class PuzzleGeneratorManager {
   /// Returns next available generator.
   PuzzleGenerator findNextGenerator(Map<String, dynamic> parameters) {
     PuzzleGenerator nextGenerator;
-    if (generators.length == 0) {
+    if (generators.isEmpty) {
       nextGenerator = generators[0];
     } else {
       int nextGeneratorIndex;
       do {
         nextGeneratorIndex = _findNextGeneratorIndex();
-        PuzzleGenerator tmpGenerator = generators[nextGeneratorIndex];
+        var tmpGenerator = generators[nextGeneratorIndex];
         if (_isGeneratorEnabled(tmpGenerator.name, parameters)) {
           _generatorIndex = nextGeneratorIndex;
           nextGenerator = tmpGenerator;
@@ -148,8 +146,8 @@ class PuzzleGeneratorManager {
 
   bool _isGeneratorEnabled(
       String generatorName, Map<String, dynamic> parameters) {
-    bool enabled = true;
-    String paramName = '$generatorName.${PuzzleGenerator.paramEnabledPostfix}';
+    var enabled = true;
+    var paramName = '$generatorName.${PuzzleGenerator.paramEnabledPostfix}';
     if (parameters.containsKey(paramName)) {
       enabled = parameters[paramName];
     }
