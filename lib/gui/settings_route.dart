@@ -14,6 +14,7 @@ class SettingsRoute extends StatefulWidget {
 
 class _SettingsRouteState extends State<SettingsRoute> {
   final Map<String, TextEditingController> _editingControlers = {};
+  final Map<String, String> _errorMessages = {};
 
   @override
   void dispose() {
@@ -55,26 +56,33 @@ class _SettingsRouteState extends State<SettingsRoute> {
         value: value,
         items: [false, true]
             .map<DropdownMenuItem<bool>>(
-              (value) =>
-              DropdownMenuItem<bool>(
-                  value: value, child: Text(value.toString())),
-        )
+              (v) =>
+                  DropdownMenuItem<bool>(value: v, child: Text(v.toString())),
+            )
             .toList(),
-        onChanged: (value) =>
-            setState(() =>
-                widget._configuration
-                    .setParameterValue(name, value)),
+        onChanged: (v) =>
+            setState(() => widget._configuration.setParameterValue(name, v)),
       );
     } else {
       // TODO: Add validation
       inputWidget = TextField(
         controller: getEditingControler(name, value.toString()),
-        onSubmitted: (newValue) =>
-            setState(() =>
-                // TODO: convert newValue to proper type
-                widget._configuration.setParameterValue(name, int.parse(newValue))),
+        decoration: InputDecoration(
+          labelText: '?',
+          errorText: _errorMessages[name],
+        ),
+        onSubmitted: (v) {
+          var errorMsg = _validate(v, parameter.definition.validators);
+          setState(() {
+            _errorMessages[name] = errorMsg;
+            if (errorMsg == null) {
+              widget._configuration.setParameterValue(
+                  name, _toProperType(v, parameter.definition.defaultValue));
+            }
+          });
+        },
       );
-  }
+    }
     return inputWidget;
   }
 
@@ -87,5 +95,40 @@ class _SettingsRouteState extends State<SettingsRoute> {
       _editingControlers[name] = controller;
     }
     return controller;
+  }
+
+  dynamic _toProperType(String value, dynamic referenceType) {
+    dynamic typedValue;
+    if (value != null) {
+      if (referenceType is int) {
+        typedValue = int.parse(value);
+      } else if (referenceType is double) {
+        typedValue = double.parse(value);
+      } else if (referenceType is bool) {
+        typedValue = (value.toLowerCase() == 'true');
+      } else if (referenceType is String) {
+        typedValue = value;
+      } else {
+        throw Exception(
+            'Not supported type ${referenceType?.runtimeType?.toString()}.');
+      }
+    }
+    return typedValue;
+  }
+
+  String _validate(String value, List<ParameterValidator> validators) {
+    var errorMsg;
+    for (var v in validators) {
+      var msg = v.validate(value);
+      if (msg != null && msg.isNotEmpty) {
+        if (errorMsg == null) {
+          errorMsg = msg;
+        } else {
+          errorMsg += ' $msg';
+        }
+        break;
+      }
+    }
+    return errorMsg;
   }
 }
