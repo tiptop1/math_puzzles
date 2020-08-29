@@ -21,6 +21,7 @@ class ParameterDefinition {
 }
 
 /// Configuration parameter validator.
+/// It assume that parameter will be provided as String
 abstract class ParameterValidator {
   /// Error message.
   final String errorMessage;
@@ -28,9 +29,9 @@ abstract class ParameterValidator {
   const ParameterValidator(this.errorMessage);
 
   /// If [value] valid return null othwrise errorMessage.
-  String validate(dynamic value) => isValueValid(value) ? null : errorMessage;
+  String validate(String value) => isValueValid(value) ? null : errorMessage;
 
-  bool isValueValid(dynamic value);
+  bool isValueValid(String value);
 }
 
 /// Predefined value scope validator.
@@ -40,25 +41,31 @@ class ScopeParameterValidator extends ParameterValidator {
 
   const ScopeParameterValidator(this.minValue, this.maxValue)
       : super(
-            'Invalid parameter value - expected is between $minValue and $maxValue.');
+            'Allowed value between $minValue and $maxValue.');
 
   @override
-  bool isValueValid(dynamic value) => minValue <= value && value <= maxValue;
+  bool isValueValid(String strValue) {
+    num numValue = double.parse(strValue);
+    return  minValue <= numValue && numValue <= maxValue;
+  }
+
 }
 
 class IntTypeValidator extends ParameterValidator {
   const IntTypeValidator()
-      : super('Invalid parameter type - expected integer.');
+      : super('Expected integer value.');
 
   @override
-  bool isValueValid(dynamic value) => value is int;
+  bool isValueValid(String strValue) {
+    return strValue != null ? int.tryParse(strValue) != null : false;
+  }
 }
 
 class BoolTypeValidator extends ParameterValidator {
-  const BoolTypeValidator() : super('Invalid parameter type - expected bool.');
+  const BoolTypeValidator() : super('Expected bool value.');
 
   @override
-  bool isValueValid(dynamic value) => value is bool;
+  bool isValueValid(String strValue) => true;
 }
 
 /// The class load, keep and store application parameters.
@@ -121,15 +128,6 @@ class Configuration {
   void setParameterValue(String name, dynamic value) {
     if (_parameters.containsKey(name)) {
       var parameter = _parameters[name];
-      var definition = parameter.definition;
-      // TODO: Maybe value validation should be extracted for further common use.
-      for (var v in definition.validators) {
-        if (!v.isValueValid(value)) {
-          throw Exception(
-              "Parameter '$name' value $value validation fail with message: "
-              "'${v.errorMessage}'.");
-        }
-      }
       _parameters[name] = Parameter(value, parameter.definition);
     } else {
       throw Exception('Definition for parameter \'$name\' unknown.');
