@@ -4,7 +4,6 @@ import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/gui/puzzle_route.dart';
 import 'package:math_puzzles/gui/settings_route.dart';
 import 'package:math_puzzles/localizations.dart';
-import 'package:math_puzzles/session.dart';
 
 class Route {
   static const String root = '/';
@@ -13,7 +12,6 @@ class Route {
 
 class MathPuzzleWidget extends StatefulWidget {
   final Configuration _configuration;
-  final Session _session = Session();
 
   MathPuzzleWidget(this._configuration);
 
@@ -51,7 +49,7 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
       initialRoute: Route.root,
       routes: {
         Route.root: (context) =>
-            PuzzleRoute(widget._configuration, widget._session),
+            PuzzleRoute(widget._configuration),
         Route.settings: (context) => SettingsRoute(widget._configuration),
       },
     );
