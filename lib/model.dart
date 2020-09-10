@@ -22,3 +22,22 @@ class PuzzleModel extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class SessionModel extends ChangeNotifier {
+  int _correctAnswersCount = 0;
+  int _incorrectAnswersCount = 0;
+
+  int get correctAnswersCount => _correctAnswersCount;
+
+  void increaseCorrectAnswersCount() {
+    _correctAnswersCount++;
+    notifyListeners();
+  }
+
+  int get incorrectAnswersCount => _incorrectAnswersCount;
+
+  void increaseIncorrectAnswersCount() {
+    _incorrectAnswersCount++;
+    notifyListeners();
+  }
+}
