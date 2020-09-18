@@ -20,15 +20,22 @@ class AppLocalizations {
   static AppLocalizations of(BuildContext context) =>
       Localizations.of<AppLocalizations>(context, AppLocalizations);
 
-  String get title => Intl.message('Math Puzzles', name: 'title');
+  String get applicationTitle =>
+      Intl.message('Math Puzzles', name: 'applicationTitle');
 
-  String get showAnswer => Intl.message('Show answer', name: 'showAnswer');
+  String get settingsMenu => Intl.message('Settings', name: 'settingsMenu');
 
-  String get correct => Intl.message('Correct', name: 'correct');
+  String get puzzleQuestion =>
+      Intl.message("What's the answer?", name: 'puzzleQuestion');
 
-  String get incorrect => Intl.message('Incorrect', name: 'incorrect');
+  String get showAnswerButton =>
+      Intl.message('Show answer', name: 'showAnswerButton');
 
-  String get settings => Intl.message('Settings', name: 'settings');
+  String get correctAnswerButton =>
+      Intl.message('Correct', name: 'correctAnswerButton');
+
+  String get incorrectAnswerButton =>
+      Intl.message('Incorrect', name: 'incorrectAnswerButton');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
