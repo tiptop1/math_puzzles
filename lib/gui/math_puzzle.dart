@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/gui/puzzle_route.dart';
+import 'package:math_puzzles/gui/session_summary_route.dart';
 import 'package:math_puzzles/gui/settings_route.dart';
 import 'package:math_puzzles/localizations.dart';
 
 class Route {
-  static const String root = '/';
+  static const String puzzle = '/';
   static const String settings = '/settings';
+  static const String sessionSummary = '/sessionSummary';
 }
 
 class MathPuzzleWidget extends StatefulWidget {
@@ -17,7 +19,6 @@ class MathPuzzleWidget extends StatefulWidget {
 
   @override
   _MathPuzzleState createState() => _MathPuzzleState();
-
 }
 
 class _MathPuzzleState extends State<MathPuzzleWidget> {
@@ -46,12 +47,30 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
       ],
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context).applicationTitle,
-      initialRoute: Route.root,
+      initialRoute: Route.puzzle,
       routes: {
-        Route.root: (context) =>
-            PuzzleRoute(widget._configuration),
+        Route.puzzle: (context) => PuzzleRoute(widget._configuration),
         Route.settings: (context) => SettingsRoute(widget._configuration),
+        Route.sessionSummary: (context) => SessionSummaryRoute(),
       },
     );
   }
+}
+
+List<Widget> createActions(BuildContext context) {
+  return <Widget>[
+    PopupMenuButton<String>(
+      onSelected: (value) => Navigator.pushNamed(context, value),
+      itemBuilder: (buildContext) {
+        return [
+          PopupMenuItem<String>(
+              value: Route.puzzle,
+              child: Text(AppLocalizations.of(context).newSessionMenu)),
+          PopupMenuItem<String>(
+              value: Route.settings,
+              child: Text(AppLocalizations.of(context).settingsMenu)),
+        ];
+      },
+    )
+  ];
 }
