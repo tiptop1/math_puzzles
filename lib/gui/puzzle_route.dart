@@ -22,55 +22,50 @@ class PuzzleRoute extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: math_puzzle.createActions(context),
       ),
-      body: WillPopScope(
-        onWillPop: () async {
-          return Future.value(false);
-        },
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider<PuzzleModel>(
-                create: (_) => PuzzleModel(PuzzleGeneratorManager.instance()
-                    .findNextGenerator(parameterValues)
-                    .generate(parameterValues))),
-            ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
-          ],
-          child: Column(
-            children: [
-              Expanded(
-                flex: 10,
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<PuzzleModel>(
+              create: (_) => PuzzleModel(PuzzleGeneratorManager.instance()
+                  .findNextGenerator(parameterValues)
+                  .generate(parameterValues))),
+          ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
+        ],
+        child: Column(
+          children: [
+            Expanded(
+              flex: 10,
+              child: Center(
+                  child: Text(AppLocalizations.of(context).puzzleQuestion)),
+            ),
+            Consumer<PuzzleModel>(builder: (context, puzzleModel, child) {
+              return Expanded(
+                flex: 70,
                 child: Center(
-                    child: Text(AppLocalizations.of(context).puzzleQuestion)),
-              ),
-              Consumer<PuzzleModel>(builder: (context, puzzleModel, child) {
-                return Expanded(
-                  flex: 70,
-                  child: Center(
-                    child: PuzzleWidget(puzzleModel),
-                  ),
-                );
-              }),
-              Consumer2<PuzzleModel, SessionModel>(
-                builder: (context, puzzleModel, sessionModel, child) {
-                  return Expanded(
-                    flex: 10,
-                    child: Center(
-                      child: AnswerButtonsWidget(
-                          puzzleModel, sessionModel, _configuration),
-                    ),
-                  );
-                },
-              ),
-              Consumer<SessionModel>(builder: (context, sessionModel, child) {
+                  child: PuzzleWidget(puzzleModel),
+                ),
+              );
+            }),
+            Consumer2<PuzzleModel, SessionModel>(
+              builder: (context, puzzleModel, sessionModel, child) {
                 return Expanded(
                   flex: 10,
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: StatusBarWidget(sessionModel, _configuration),
+                  child: Center(
+                    child: AnswerButtonsWidget(
+                        puzzleModel, sessionModel, _configuration),
                   ),
                 );
-              })
-            ],
-          ),
+              },
+            ),
+            Consumer<SessionModel>(builder: (context, sessionModel, child) {
+              return Expanded(
+                flex: 10,
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: StatusBarWidget(sessionModel, _configuration),
+                ),
+              );
+            })
+          ],
         ),
       ),
     );
