@@ -40,17 +40,38 @@ class PuzzleRoute extends StatelessWidget {
         ],
         child: Column(
           children: [
+            Expanded(
+              flex: 10,
+              child: Center(
+                  child: Text(AppLocalizations.of(context).puzzleQuestion)),
+            ),
             Consumer<PuzzleModel>(builder: (context, puzzleModel, child) {
-              return PuzzleWidget(puzzleModel);
+              return Expanded(
+                flex: 70,
+                child: Center(
+                  child: PuzzleWidget(puzzleModel),
+                ),
+              );
             }),
             Consumer2<PuzzleModel, SessionModel>(
               builder: (context, puzzleModel, sessionModel, child) {
-                return AnswerButtonsWidget(
-                    puzzleModel, sessionModel, _configuration);
+                return Expanded(
+                  flex: 10,
+                  child: Center(
+                    child: AnswerButtonsWidget(
+                        puzzleModel, sessionModel, _configuration),
+                  ),
+                );
               },
             ),
             Consumer<SessionModel>(builder: (context, sessionModel, child) {
-              return StatusBarWidget(sessionModel);
+              return Expanded(
+                flex: 10,
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: StatusBarWidget(sessionModel, _configuration),
+                ),
+              );
             })
           ],
         ),
@@ -72,17 +93,18 @@ class AnswerButtonsWidget extends StatelessWidget {
     Widget widget;
     if (!_puzzleModel.puzzleAnswered) {
       widget = RaisedButton(
-        child: Text(AppLocalizations.of(context).showAnswer),
+        child: Text(AppLocalizations.of(context).showAnswerButton),
         onPressed: _showAnswerCallback,
       );
     } else {
       widget = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RaisedButton(
-              child: Text(AppLocalizations.of(context).incorrect),
+              child: Text(AppLocalizations.of(context).incorrectAnswerButton),
               onPressed: _incorrectAnswerCallback),
           RaisedButton(
-              child: Text(AppLocalizations.of(context).correct),
+              child: Text(AppLocalizations.of(context).correctAnswerButton),
               onPressed: _correctAnswerCallback),
         ],
       );
@@ -124,18 +146,28 @@ class PuzzleWidget extends StatelessWidget {
 }
 
 class StatusBarWidget extends StatelessWidget {
-  final SessionModel _model;
+  static const statusSeparator = '/';
 
-  StatusBarWidget(this._model);
+  final SessionModel _sessionModel;
+  final Configuration _configuration;
+
+  StatusBarWidget(this._sessionModel, this._configuration);
 
   @override
   Widget build(BuildContext buildContext) {
+    var puzzlesCount =
+        _configuration.parameters[Configuration.paramPuzzlesCount].value;
+    var correctAnswersCount = _sessionModel.correctAnswersCount;
+    var incorrectAnswersCount = _sessionModel.incorrectAnswersCount;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Text('Correct:'),
-        Text(_model.correctAnswersCount.toString()),
-        Text('Incorrect:'),
-        Text(_model.incorrectAnswersCount.toString()),
+        Text((puzzlesCount - correctAnswersCount - incorrectAnswersCount)
+            .toString()),
+        Text(statusSeparator),
+        Text(correctAnswersCount.toString()),
+        Text('/'),
+        Text(incorrectAnswersCount.toString()),
       ],
     );
   }
