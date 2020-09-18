@@ -23,6 +23,9 @@ class AppLocalizations {
   String get applicationTitle =>
       Intl.message('Math Puzzles', name: 'applicationTitle');
 
+  String get newSessionMenu =>
+      Intl.message('New session', name: 'newSessionMenu');
+
   String get settingsMenu => Intl.message('Settings', name: 'settingsMenu');
 
   String get puzzleQuestion =>
@@ -36,6 +39,15 @@ class AppLocalizations {
 
   String get incorrectAnswerButton =>
       Intl.message('Incorrect', name: 'incorrectAnswerButton');
+
+  String get sessionSummary =>
+      Intl.message('Session summary', name: 'sessionSummary');
+
+  String get correctAnswersCount =>
+      Intl.message('Correct answers count:', name: 'correctAnswersCount');
+
+  String get incorrectAnswersCount =>
+      Intl.message('Incorrect answers count:', name: 'incorrectAnswersCount');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
