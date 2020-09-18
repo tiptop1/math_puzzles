@@ -17,63 +17,60 @@ class PuzzleRoute extends StatelessWidget {
     var parameterValues = _toValues(_configuration.parameters);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Math puzzles'),
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: (value) => Navigator.pushNamed(context, value),
-            itemBuilder: (buildContext) {
-              return [
-                PopupMenuItem<String>(
-                    value: math_puzzle.Route.settings, child: Text('Settings')),
-              ];
-            },
-          )
-        ],
+        title: Text(AppLocalizations.of(context).applicationTitle),
+        leading: null,
+        automaticallyImplyLeading: false,
+        actions: math_puzzle.createActions(context),
       ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<PuzzleModel>(
-              create: (_) => PuzzleModel(PuzzleGeneratorManager.instance()
-                  .findNextGenerator(parameterValues)
-                  .generate(parameterValues))),
-          ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
-        ],
-        child: Column(
-          children: [
-            Expanded(
-              flex: 10,
-              child: Center(
-                  child: Text(AppLocalizations.of(context).puzzleQuestion)),
-            ),
-            Consumer<PuzzleModel>(builder: (context, puzzleModel, child) {
-              return Expanded(
-                flex: 70,
+      body: WillPopScope(
+        onWillPop: () async {
+          return Future.value(false);
+        },
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<PuzzleModel>(
+                create: (_) => PuzzleModel(PuzzleGeneratorManager.instance()
+                    .findNextGenerator(parameterValues)
+                    .generate(parameterValues))),
+            ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
+          ],
+          child: Column(
+            children: [
+              Expanded(
+                flex: 10,
                 child: Center(
-                  child: PuzzleWidget(puzzleModel),
-                ),
-              );
-            }),
-            Consumer2<PuzzleModel, SessionModel>(
-              builder: (context, puzzleModel, sessionModel, child) {
+                    child: Text(AppLocalizations.of(context).puzzleQuestion)),
+              ),
+              Consumer<PuzzleModel>(builder: (context, puzzleModel, child) {
                 return Expanded(
-                  flex: 10,
+                  flex: 70,
                   child: Center(
-                    child: AnswerButtonsWidget(
-                        puzzleModel, sessionModel, _configuration),
+                    child: PuzzleWidget(puzzleModel),
                   ),
                 );
-              },
-            ),
-            Consumer<SessionModel>(builder: (context, sessionModel, child) {
-              return Expanded(
-                flex: 10,
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: StatusBarWidget(sessionModel, _configuration),
-                ),
-              );
-            })
-          ],
+              }),
+              Consumer2<PuzzleModel, SessionModel>(
+                builder: (context, puzzleModel, sessionModel, child) {
+                  return Expanded(
+                    flex: 10,
+                    child: Center(
+                      child: AnswerButtonsWidget(
+                          puzzleModel, sessionModel, _configuration),
+                    ),
+                  );
+                },
+              ),
+              Consumer<SessionModel>(builder: (context, sessionModel, child) {
+                return Expanded(
+                  flex: 10,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: StatusBarWidget(sessionModel, _configuration),
+                  ),
+                );
+              })
+            ],
+          ),
         ),
       ),
     );
@@ -102,25 +99,33 @@ class AnswerButtonsWidget extends StatelessWidget {
         children: [
           RaisedButton(
               child: Text(AppLocalizations.of(context).incorrectAnswerButton),
-              onPressed: _incorrectAnswerCallback),
+              onPressed: () =>
+                  _incorrectAnswerCallback(context, _sessionModel)),
           RaisedButton(
               child: Text(AppLocalizations.of(context).correctAnswerButton),
-              onPressed: _correctAnswerCallback),
+              onPressed: () => _correctAnswerCallback(context, _sessionModel)),
         ],
       );
     }
     return widget;
   }
 
-  void _correctAnswerCallback() {
+  void _correctAnswerCallback(BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseCorrectAnswersCount();
     var parameterValues = _toValues(_configuration.parameters);
     _puzzleModel.puzzle = PuzzleGeneratorManager.instance()
         .findNextGenerator(parameterValues)
         .generate(parameterValues);
+    if (_sessionModel.correctAnswersCount +
+            _sessionModel.incorrectAnswersCount >=
+        _configuration.parameters[Configuration.paramPuzzlesCount].value) {
+      Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
+          arguments: sessionModel);
+    }
   }
 
-  void _incorrectAnswerCallback() {
+  void _incorrectAnswerCallback(
+      BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseIncorrectAnswersCount();
     var parameterValues = _toValues(_configuration.parameters);
     _puzzleModel.puzzle = PuzzleGeneratorManager.instance()
