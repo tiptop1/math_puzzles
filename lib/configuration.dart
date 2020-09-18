@@ -70,11 +70,16 @@ class BoolTypeValidator extends ParameterValidator {
 
 /// The class load, keep and store application parameters.
 class Configuration {
+  static const String paramPuzzlesCount = 'session.puzzlesCount';
+  static const int defaultValuePuzzlesCount = 20;
+
   final Map<String, Parameter> _parameters = {};
 
   /// Created empty configuration with parameter definitions, but without
   /// parameter values
   Configuration._internal() {
+    _parameters[paramPuzzlesCount] = Parameter(defaultValuePuzzlesCount, ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount));
+
     for (var gen in PuzzleGeneratorManager.generators) {
       var paramDefs = _readParameterDefinitions(gen);
       paramDefs.forEach((paramDef) => _parameters[paramDef.name] =
