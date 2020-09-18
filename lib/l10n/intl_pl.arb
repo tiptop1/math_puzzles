@@ -1,28 +1,33 @@
 {
-  "@@last_modified": "2020-02-11T16:54:53.109166",
+  "@@last_modified": "2020-09-11T13:45:07.909559",
   "@@locale":"pl",
-  "title": "Zagadki matematyczne",
-  "@title": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "showAnswer": "Poka\u017C\u00A0odpowied\u017A",
-  "@showAnswer": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "correct": "Poprawna",
-  "@correct": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "incorrect": "Niepoprawna",
-  "@incorrect": {
+  "applicationTitle": "Math puzzles",
+  "@applicationTitle": {
     "type": "text",
     "placeholders": {}
   },
   "settings": "Ustawienia",
   "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "puzzleQuestion": "Jaka\u00A0jest\u00A0odpowied\u017A?",
+   "@puzzleQuestion": {
+   "type": "text",
+   "placeholders": {}
+   },
+  "showAnswerButton": "Poka\u017C\u00A0odpowied\u017A",
+  "@showAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "correctAnswerButton": "Poprawna",
+  "@correctAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "incorrectAnswerButton": "Niepoprawna",
+  "@incorrectAnswerButton": {
     "type": "text",
     "placeholders": {}
   }

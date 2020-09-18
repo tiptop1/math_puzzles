@@ -21,10 +21,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "correct" : MessageLookupByLibrary.simpleMessage("Correct"),
-    "incorrect" : MessageLookupByLibrary.simpleMessage("Incorrect"),
-    "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
-    "showAnswer" : MessageLookupByLibrary.simpleMessage("Show answer"),
-    "title" : MessageLookupByLibrary.simpleMessage("Math Puzzles")
+    "applicationTitle" : MessageLookupByLibrary.simpleMessage("Math Puzzles"),
+    "correctAnswerButton" : MessageLookupByLibrary.simpleMessage("Correct"),
+    "incorrectAnswerButton" : MessageLookupByLibrary.simpleMessage("Incorrect"),
+    "puzzleQuestion" : MessageLookupByLibrary.simpleMessage("What\'s the answer?"),
+    "settingsMenu" : MessageLookupByLibrary.simpleMessage("Settings"),
+    "showAnswerButton" : MessageLookupByLibrary.simpleMessage("Show answer")
   };
 }

@@ -1,29 +1,34 @@
 {
-  "@@last_modified": "2020-02-11T16:54:53.109166",
+  "@@last_modified": "2020-09-11T13:45:07.909559",
   "@@locale":"en",
-  "title": "Math Puzzles",
-  "@title": {
+  "applicationTitle": "Math Puzzles",
+  "@applicationTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "showAnswer": "Show answer",
-  "@showAnswer": {
+  "settingsMenu": "Settings",
+  "@settingsMenu": {
     "type": "text",
     "placeholders": {}
   },
-  "correct": "Correct",
-  "@correct": {
+  "puzzleQuestion": "What's the answer?",
+  "@puzzleQuestion": {
     "type": "text",
     "placeholders": {}
   },
-  "incorrect": "Incorrect",
-  "@incorrect": {
+  "showAnswerButton": "Show answer",
+  "@showAnswerButton": {
     "type": "text",
     "placeholders": {}
   },
-  "settings": "Settings",
-    "@settings": {
-      "type": "text",
-      "placeholders": {}
-   }
+  "correctAnswerButton": "Correct",
+  "@correctAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "incorrectAnswerButton": "Incorrect",
+  "@incorrectAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  }
 }
