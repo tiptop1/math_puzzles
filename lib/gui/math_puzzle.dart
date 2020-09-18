@@ -45,7 +45,7 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
         Locale('pl'),
       ],
       onGenerateTitle: (BuildContext context) =>
-          AppLocalizations.of(context).title,
+          AppLocalizations.of(context).applicationTitle,
       initialRoute: Route.root,
       routes: {
         Route.root: (context) =>
