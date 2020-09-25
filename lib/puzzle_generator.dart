@@ -97,11 +97,40 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   }
 }
 
+@ParameterDefinition(PercentagePuzzleGenerator.paramEnabled, true,
+    validators: [BoolTypeValidator()])
+@ParameterDefinition(PercentagePuzzleGenerator.maxResult, 100,
+    validators: [IntTypeValidator(), ScopeParameterValidator(1, 1000)])
+@ParameterDefinition(PercentagePuzzleGenerator.fractionDigits, 2,
+    validators: [IntTypeValidator(), ScopeParameterValidator(0, 4)])
+@reflector
+class PercentagePuzzleGenerator extends PuzzleGenerator {
+  static const String _name = 'PercentageGenerator';
+  static const String paramEnabled =
+      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String maxResult = '$_name.maxResult';
+  static const String fractionDigits = '$_name.fractionDigits';
+
+  final Random _random;
+
+  PercentagePuzzleGenerator(this._random) : super(_name);
+
+  @override
+  Puzzle generate(Map<String, Object> parameters) {
+    var number = _random.nextInt(_getRequiredParameter(maxResult, parameters));
+    var percentage = _random.nextInt(100);
+    var result = ((percentage / 100) * number)
+        .toStringAsFixed(_getRequiredParameter(fractionDigits, parameters));
+    return Puzzle('$percentage% * $number', result);
+  }
+}
+
 class PuzzleGeneratorManager {
   static final Random _random = Random();
   static List<PuzzleGenerator> generators = [
     AdditionPuzzleGenerator(_random),
-    MultiplicationTablePuzzleGenerator(_random)
+    MultiplicationTablePuzzleGenerator(_random),
+    PercentagePuzzleGenerator(_random)
   ];
 
   int _generatorIndex = 0;
