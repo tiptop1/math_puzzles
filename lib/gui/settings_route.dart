@@ -64,20 +64,21 @@ class _SettingsRouteState extends State<SettingsRoute> {
             setState(() => widget._configuration.setParameterValue(name, v)),
       );
     } else {
+      var defaultValue = parameter.definition.defaultValue;
       // TODO: Add validation
       inputWidget = TextField(
+        keyboardType: (defaultValue is num ? TextInputType.number : TextInputType.text),
         controller: getEditingControler(name, value.toString()),
         decoration: InputDecoration(
           labelText: '?',
           errorText: _errorMessages[name],
         ),
-        onSubmitted: (v) {
+        onChanged: (v) {
           var errorMsg = _validate(v, parameter.definition.validators);
           setState(() {
             _errorMessages[name] = errorMsg;
             if (errorMsg == null) {
-              widget._configuration.setParameterValue(
-                  name, _toProperType(v, parameter.definition.defaultValue));
+              widget._configuration.setParameterValue(name, _toProperType(v, defaultValue));
             }
           });
         },
