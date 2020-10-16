@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/gui/puzzle_route.dart';
 import 'package:math_puzzles/gui/session_summary_route.dart';
 import 'package:math_puzzles/gui/settings_route.dart';
@@ -13,26 +12,11 @@ class Route {
 }
 
 class MathPuzzleWidget extends StatefulWidget {
-  final Configuration _configuration;
-
-  MathPuzzleWidget(this._configuration);
-
   @override
   _MathPuzzleState createState() => _MathPuzzleState();
 }
 
 class _MathPuzzleState extends State<MathPuzzleWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget._configuration.store();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,8 +33,8 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
           AppLocalizations.of(context).applicationTitle,
       initialRoute: Route.puzzle,
       routes: {
-        Route.puzzle: (context) => PuzzleRoute(widget._configuration),
-        Route.settings: (context) => SettingsRoute(widget._configuration),
+        Route.puzzle: (context) => PuzzleRoute(),
+        Route.settings: (context) => SettingsRoute(),
         Route.sessionSummary: (context) => SessionSummaryRoute(),
       },
     );

@@ -21,7 +21,7 @@ class _InitializationWidgetState extends State<InitializationWidget> {
     if (widget.delay != null) {
       Future.delayed(
         Duration(milliseconds: widget.delay),
-            () => widget.initializationCallback(),
+        () => widget.initializationCallback(),
       );
     } else {
       widget.initializationCallback();

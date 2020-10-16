@@ -3,7 +3,6 @@ import 'package:math_puzzles/configuration.dart';
 import 'package:math_puzzles/gui/initialization.dart';
 import 'package:math_puzzles/gui/main.reflectable.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';
-import 'dart:developer' as developer;
 
 void main() {
   // Set up reflection support.
@@ -19,7 +18,6 @@ class MainWidget extends StatefulWidget {
 }
 
 class _MainState extends State<MainWidget> with WidgetsBindingObserver {
-  bool _initialized = false;
   Configuration _configuration;
 
   @override
@@ -36,24 +34,26 @@ class _MainState extends State<MainWidget> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-     if (state == AppLifecycleState.paused) {
-       _configuration.store();
-     }
+    if (state == AppLifecycleState.paused) {
+      _configuration.store();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_initialized) {
-      return MathPuzzleWidget(_configuration);
+    var widget;
+    if (_configuration != null) {
+      widget = _configuration;
     } else {
-      return InitializationWidget(
+      widget = InitializationWidget(
           delay: 2000,
-          initializationCallback: () => Configuration.load().then(
+          initializationCallback: () =>
+              Configuration.load(MathPuzzleWidget()).then(
                 (configuration) => setState(() {
-                  _initialized = true;
                   _configuration = configuration;
                 }),
               ));
     }
+    return widget;
   }
 }

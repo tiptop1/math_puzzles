@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,20 +41,17 @@ class ScopeParameterValidator extends ParameterValidator {
   final num maxValue;
 
   const ScopeParameterValidator(this.minValue, this.maxValue)
-      : super(
-            'Allowed value between $minValue and $maxValue.');
+      : super('Allowed value between $minValue and $maxValue.');
 
   @override
   bool isValueValid(String strValue) {
     num numValue = double.parse(strValue);
-    return  minValue <= numValue && numValue <= maxValue;
+    return minValue <= numValue && numValue <= maxValue;
   }
-
 }
 
 class IntTypeValidator extends ParameterValidator {
-  const IntTypeValidator()
-      : super('Expected integer value.');
+  const IntTypeValidator() : super('Expected integer value.');
 
   @override
   bool isValueValid(String strValue) {
@@ -69,16 +67,23 @@ class BoolTypeValidator extends ParameterValidator {
 }
 
 /// The class load, keep and store application parameters.
-class Configuration {
+class Configuration extends InheritedWidget {
   static const String paramPuzzlesCount = 'session.puzzlesCount';
   static const int defaultValuePuzzlesCount = 20;
 
   final Map<String, Parameter> _parameters = {};
 
+  @override
+  bool updateShouldNotify(Configuration old) => false;
+
+  static Configuration of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<Configuration>();
+
   /// Created empty configuration with parameter definitions, but without
   /// parameter values
-  Configuration._internal() {
-    _parameters[paramPuzzlesCount] = Parameter(defaultValuePuzzlesCount, ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount));
+  Configuration._internal(Widget child) : super(child: child) {
+    _parameters[paramPuzzlesCount] = Parameter(defaultValuePuzzlesCount,
+        ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount));
 
     for (var gen in PuzzleGeneratorManager.generators) {
       var paramDefs = _readParameterDefinitions(gen);
@@ -87,9 +92,9 @@ class Configuration {
     }
   }
 
-  static Future<Configuration> load() async {
+  static Future<Configuration> load(Widget child) async {
     var prefs = await SharedPreferences.getInstance();
-    var config = Configuration._internal();
+    var config = Configuration._internal(child);
 
     // Load into configuration parameters from SharedPreferences
     var parameters = config.parameters;

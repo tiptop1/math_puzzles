@@ -19,18 +19,23 @@ class SessionSummaryRoute extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
-            _createCorrectAnswersSummary(context, _sessionModel.correctAnswersCount),
-            _createIncorrectAnswersSummary(context, _sessionModel.incorrectAnswersCount),
+            _createCorrectAnswersSummary(
+                context, _sessionModel.correctAnswersCount),
+            _createIncorrectAnswersSummary(
+                context, _sessionModel.incorrectAnswersCount),
           ],
         ));
   }
 
-  Widget _createCorrectAnswersSummary(BuildContext context, int correctAnswersCount) {
-    return Text('${AppLocalizations.of(context).correctAnswersCount} $correctAnswersCount');
+  Widget _createCorrectAnswersSummary(
+      BuildContext context, int correctAnswersCount) {
+    return Text(
+        '${AppLocalizations.of(context).correctAnswersCount} $correctAnswersCount');
   }
 
-  Widget _createIncorrectAnswersSummary(BuildContext context, int incorrectAnswersCount) {
-    return Text('${AppLocalizations.of(context).incorrectAnswersCount} $incorrectAnswersCount');
+  Widget _createIncorrectAnswersSummary(
+      BuildContext context, int incorrectAnswersCount) {
+    return Text(
+        '${AppLocalizations.of(context).incorrectAnswersCount} $incorrectAnswersCount');
   }
-
 }

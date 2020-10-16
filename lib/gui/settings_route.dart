@@ -4,10 +4,6 @@ import 'package:flutter/widgets.dart';
 import '../configuration.dart';
 
 class SettingsRoute extends StatefulWidget {
-  final Configuration _configuration;
-
-  SettingsRoute(this._configuration);
-
   @override
   _SettingsRouteState createState() => _SettingsRouteState();
 }
@@ -26,31 +22,33 @@ class _SettingsRouteState extends State<SettingsRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(automaticallyImplyLeading: true),
-        body: _createBody(widget._configuration.parameters));
+        body: _createBody(Configuration.of(context).parameters));
   }
 
   Widget _createBody(Map<String, Parameter> parameters) {
     return GridView.count(
       crossAxisCount: 2,
-      children: _createGridViewChildren(parameters),
+      children: _createGridViewChildren(context, parameters),
     );
   }
 
-  List<Widget> _createGridViewChildren(Map<String, Parameter> parameters) {
-    List<Widget> childWidgets = [];
+  List<Widget> _createGridViewChildren(
+      BuildContext context, Map<String, Parameter> parameters) {
+    var childWidgets = <Widget>[];
     for (var name in parameters.keys) {
       // Add parameter name
       childWidgets.add(Text(name));
       // Add input widget
-      childWidgets.add(_createInputWidget(parameters[name]));
+      childWidgets.add(_createInputWidget(context, parameters[name]));
     }
     return childWidgets;
   }
 
-  Widget _createInputWidget(Parameter parameter) {
+  Widget _createInputWidget(BuildContext context, Parameter parameter) {
     Widget inputWidget;
     var value = parameter.value;
     var name = parameter.definition.name;
+    var config = Configuration.of(context);
     if (value is bool) {
       inputWidget = DropdownButton(
         value: value,
@@ -60,14 +58,14 @@ class _SettingsRouteState extends State<SettingsRoute> {
                   DropdownMenuItem<bool>(value: v, child: Text(v.toString())),
             )
             .toList(),
-        onChanged: (v) =>
-            setState(() => widget._configuration.setParameterValue(name, v)),
+        onChanged: (v) => setState(() => config.setParameterValue(name, v)),
       );
     } else {
       var defaultValue = parameter.definition.defaultValue;
       // TODO: Add validation
       inputWidget = TextField(
-        keyboardType: (defaultValue is num ? TextInputType.number : TextInputType.text),
+        keyboardType:
+            (defaultValue is num ? TextInputType.number : TextInputType.text),
         controller: getEditingControler(name, value.toString()),
         decoration: InputDecoration(
           labelText: '?',
@@ -78,7 +76,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
           setState(() {
             _errorMessages[name] = errorMsg;
             if (errorMsg == null) {
-              widget._configuration.setParameterValue(name, _toProperType(v, defaultValue));
+              config.setParameterValue(name, _toProperType(v, defaultValue));
             }
           });
         },
