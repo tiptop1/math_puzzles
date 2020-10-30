@@ -46,7 +46,7 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
 
   final Random _random;
 
-  AdditionPuzzleGenerator(this._random) : super(_name);
+  const AdditionPuzzleGenerator(this._random) : super(_name);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -81,7 +81,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 
   final Random _random;
 
-  MultiplicationTablePuzzleGenerator(this._random) : super(_name);
+  const MultiplicationTablePuzzleGenerator(this._random) : super(_name);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -113,7 +113,7 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
 
   final Random _random;
 
-  PercentagePuzzleGenerator(this._random) : super(_name);
+  const PercentagePuzzleGenerator(this._random) : super(_name);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -126,53 +126,64 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
 }
 
 class PuzzleGeneratorManager {
-  static final Random _random = Random();
-  static List<PuzzleGenerator> generators = [
-    AdditionPuzzleGenerator(_random),
-    MultiplicationTablePuzzleGenerator(_random),
-    PercentagePuzzleGenerator(_random)
-  ];
-
-  int _generatorIndex = 0;
   static PuzzleGeneratorManager _instance;
 
-  PuzzleGeneratorManager._internal();
+  List<PuzzleGenerator> generators;
+  int _enabledGeneratorIndex = -1;
 
-  static PuzzleGeneratorManager instance() {
+  PuzzleGeneratorManager._internal() {
+    var random = Random();
+    generators = List.unmodifiable([
+      AdditionPuzzleGenerator(random),
+      MultiplicationTablePuzzleGenerator(random),
+      PercentagePuzzleGenerator(random)
+    ]);
+  }
+
+  factory PuzzleGeneratorManager() {
     _instance ??= PuzzleGeneratorManager._internal();
     return _instance;
   }
 
-  int _findNextGeneratorIndex() {
-    int index;
-    if (_generatorIndex == generators.length - 1) {
-      index = 0;
-    } else {
-      index = _generatorIndex + 1;
-    }
-    return index;
-  }
+  /// Returns next enabled generator according to [parameters].
+  PuzzleGenerator findNextEnabledGenerator(Map<String, dynamic> parameters) {
+    var nextEnabledGenerator;
+    var enabledGenerators = _findEnabledGenerators(parameters);
+    assert(enabledGenerators.isNotEmpty,
+        'All puzzle generators had been disable - at lease one must be enabled.');
 
-  /// Returns next available generator.
-  PuzzleGenerator findNextGenerator(Map<String, dynamic> parameters) {
-    PuzzleGenerator nextGenerator;
-    if (generators.isEmpty) {
-      nextGenerator = generators[0];
-    } else {
-      int nextGeneratorIndex;
-      do {
-        nextGeneratorIndex = _findNextGeneratorIndex();
-        var tmpGenerator = generators[nextGeneratorIndex];
-        if (_isGeneratorEnabled(tmpGenerator.name, parameters)) {
-          _generatorIndex = nextGeneratorIndex;
-          nextGenerator = tmpGenerator;
+    var i;
+    var nextEnabledGeneratorIndex =
+        (_enabledGeneratorIndex < generators.length - 1
+            ? _enabledGeneratorIndex + 1
+            : 0);
+
+    // Look for generator in index scope [nextEnabledGeneratorIndex, this.generators.length - 1]
+    for (i = nextEnabledGeneratorIndex; i < generators.length; i++) {
+      if (enabledGenerators.containsKey(i)) {
+        nextEnabledGenerator = enabledGenerators[i];
+        break;
+      }
+    }
+
+    // If enabled generator not found in first pass,
+    // look for generator in index scope [0, nextEnabledGeneratorIndex)
+    if (nextEnabledGenerator == null) {
+      for (i = 0; i < nextEnabledGeneratorIndex; i++) {
+        if (enabledGenerators.containsKey(i)) {
+          nextEnabledGenerator = enabledGenerators[i];
           break;
         }
-      } while (nextGeneratorIndex == _generatorIndex - 1);
+      }
     }
-    return nextGenerator;
+
+    _enabledGeneratorIndex = (nextEnabledGenerator != null ? i : -1);
+
+    return nextEnabledGenerator;
   }
 
+  /// Returns true if generator named [generatorName] is enabled
+  /// according to [parameters], otherwise false.
   bool _isGeneratorEnabled(
       String generatorName, Map<String, dynamic> parameters) {
     var enabled = true;
@@ -181,5 +192,20 @@ class PuzzleGeneratorManager {
       enabled = parameters[paramName];
     }
     return enabled;
+  }
+
+  /// Returns mapping index:generator for generator enabled by [parameters].
+  Map<int, PuzzleGenerator> _findEnabledGenerators(
+      Map<String, dynamic> parameters) {
+    var enabledGenerators = <int, PuzzleGenerator>{};
+
+    for (var i = 0; i < generators.length; i++) {
+      var gen = generators[i];
+      if (_isGeneratorEnabled(gen.name, parameters)) {
+        enabledGenerators[i] = gen;
+      }
+    }
+
+    return enabledGenerators;
   }
 }
