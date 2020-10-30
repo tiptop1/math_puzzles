@@ -43,14 +43,13 @@ class _MainState extends State<MainWidget> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     var widget;
     if (_configuration != null) {
-      widget = _configuration;
+      widget = MathPuzzleWidget(_configuration);
     } else {
       widget = InitializationWidget(
           delay: 2000,
-          initializationCallback: () =>
-              Configuration.load(MathPuzzleWidget()).then(
-                (configuration) => setState(() {
-                  _configuration = configuration;
+          initializationCallback: () => Configuration.load().then(
+                (c) => setState(() {
+                  _configuration = c;
                 }),
               ));
     }

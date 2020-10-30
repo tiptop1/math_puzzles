@@ -8,9 +8,13 @@ import '../puzzle_generator.dart';
 import 'math_puzzle.dart' as math_puzzle;
 
 class PuzzleRoute extends StatelessWidget {
+  final Configuration _configuration;
+
+  PuzzleRoute(this._configuration);
+
   @override
   Widget build(BuildContext context) {
-    var parameterValues = _toValues(Configuration.of(context).parameters);
+    var parameterValues = _toValues(_configuration.parameters);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).applicationTitle),
@@ -21,8 +25,8 @@ class PuzzleRoute extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider<PuzzleModel>(
-              create: (_) => PuzzleModel(PuzzleGeneratorManager.instance()
-                  .findNextGenerator(parameterValues)
+              create: (_) => PuzzleModel(PuzzleGeneratorManager()
+                  .findNextEnabledGenerator(parameterValues)
                   .generate(parameterValues))),
           ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
         ],
@@ -46,7 +50,8 @@ class PuzzleRoute extends StatelessWidget {
                 return Expanded(
                   flex: 10,
                   child: Center(
-                    child: AnswerButtonsWidget(puzzleModel, sessionModel),
+                    child: AnswerButtonsWidget(
+                        _configuration, puzzleModel, sessionModel),
                   ),
                 );
               },
@@ -56,7 +61,7 @@ class PuzzleRoute extends StatelessWidget {
                 flex: 10,
                 child: Align(
                   alignment: Alignment.bottomRight,
-                  child: StatusBarWidget(sessionModel),
+                  child: StatusBarWidget(_configuration, sessionModel),
                 ),
               );
             })
@@ -68,10 +73,12 @@ class PuzzleRoute extends StatelessWidget {
 }
 
 class AnswerButtonsWidget extends StatelessWidget {
+  final Configuration _configuration;
   final PuzzleModel _puzzleModel;
   final SessionModel _sessionModel;
 
-  AnswerButtonsWidget(this._puzzleModel, this._sessionModel);
+  AnswerButtonsWidget(
+      this._configuration, this._puzzleModel, this._sessionModel);
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +107,13 @@ class AnswerButtonsWidget extends StatelessWidget {
 
   void _correctAnswerCallback(BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseCorrectAnswersCount();
-    var config = Configuration.of(context);
-    var parameterValues = _toValues(config.parameters);
-    _puzzleModel.puzzle = PuzzleGeneratorManager.instance()
-        .findNextGenerator(parameterValues)
+    var parameterValues = _toValues(_configuration.parameters);
+    _puzzleModel.puzzle = PuzzleGeneratorManager()
+        .findNextEnabledGenerator(parameterValues)
         .generate(parameterValues);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
-        config.parameters[Configuration.paramPuzzlesCount].value) {
+        _configuration.parameters[Configuration.paramPuzzlesCount].value) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
     }
@@ -116,9 +122,9 @@ class AnswerButtonsWidget extends StatelessWidget {
   void _incorrectAnswerCallback(
       BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseIncorrectAnswersCount();
-    var parameterValues = _toValues(Configuration.of(context).parameters);
-    _puzzleModel.puzzle = PuzzleGeneratorManager.instance()
-        .findNextGenerator(parameterValues)
+    var parameterValues = _toValues(_configuration.parameters);
+    _puzzleModel.puzzle = PuzzleGeneratorManager()
+        .findNextEnabledGenerator(parameterValues)
         .generate(parameterValues);
   }
 
@@ -142,15 +148,15 @@ class PuzzleWidget extends StatelessWidget {
 class StatusBarWidget extends StatelessWidget {
   static const statusSeparator = '/';
 
+  final Configuration _configuration;
   final SessionModel _sessionModel;
 
-  StatusBarWidget(this._sessionModel);
+  StatusBarWidget(this._configuration, this._sessionModel);
 
   @override
   Widget build(BuildContext context) {
-    var puzzlesCount = Configuration.of(context)
-        .parameters[Configuration.paramPuzzlesCount]
-        .value;
+    var puzzlesCount =
+        _configuration.parameters[Configuration.paramPuzzlesCount].value;
     var correctAnswersCount = _sessionModel.correctAnswersCount;
     var incorrectAnswersCount = _sessionModel.incorrectAnswersCount;
     return Row(

@@ -4,6 +4,10 @@ import 'package:flutter/widgets.dart';
 import '../configuration.dart';
 
 class SettingsRoute extends StatefulWidget {
+  final Configuration _configuration;
+
+  SettingsRoute(this._configuration);
+
   @override
   _SettingsRouteState createState() => _SettingsRouteState();
 }
@@ -22,7 +26,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(automaticallyImplyLeading: true),
-        body: _createBody(Configuration.of(context).parameters));
+        body: _createBody(widget._configuration.parameters));
   }
 
   Widget _createBody(Map<String, Parameter> parameters) {
@@ -48,7 +52,6 @@ class _SettingsRouteState extends State<SettingsRoute> {
     Widget inputWidget;
     var value = parameter.value;
     var name = parameter.definition.name;
-    var config = Configuration.of(context);
     if (value is bool) {
       inputWidget = DropdownButton(
         value: value,
@@ -58,7 +61,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
                   DropdownMenuItem<bool>(value: v, child: Text(v.toString())),
             )
             .toList(),
-        onChanged: (v) => setState(() => config.setParameterValue(name, v)),
+        onChanged: (v) =>
+            setState(() => widget._configuration.setParameterValue(name, v)),
       );
     } else {
       var defaultValue = parameter.definition.defaultValue;
@@ -76,7 +80,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
           setState(() {
             _errorMessages[name] = errorMsg;
             if (errorMsg == null) {
-              config.setParameterValue(name, _toProperType(v, defaultValue));
+              widget._configuration
+                  .setParameterValue(name, _toProperType(v, defaultValue));
             }
           });
         },
