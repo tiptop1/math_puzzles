@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,34 +66,26 @@ class BoolTypeValidator extends ParameterValidator {
 }
 
 /// The class load, keep and store application parameters.
-class Configuration extends InheritedWidget {
+class Configuration {
   static const String paramPuzzlesCount = 'session.puzzlesCount';
   static const int defaultValuePuzzlesCount = 20;
 
   final Map<String, Parameter> _parameters = {};
 
-  @override
-  bool updateShouldNotify(Configuration old) => false;
-
-  static Configuration of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<Configuration>();
-
-  /// Created empty configuration with parameter definitions, but without
-  /// parameter values
-  Configuration._internal(Widget child) : super(child: child) {
+  Configuration._internal() {
     _parameters[paramPuzzlesCount] = Parameter(defaultValuePuzzlesCount,
         ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount));
 
-    for (var gen in PuzzleGeneratorManager.generators) {
+    for (var gen in PuzzleGeneratorManager().generators) {
       var paramDefs = _readParameterDefinitions(gen);
       paramDefs.forEach((paramDef) => _parameters[paramDef.name] =
           Parameter(paramDef.defaultValue, paramDef));
     }
   }
 
-  static Future<Configuration> load(Widget child) async {
+  static Future<Configuration> load() async {
     var prefs = await SharedPreferences.getInstance();
-    var config = Configuration._internal(child);
+    var config = Configuration._internal();
 
     // Load into configuration parameters from SharedPreferences
     var parameters = config.parameters;
@@ -102,7 +93,7 @@ class Configuration extends InheritedWidget {
 
     // Load into configuration default generator parameters if not already
     // loaded from SharedPreferences
-    PuzzleGeneratorManager.generators.forEach((generator) {
+    PuzzleGeneratorManager().generators.forEach((generator) {
       var defParams = _readDefaultParameterValues(generator);
       defParams.forEach((name, value) {
         if (!parameters.containsKey(name)) {
