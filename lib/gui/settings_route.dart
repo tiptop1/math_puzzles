@@ -39,7 +39,8 @@ class SettingsRouteState extends State<SettingsRoute> {
       var groupName = _extractGroupName(paramName);
       if (groupedParams.containsKey(groupName)) {
         groupedParams[groupName].add(parameters[paramName]);
-        groupedParams[groupName].sort((a,b) => a.definition.name.compareTo(b.definition.name));
+        groupedParams[groupName]
+            .sort((a, b) => a.definition.name.compareTo(b.definition.name));
       } else {
         groupedParams[groupName] = [parameters[paramName]];
       }
@@ -89,12 +90,93 @@ class SettingsRouteState extends State<SettingsRoute> {
   }
 
   Widget _createListItemForParameter(Parameter parameter) {
+    var currParamValue = parameter.value;
     return ListTile(
-      title: Text('${parameter.definition.name}: ${parameter.value}'),
+      title: Text('${parameter.definition.name}: ${currParamValue}'),
+      onTap: () {
+        _showDialogForParameter(parameter).then((newParamValue) {
+          if (newParamValue != currParamValue) {
+            setState(() {
+              widget._configuration
+                  .setParameterValue(parameter.definition.name, newParamValue);
+            });
+          }
+        });
+      },
     );
   }
 
   Widget _createListItemForHeadline(String headline) {
     return ListTile(title: Text(headline));
+  }
+
+  Future<dynamic> _showDialogForParameter(Parameter parameter) async {
+    var currParamValue = parameter.value;
+    var dialogChildren;
+    if (currParamValue is bool) {
+      dialogChildren = [BoolRadioButtonGroup(currParamValue)];
+    } else if (currParamValue is int) {
+      dialogChildren = [];
+    } else {
+      throw UnsupportedError('Dialogs not supported for parameter of type '
+          '${currParamValue?.runtimeType}.');
+    }
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+          title: Text(parameter.definition.name), children: dialogChildren),
+    );
+  }
+}
+
+// TODO: Should it be stateful widget? Do I realy need keep _groupValue?
+class BoolRadioButtonGroup extends StatefulWidget {
+  final bool currentValue;
+
+  BoolRadioButtonGroup(this.currentValue);
+
+  @override
+  State createState() => _BoolRadioButtonGroupState();
+}
+
+class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
+  bool _groupValue;
+
+  _BoolRadioButtonGroupState();
+
+  @override
+  void initState() {
+    super.initState();
+    _groupValue = widget.currentValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          title: const Text('False'),
+          leading: Radio(
+            value: false,
+            groupValue: _groupValue,
+            onChanged: (bool value) {
+              setState(() => _groupValue = value);
+              Navigator.pop(context, value);
+            },
+          ),
+        ),
+        ListTile(
+          title: const Text('True'),
+          leading: Radio(
+            value: true,
+            groupValue: _groupValue,
+            onChanged: (bool value) {
+              setState(() => _groupValue = value);
+              Navigator.pop(context, value);
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
