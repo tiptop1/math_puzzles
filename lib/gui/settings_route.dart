@@ -116,7 +116,7 @@ class SettingsRouteState extends State<SettingsRoute> {
     if (currParamValue is bool) {
       dialogChildren = [BoolRadioButtonGroup(currParamValue)];
     } else if (currParamValue is int) {
-      dialogChildren = [];
+      dialogChildren = [NumericInputField(parameter)];
     } else {
       throw UnsupportedError('Dialogs not supported for parameter of type '
           '${currParamValue?.runtimeType}.');
@@ -178,5 +178,93 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
         ),
       ],
     );
+  }
+}
+
+class NumericInputField extends StatefulWidget {
+  final Parameter _parameter;
+
+  NumericInputField(this._parameter);
+
+  @override
+  State createState() => _NumericInputFieldState();
+}
+
+class _NumericInputFieldState extends State<NumericInputField> {
+  final _formKey = GlobalKey<FormState>();
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = widget._parameter.value.toString();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _controller.text = widget._parameter.value.toString();
+    var paramDefinition = widget._parameter.definition;
+    return Form(
+      key: _formKey,
+      child: TextFormField(
+        controller: _controller,
+        keyboardType:
+            _textInputTypeByParameterType(paramDefinition.defaultValue),
+        validator: (value) => _validateValue(value, paramDefinition.validators),
+        onEditingComplete: () {
+          if (_formKey.currentState.validate()) {
+            Navigator.pop(
+                context,
+                _asParameterType(
+                    _controller.text, paramDefinition.defaultValue));
+          }
+        },
+      ),
+    );
+  }
+
+  String _validateValue(String value, List<ParameterValidator> validators) {
+    var validationMsg;
+    for (var i = 0; i < validators.length; i++) {
+      var validator = validators[i];
+      validationMsg = validator.validate(value);
+      if (validationMsg != null) {
+        break;
+      }
+    }
+    return validationMsg;
+  }
+
+  // TODO: Maybe the method should be put in ParameterDefinition
+  dynamic _asParameterType(String value, dynamic defaultValue) {
+    dynamic parameterValue;
+    if (defaultValue is int) {
+      parameterValue = int.parse(value);
+    } else if (defaultValue is double) {
+      parameterValue = double.parse(value);
+    } else {
+      throw UnsupportedError(
+          'Parameter tyype ${defaultValue.runtimeType} not suppored!');
+    }
+    return parameterValue;
+  }
+
+  TextInputType _textInputTypeByParameterType(dynamic value) {
+    bool decimal;
+    if (value is int) {
+      decimal = false;
+    } else if (value is double) {
+      decimal = true;
+    } else {
+      throw UnsupportedError(
+          'Parameter type ${value.runtimeType} not supported!');
+    }
+    return TextInputType.numberWithOptions(signed: false, decimal: decimal);
   }
 }
