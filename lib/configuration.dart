@@ -73,8 +73,13 @@ class Configuration {
   final Map<String, Parameter> _parameters = {};
 
   Configuration._internal() {
-    _parameters[paramPuzzlesCount] = Parameter(defaultValuePuzzlesCount,
-        ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount));
+    _parameters[paramPuzzlesCount] = Parameter(
+        defaultValuePuzzlesCount,
+        ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount,
+            validators: [
+              IntTypeValidator(),
+              ScopeParameterValidator(1, 1000)
+            ]));
 
     for (var gen in PuzzleGeneratorManager().generators) {
       var paramDefs = _readParameterDefinitions(gen);
