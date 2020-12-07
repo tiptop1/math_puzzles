@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:math_puzzles/localizations.dart';
 
 import '../configuration.dart';
 
@@ -80,22 +81,24 @@ class SettingsRouteState extends State<SettingsRoute> {
     var listItem = listItems[i];
     var listItemWidget;
     if (listItem is Parameter) {
-      listItemWidget = _createListItemForParameter(listItem);
+      listItemWidget = _createListItemForParameter(context, listItem);
     } else if (listItem is String) {
-      listItemWidget = _createListItemForHeadline(listItem);
+      listItemWidget = _createListItemForHeadline(context, listItem);
     } else {
-      listItemWidget = Divider();
+      listItemWidget = Divider(color: Colors.black, thickness: 2);
     }
     return listItemWidget;
   }
 
-  Widget _createListItemForParameter(Parameter parameter) {
+  Widget _createListItemForParameter(
+      BuildContext context, Parameter parameter) {
     var currParamValue = parameter.value;
     return ListTile(
-      title: Text('${parameter.definition.name}: ${currParamValue}'),
+      title: Text(
+          '${AppLocalizations.of(context).dynamicMessage(parameter.definition.name)}: ${currParamValue}'),
       onTap: () {
         _showDialogForParameter(parameter).then((newParamValue) {
-          if (newParamValue != currParamValue) {
+          if (newParamValue != null && newParamValue != currParamValue) {
             setState(() {
               widget._configuration
                   .setParameterValue(parameter.definition.name, newParamValue);
@@ -106,8 +109,13 @@ class SettingsRouteState extends State<SettingsRoute> {
     );
   }
 
-  Widget _createListItemForHeadline(String headline) {
-    return ListTile(title: Text(headline));
+  Widget _createListItemForHeadline(BuildContext context, String headline) {
+    return ListTile(
+      title: Text(
+        AppLocalizations.of(context).dynamicMessage(headline),
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   Future<dynamic> _showDialogForParameter(Parameter parameter) async {
@@ -124,7 +132,9 @@ class SettingsRouteState extends State<SettingsRoute> {
     return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-          title: Text(parameter.definition.name), children: dialogChildren),
+          title: Text(AppLocalizations.of(context)
+              .dynamicMessage(parameter.definition.name)),
+          children: dialogChildren),
     );
   }
 }
@@ -155,24 +165,24 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: const Text('False'),
-          leading: Radio(
-            value: false,
-            groupValue: _groupValue,
-            onChanged: (bool value) {
-              setState(() => _groupValue = value);
-              Navigator.pop(context, value);
-            },
-          ),
-        ),
-        ListTile(
-          title: const Text('True'),
+          title: Text(AppLocalizations.of(context).boolTrue),
           leading: Radio(
             value: true,
             groupValue: _groupValue,
             onChanged: (bool value) {
               setState(() => _groupValue = value);
-              Navigator.pop(context, value);
+              Navigator.pop(context, _groupValue);
+            },
+          ),
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context).boolFalse),
+          leading: Radio(
+            value: false,
+            groupValue: _groupValue,
+            onChanged: (bool value) {
+              setState(() => _groupValue = value);
+              Navigator.pop(context, _groupValue);
             },
           ),
         ),
@@ -250,7 +260,7 @@ class _NumericInputFieldState extends State<NumericInputField> {
       parameterValue = double.parse(value);
     } else {
       throw UnsupportedError(
-          'Parameter tyype ${defaultValue.runtimeType} not suppored!');
+          'Parameter type ${defaultValue.runtimeType} not supported!');
     }
     return parameterValue;
   }
