@@ -35,11 +35,11 @@ abstract class ParameterValidator {
 }
 
 /// Predefined value scope validator.
-class ScopeParameterValidator extends ParameterValidator {
+class NumScopeParameterValidator extends ParameterValidator {
   final num minValue;
   final num maxValue;
 
-  const ScopeParameterValidator(this.minValue, this.maxValue)
+  const NumScopeParameterValidator(this.minValue, this.maxValue)
       : super('Allowed value between $minValue and $maxValue.');
 
   @override
@@ -78,7 +78,7 @@ class Configuration {
         ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount,
             validators: [
               IntTypeValidator(),
-              ScopeParameterValidator(1, 1000)
+              NumScopeParameterValidator(1, 1000)
             ]));
 
     for (var gen in PuzzleGeneratorManager().generators) {
@@ -141,7 +141,7 @@ class Configuration {
   }
 
   static List<Object> _readMetadata(PuzzleGenerator generator) {
-    var typeMirror = reflector.reflectType(generator.runtimeType);
+    var typeMirror = metadataReflector.reflectType(generator.runtimeType);
     return typeMirror.metadata;
   }
 
