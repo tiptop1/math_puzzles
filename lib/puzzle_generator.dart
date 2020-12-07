@@ -10,9 +10,9 @@ class Reflector extends Reflectable {
   const Reflector() : super(metadataCapability);
 }
 
-const reflector = Reflector();
+const metadataReflector = Reflector();
 
-@reflector
+@metadataReflector
 abstract class PuzzleGenerator {
   static const String paramEnabledPostfix = 'enabled';
   final String name;
@@ -33,12 +33,12 @@ abstract class PuzzleGenerator {
 @ParameterDefinition(AdditionPuzzleGenerator.paramEnabled, true,
     validators: [BoolTypeValidator()])
 @ParameterDefinition(AdditionPuzzleGenerator.paramMaxResult, 1000,
-    validators: [IntTypeValidator(), ScopeParameterValidator(1, 10000)])
+    validators: [IntTypeValidator(), NumScopeParameterValidator(1, 10000)])
 @ParameterDefinition(AdditionPuzzleGenerator.paramFractionDigits, 0,
-    validators: [IntTypeValidator(), ScopeParameterValidator(0, 4)])
-@reflector
+    validators: [IntTypeValidator(), NumScopeParameterValidator(0, 4)])
+@metadataReflector
 class AdditionPuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'additionalPuzzleGenerator';
+  static const String _name = 'additionGenerator';
   static const String paramEnabled =
       '$_name.${PuzzleGenerator.paramEnabledPostfix}';
   static const String paramMaxResult = '$_name.maxResult';
@@ -71,10 +71,10 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
     validators: [BoolTypeValidator()])
 @ParameterDefinition(
     MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
-    validators: [IntTypeValidator(), ScopeParameterValidator(10, 1000)])
-@reflector
+    validators: [IntTypeValidator(), NumScopeParameterValidator(10, 1000)])
+@metadataReflector
 class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'MultiplicationTableGenerator';
+  static const String _name = 'multiplicationTableGenerator';
   static const String paramEnabled =
       '$_name.${PuzzleGenerator.paramEnabledPostfix}';
   static const String paramMultiplicationTimes = '$_name.multiplicationTimes';
@@ -100,12 +100,12 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 @ParameterDefinition(PercentagePuzzleGenerator.paramEnabled, true,
     validators: [BoolTypeValidator()])
 @ParameterDefinition(PercentagePuzzleGenerator.maxResult, 100,
-    validators: [IntTypeValidator(), ScopeParameterValidator(1, 1000)])
+    validators: [IntTypeValidator(), NumScopeParameterValidator(1, 1000)])
 @ParameterDefinition(PercentagePuzzleGenerator.fractionDigits, 2,
-    validators: [IntTypeValidator(), ScopeParameterValidator(0, 4)])
-@reflector
+    validators: [IntTypeValidator(), NumScopeParameterValidator(0, 4)])
+@metadataReflector
 class PercentagePuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'PercentageGenerator';
+  static const String _name = 'percentageGenerator';
   static const String paramEnabled =
       '$_name.${PuzzleGenerator.paramEnabledPostfix}';
   static const String maxResult = '$_name.maxResult';
