@@ -19,12 +19,36 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static m0(minValue, maxValue) => "Allowed value between ${minValue} and ${maxValue}.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "additionGenerator" : MessageLookupByLibrary.simpleMessage("Addition"),
+    "additionGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Enabled"),
+    "additionGenerator_fractionDigits" : MessageLookupByLibrary.simpleMessage("Number of digits after the decimal point"),
+    "additionGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Max result"),
     "applicationTitle" : MessageLookupByLibrary.simpleMessage("Math Puzzles"),
+    "boolFalse" : MessageLookupByLibrary.simpleMessage("No"),
+    "boolTrue" : MessageLookupByLibrary.simpleMessage("Yes"),
+    "boolTypeValidatorMsg" : MessageLookupByLibrary.simpleMessage("Expected logic value - \"true\" or \"false\"."),
     "correctAnswerButton" : MessageLookupByLibrary.simpleMessage("Correct"),
+    "correctAnswersCount" : MessageLookupByLibrary.simpleMessage("Correct answers count:"),
     "incorrectAnswerButton" : MessageLookupByLibrary.simpleMessage("Incorrect"),
+    "incorrectAnswersCount" : MessageLookupByLibrary.simpleMessage("Incorrect answers count:"),
+    "intTypeValidatorMsg" : MessageLookupByLibrary.simpleMessage("Expected integer value."),
+    "multiplicationTableGenerator" : MessageLookupByLibrary.simpleMessage("Multiplication Table"),
+    "multiplicationTableGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Enabled"),
+    "multiplicationTableGenerator_multiplicationTimes" : MessageLookupByLibrary.simpleMessage("Multiplication times"),
+    "newSessionMenu" : MessageLookupByLibrary.simpleMessage("New session"),
+    "numScopeValidatorMsg" : m0,
+    "percentageGenerator" : MessageLookupByLibrary.simpleMessage("Percentage"),
+    "percentageGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Enabled"),
+    "percentageGenerator_fractionDigits" : MessageLookupByLibrary.simpleMessage("Number of digits after the decimal point"),
+    "percentageGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Max result"),
     "puzzleQuestion" : MessageLookupByLibrary.simpleMessage("What\'s the answer?"),
+    "session" : MessageLookupByLibrary.simpleMessage("Session"),
+    "sessionSummary" : MessageLookupByLibrary.simpleMessage("Session summary"),
+    "session_puzzlesCount" : MessageLookupByLibrary.simpleMessage("Number of puzzels"),
     "settingsMenu" : MessageLookupByLibrary.simpleMessage("Settings"),
     "showAnswerButton" : MessageLookupByLibrary.simpleMessage("Show answer")
   };

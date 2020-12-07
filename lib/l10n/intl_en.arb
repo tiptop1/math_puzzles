@@ -1,8 +1,12 @@
 {
-  "@@last_modified": "2020-09-11T13:45:07.909559",
-  "@@locale":"en",
+  "@@last_modified": "2020-12-08T00:01:27.696367",
   "applicationTitle": "Math Puzzles",
   "@applicationTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newSessionMenu": "New session",
+  "@newSessionMenu": {
     "type": "text",
     "placeholders": {}
   },
@@ -28,6 +32,114 @@
   },
   "incorrectAnswerButton": "Incorrect",
   "@incorrectAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sessionSummary": "Session summary",
+  "@sessionSummary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "correctAnswersCount": "Correct answers count:",
+  "@correctAnswersCount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "incorrectAnswersCount": "Incorrect answers count:",
+  "@incorrectAnswersCount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "boolTrue": "Yes",
+  "@boolTrue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "boolFalse": "No",
+  "@boolFalse": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "intTypeValidatorMsg": "Expected integer value.",
+  "@intTypeValidatorMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "boolTypeValidatorMsg": "Expected logic value - \"true\" or \"false\".",
+  "@boolTypeValidatorMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "numScopeValidatorMsg": "Allowed value between {minValue} and {maxValue}.",
+  "@numScopeValidatorMsg": {
+    "type": "text",
+    "placeholders": {
+      "minValue": {},
+      "maxValue": {}
+    }
+  },
+  "additionGenerator": "Addition",
+  "@additionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "additionGenerator_enabled": "Enabled",
+  "@additionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "additionGenerator_maxResult": "Max result",
+  "@additionGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "additionGenerator_fractionDigits": "Number of digits after the decimal point",
+  "@additionGenerator_fractionDigits": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator": "Percentage",
+  "@percentageGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator_enabled": "Enabled",
+  "@percentageGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator_maxResult": "Max result",
+  "@percentageGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator_fractionDigits": "Number of digits after the decimal point",
+  "@percentageGenerator_fractionDigits": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator": "Multiplication Table",
+  "@multiplicationTableGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator_enabled": "Enabled",
+  "@multiplicationTableGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator_multiplicationTimes": "Multiplication times",
+  "@multiplicationTableGenerator_multiplicationTimes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "session": "Session",
+  "@session": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "session_puzzlesCount": "Number of puzzels",
+  "@session_puzzlesCount": {
     "type": "text",
     "placeholders": {}
   }
