@@ -97,7 +97,7 @@ class SettingsRouteState extends State<SettingsRoute> {
       title: Text(
           '${AppLocalizations.of(context).dynamicMessage(parameter.definition.name)}: ${currParamValue}'),
       onTap: () {
-        _showDialogForParameter(parameter).then((newParamValue) {
+        _showEditParameterDialog(parameter).then((newParamValue) {
           if (newParamValue != null && newParamValue != currParamValue) {
             setState(() {
               widget._configuration
@@ -118,7 +118,7 @@ class SettingsRouteState extends State<SettingsRoute> {
     );
   }
 
-  Future<dynamic> _showDialogForParameter(Parameter parameter) async {
+  Future<dynamic> _showEditParameterDialog(Parameter parameter) async {
     var currParamValue = parameter.value;
     var dialogChildren;
     if (currParamValue is bool) {
@@ -131,6 +131,7 @@ class SettingsRouteState extends State<SettingsRoute> {
     }
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => SimpleDialog(
           title: Text(AppLocalizations.of(context)
               .dynamicMessage(parameter.definition.name)),
