@@ -33,9 +33,9 @@ abstract class PuzzleGenerator {
 @ParameterDefinition(AdditionPuzzleGenerator.paramEnabled, true,
     validators: [BoolTypeValidator()])
 @ParameterDefinition(AdditionPuzzleGenerator.paramMaxResult, 1000,
-    validators: [IntTypeValidator(), NumScopeParameterValidator(1, 10000)])
+    validators: [IntTypeValidator(), NumParameterScopeValidator(1, 10000)])
 @ParameterDefinition(AdditionPuzzleGenerator.paramFractionDigits, 0,
-    validators: [IntTypeValidator(), NumScopeParameterValidator(0, 4)])
+    validators: [IntTypeValidator(), NumParameterScopeValidator(0, 4)])
 @metadataReflector
 class AdditionPuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'additionGenerator';
@@ -71,7 +71,7 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
     validators: [BoolTypeValidator()])
 @ParameterDefinition(
     MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
-    validators: [IntTypeValidator(), NumScopeParameterValidator(10, 1000)])
+    validators: [IntTypeValidator(), NumParameterScopeValidator(10, 1000)])
 @metadataReflector
 class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'multiplicationTableGenerator';
@@ -100,9 +100,9 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 @ParameterDefinition(PercentagePuzzleGenerator.paramEnabled, true,
     validators: [BoolTypeValidator()])
 @ParameterDefinition(PercentagePuzzleGenerator.maxResult, 100,
-    validators: [IntTypeValidator(), NumScopeParameterValidator(1, 1000)])
+    validators: [IntTypeValidator(), NumParameterScopeValidator(1, 1000)])
 @ParameterDefinition(PercentagePuzzleGenerator.fractionDigits, 2,
-    validators: [IntTypeValidator(), NumScopeParameterValidator(0, 4)])
+    validators: [IntTypeValidator(), NumParameterScopeValidator(0, 4)])
 @metadataReflector
 class PercentagePuzzleGenerator extends PuzzleGenerator {
   static const String _name = 'percentageGenerator';

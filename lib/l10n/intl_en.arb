@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-12-08T00:01:27.696367",
+  "@@last_modified": "2020-12-09T15:29:43.046694",
   "applicationTitle": "Math Puzzles",
   "@applicationTitle": {
     "type": "text",
@@ -60,18 +60,18 @@
     "type": "text",
     "placeholders": {}
   },
-  "intTypeValidatorMsg": "Expected integer value.",
-  "@intTypeValidatorMsg": {
+  "intTypeValidator": "Expected integer value.",
+  "@intTypeValidator": {
     "type": "text",
     "placeholders": {}
   },
-  "boolTypeValidatorMsg": "Expected logic value - \"true\" or \"false\".",
-  "@boolTypeValidatorMsg": {
+  "boolTypeValidator": "Expected logic value - \"true\" or \"false\".",
+  "@boolTypeValidator": {
     "type": "text",
     "placeholders": {}
   },
-  "numScopeValidatorMsg": "Allowed value between {minValue} and {maxValue}.",
-  "@numScopeValidatorMsg": {
+  "numParameterScopeValidator": "Allowed value between {minValue} and {maxValue}.",
+  "@numParameterScopeValidator": {
     "type": "text",
     "placeholders": {
       "minValue": {},
@@ -138,7 +138,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "session_puzzlesCount": "Number of puzzels",
+  "session_puzzlesCount": "Number of puzzles",
   "@session_puzzlesCount": {
     "type": "text",
     "placeholders": {}

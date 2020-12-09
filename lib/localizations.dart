@@ -64,16 +64,16 @@ class AppLocalizations {
   // Notice: dynamicMassage(...) can call just regular methods and not getters.
 
   // Validators
-  String intTypeValidatorMsg() =>
-      Intl.message('Expected integer value.', name: 'intTypeValidatorMsg');
+  String intTypeValidator() =>
+      Intl.message('Expected integer value.', name: 'intTypeValidator');
 
-  String boolTypeValidatorMsg() =>
+  String boolTypeValidator() =>
       Intl.message('Expected logic value - "true" or "false".',
-          name: 'boolTypeValidatorMsg');
+          name: 'boolTypeValidator');
 
-  String numScopeValidatorMsg(num minValue, num maxValue) =>
+  String numParameterScopeValidator(num minValue, num maxValue) =>
       Intl.message('Allowed value between $minValue and ${maxValue}.',
-          name: 'numScopeValidatorMsg', args: [minValue, maxValue]);
+          name: 'numParameterScopeValidator', args: [minValue, maxValue]);
 
   // Puzzle generator parameters
   // Addition Generator
@@ -119,7 +119,7 @@ class AppLocalizations {
   String session() => Intl.message('Session', name: 'session');
 
   String session_puzzlesCount() =>
-      Intl.message('Number of puzzels', name: 'session_puzzlesCount');
+      Intl.message('Number of puzzles', name: 'session_puzzlesCount');
 
   String dynamicMessage(String name, {List<dynamic> args = const []}) {
     var instanceMirror = invokingReflector.reflect(this);

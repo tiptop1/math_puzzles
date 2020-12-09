@@ -226,7 +226,8 @@ class _NumericInputFieldState extends State<NumericInputField> {
         controller: _controller,
         keyboardType:
             _textInputTypeByParameterType(paramDefinition.defaultValue),
-        validator: (value) => _validateValue(value, paramDefinition.validators),
+        validator: (value) =>
+            _validateValue(context, value, paramDefinition.validators),
         onEditingComplete: () {
           if (_formKey.currentState.validate()) {
             Navigator.pop(
@@ -239,16 +240,20 @@ class _NumericInputFieldState extends State<NumericInputField> {
     );
   }
 
-  String _validateValue(String value, List<ParameterValidator> validators) {
-    var validationMsg;
+  String _validateValue(
+      BuildContext context, String value, List<ParameterValidator> validators) {
+    var strMsg;
     for (var i = 0; i < validators.length; i++) {
       var validator = validators[i];
-      validationMsg = validator.validate(value);
-      if (validationMsg != null) {
+      var parametrizedMsg = validator.validate(value);
+      if (parametrizedMsg != null) {
+        strMsg = AppLocalizations.of(context).dynamicMessage(
+            parametrizedMsg.message,
+            args: parametrizedMsg.parameters);
         break;
       }
     }
-    return validationMsg;
+    return strMsg;
   }
 
   // TODO: Maybe the method should be put in ParameterDefinition

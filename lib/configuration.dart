@@ -20,49 +20,76 @@ class ParameterDefinition {
       {this.validators = const []});
 }
 
-/// Configuration parameter validator.
-/// It assume that parameter will be provided as String
-abstract class ParameterValidator {
-  /// Error message.
-  final String errorMessage;
+class ParametrizedMessage {
+  final String message;
+  final List<dynamic> parameters;
 
-  const ParameterValidator(this.errorMessage);
+  ParametrizedMessage(this.message, {this.parameters = const []});
+
+  @override
+  String toString() => '{msg: $message, params: $parameters}';
+}
+
+/// Configuration parameter validator.
+/// It assume that parameter will be provided as String - it's because input
+/// parameters are entered as text.
+abstract class ParameterValidator {
+  const ParameterValidator();
 
   /// If [value] valid return null othwrise errorMessage.
-  String validate(String value) => isValueValid(value) ? null : errorMessage;
-
-  bool isValueValid(String value);
+  ParametrizedMessage validate(String value);
 }
 
 /// Predefined value scope validator.
-class NumScopeParameterValidator extends ParameterValidator {
+class NumParameterScopeValidator extends ParameterValidator {
+  static const String name = 'numParameterScopeValidator';
+
   final num minValue;
   final num maxValue;
 
-  const NumScopeParameterValidator(this.minValue, this.maxValue)
-      : super('Allowed value between $minValue and $maxValue.');
+  const NumParameterScopeValidator(this.minValue, this.maxValue);
 
   @override
-  bool isValueValid(String strValue) {
+  ParametrizedMessage validate(String strValue) {
     num numValue = double.parse(strValue);
-    return minValue <= numValue && numValue <= maxValue;
+    var msg;
+    if (numValue < minValue || numValue > maxValue) {
+      msg = ParametrizedMessage(name, parameters: [minValue, maxValue]);
+    }
+    return msg;
   }
 }
 
 class IntTypeValidator extends ParameterValidator {
-  const IntTypeValidator() : super('Expected integer value.');
+  static const String name = 'intTypeValidator';
+
+  const IntTypeValidator();
 
   @override
-  bool isValueValid(String strValue) {
-    return strValue != null ? int.tryParse(strValue) != null : false;
+  ParametrizedMessage validate(String strValue) {
+    var msg;
+    if (strValue == null || int.tryParse(strValue) == null) {
+      msg = ParametrizedMessage(name);
+    }
+    return msg;
   }
+
 }
 
 class BoolTypeValidator extends ParameterValidator {
-  const BoolTypeValidator() : super('Expected bool value.');
+  static const name = 'boolTypeValidator';
+
+  const BoolTypeValidator();
 
   @override
-  bool isValueValid(String strValue) => true;
+  ParametrizedMessage validate(String strValue) {
+    var msg;
+    strValue = strValue.toLowerCase();
+    if (strValue == null || strValue != 'true' || strValue != 'false' ) {
+      msg = ParametrizedMessage(name);
+    }
+    return msg;
+  }
 }
 
 /// The class load, keep and store application parameters.
@@ -78,7 +105,7 @@ class Configuration {
         ParameterDefinition(paramPuzzlesCount, defaultValuePuzzlesCount,
             validators: [
               IntTypeValidator(),
-              NumScopeParameterValidator(1, 1000)
+              NumParameterScopeValidator(1, 1000)
             ]));
 
     for (var gen in PuzzleGeneratorManager().generators) {
