@@ -6,6 +6,7 @@ import 'package:math_puzzles/localizations.dart';
 import '../model.dart';
 
 class SessionSummaryRoute extends StatelessWidget {
+  // TODO: Try to use Donut Pie Chart with percentage of correct answer inside (charts_flutter library).
   @override
   Widget build(BuildContext context) {
     var _sessionModel =
