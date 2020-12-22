@@ -18,11 +18,16 @@ class SessionSummaryRoute extends StatelessWidget {
           actions: createActions(context),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _createCorrectAnswersSummary(
-                context, _sessionModel.correctAnswersCount),
-            _createIncorrectAnswersSummary(
-                context, _sessionModel.incorrectAnswersCount),
+            Center(
+              child: _createCorrectAnswersSummary(
+                  context, _sessionModel.correctAnswersCount),
+            ),
+            Center(
+              child: _createIncorrectAnswersSummary(
+                  context, _sessionModel.incorrectAnswersCount),
+            ),
           ],
         ));
   }

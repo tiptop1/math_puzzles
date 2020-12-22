@@ -52,10 +52,10 @@ class AppLocalizations {
       Intl.message('Session summary', name: 'sessionSummary');
 
   String get correctAnswersCount =>
-      Intl.message('Correct answers count:', name: 'correctAnswersCount');
+      Intl.message('Correct answers:', name: 'correctAnswersCount');
 
   String get incorrectAnswersCount =>
-      Intl.message('Incorrect answers count:', name: 'incorrectAnswersCount');
+      Intl.message('Incorrect answers:', name: 'incorrectAnswersCount');
 
   String get boolTrue => Intl.message('Yes', name: 'boolTrue');
 

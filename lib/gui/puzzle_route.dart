@@ -8,6 +8,10 @@ import '../puzzle_generator.dart';
 import 'math_puzzle.dart' as math_puzzle;
 
 class PuzzleRoute extends StatelessWidget {
+  static const Color answerColor = Colors.blue;
+  static const Color incorrectColor = Colors.red;
+  static const Color correctColor = Colors.green;
+
   final Configuration _configuration;
 
   PuzzleRoute(this._configuration);
@@ -35,13 +39,18 @@ class PuzzleRoute extends StatelessWidget {
             Expanded(
               flex: 10,
               child: Center(
-                  child: Text(AppLocalizations.of(context).puzzleQuestion)),
+                child: Text(
+                  AppLocalizations.of(context).puzzleQuestion,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
             ),
             Consumer<PuzzleModel>(builder: (context, puzzleModel, child) {
               return Expanded(
                 flex: 70,
                 child: Center(
-                  child: PuzzleWidget(puzzleModel),
+                  child: PuzzleWidget(
+                      puzzleModel, answerColor, correctColor, incorrectColor),
                 ),
               );
             }),
@@ -51,7 +60,12 @@ class PuzzleRoute extends StatelessWidget {
                   flex: 10,
                   child: Center(
                     child: AnswerButtonsWidget(
-                        _configuration, puzzleModel, sessionModel),
+                        _configuration,
+                        puzzleModel,
+                        sessionModel,
+                        answerColor,
+                        correctColor,
+                        incorrectColor),
                   ),
                 );
               },
@@ -61,7 +75,8 @@ class PuzzleRoute extends StatelessWidget {
                 flex: 10,
                 child: Align(
                   alignment: Alignment.bottomRight,
-                  child: StatusBarWidget(_configuration, sessionModel),
+                  child: StatusBarWidget(_configuration, sessionModel,
+                      correctColor, incorrectColor),
                 ),
               );
             })
@@ -76,28 +91,43 @@ class AnswerButtonsWidget extends StatelessWidget {
   final Configuration _configuration;
   final PuzzleModel _puzzleModel;
   final SessionModel _sessionModel;
+  final Color _answerColor;
+  final Color _correctColor;
+  final Color _incorrectColor;
 
   AnswerButtonsWidget(
-      this._configuration, this._puzzleModel, this._sessionModel);
+      this._configuration,
+      this._puzzleModel,
+      this._sessionModel,
+      this._answerColor,
+      this._correctColor,
+      this._incorrectColor);
 
   @override
   Widget build(BuildContext context) {
     Widget widget;
     if (!_puzzleModel.puzzleAnswered) {
       widget = RaisedButton(
-        child: Text(AppLocalizations.of(context).showAnswerButton),
+        child: Text(
+          AppLocalizations.of(context).showAnswerButton,
+        ),
+        color: _answerColor,
         onPressed: _showAnswerCallback,
       );
     } else {
       widget = Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           RaisedButton(
               child: Text(AppLocalizations.of(context).incorrectAnswerButton),
+              color: _incorrectColor,
               onPressed: () =>
                   _incorrectAnswerCallback(context, _sessionModel)),
           RaisedButton(
-              child: Text(AppLocalizations.of(context).correctAnswerButton),
+              child: Text(
+                AppLocalizations.of(context).correctAnswerButton,
+              ),
+              color: _correctColor,
               onPressed: () => _correctAnswerCallback(context, _sessionModel)),
         ],
       );
@@ -135,23 +165,42 @@ class AnswerButtonsWidget extends StatelessWidget {
 
 class PuzzleWidget extends StatelessWidget {
   final PuzzleModel _model;
+  final Color _answerColor;
+  final Color _correctColor;
+  final Color _incorrectColor;
 
-  PuzzleWidget(this._model);
+  PuzzleWidget(
+      this._model, this._answerColor, this._correctColor, this._incorrectColor);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-        '${_model.puzzle.question} = ${_model.puzzleAnswered ? _model.puzzle.answer : '?'}');
+    var answerTheme = Theme.of(context).textTheme.headline5;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '${_model.puzzle.question} = ',
+          style: answerTheme,
+        ),
+        Text(
+          _model.puzzleAnswered ? '${_model.puzzle.answer}' : '?',
+          style: answerTheme.apply(color: _answerColor),
+        ),
+      ],
+    );
   }
 }
 
 class StatusBarWidget extends StatelessWidget {
-  static const statusSeparator = '/';
+  static const statusSeparator = '|';
 
   final Configuration _configuration;
   final SessionModel _sessionModel;
+  final Color _correctColor;
+  final Color _incorrectColor;
 
-  StatusBarWidget(this._configuration, this._sessionModel);
+  StatusBarWidget(this._configuration, this._sessionModel, this._correctColor,
+      this._incorrectColor);
 
   @override
   Widget build(BuildContext context) {
@@ -159,15 +208,25 @@ class StatusBarWidget extends StatelessWidget {
         _configuration.parameters[Configuration.paramPuzzlesCount].value;
     var correctAnswersCount = _sessionModel.correctAnswersCount;
     var incorrectAnswersCount = _sessionModel.incorrectAnswersCount;
+    var textStyle = Theme.of(context).textTheme.headline6;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Text((puzzlesCount - correctAnswersCount - incorrectAnswersCount)
-            .toString()),
-        Text(statusSeparator),
-        Text(correctAnswersCount.toString()),
-        Text('/'),
-        Text(incorrectAnswersCount.toString()),
+        // Number of to do puzzles
+        Text(
+          '${puzzlesCount - correctAnswersCount - incorrectAnswersCount}$statusSeparator',
+          style: textStyle,
+        ),
+        // Number or correct answers
+        Text(
+          '$correctAnswersCount',
+          style: textStyle.apply(color: _correctColor),
+        ),
+        Text(statusSeparator, style: textStyle),
+        Text(
+          '$incorrectAnswersCount',
+          style: textStyle.apply(color: _incorrectColor),
+        ),
       ],
     );
   }
