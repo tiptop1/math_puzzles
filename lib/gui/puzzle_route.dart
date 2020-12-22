@@ -8,6 +8,7 @@ import '../puzzle_generator.dart';
 import 'math_puzzle.dart' as math_puzzle;
 
 class PuzzleRoute extends StatelessWidget {
+  // TODO: Is any elegant way to pass the colors down to widget tree?
   static const Color answerColor = Colors.blue;
   static const Color incorrectColor = Colors.red;
   static const Color correctColor = Colors.green;
@@ -107,8 +108,9 @@ class AnswerButtonsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget widget;
     if (!_puzzleModel.puzzleAnswered) {
-      widget = RaisedButton(
-        child: Text(
+      widget = RaisedButton.icon(
+        icon: Icon(Icons.question_answer),
+        label: Text(
           AppLocalizations.of(context).showAnswerButton,
         ),
         color: _answerColor,
@@ -118,17 +120,22 @@ class AnswerButtonsWidget extends StatelessWidget {
       widget = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          RaisedButton(
-              child: Text(AppLocalizations.of(context).incorrectAnswerButton),
+          Spacer(flex: 10),
+          RaisedButton.icon(
+              icon: Icon(Icons.close),
+              label: Text(AppLocalizations.of(context).incorrectAnswerButton),
               color: _incorrectColor,
               onPressed: () =>
                   _incorrectAnswerCallback(context, _sessionModel)),
-          RaisedButton(
-              child: Text(
+          Spacer(flex: 3),
+          RaisedButton.icon(
+              icon: Icon(Icons.check),
+              label: Text(
                 AppLocalizations.of(context).correctAnswerButton,
               ),
               color: _correctColor,
               onPressed: () => _correctAnswerCallback(context, _sessionModel)),
+          Spacer(flex: 10),
         ],
       );
     }
