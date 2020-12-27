@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-12-09T15:29:43.046694",
+  "@@last_modified": "2020-12-27T23:17:38.458860",
   "applicationTitle": "Math Puzzles",
   "@applicationTitle": {
     "type": "text",
@@ -40,13 +40,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "correctAnswersCount": "Correct answers count:",
-  "@correctAnswersCount": {
+  "correctAnswers": "Correct answers",
+  "@correctAnswers": {
     "type": "text",
     "placeholders": {}
   },
-  "incorrectAnswersCount": "Incorrect answers count:",
-  "@incorrectAnswersCount": {
+  "incorrectAnswers": "Incorrect answers",
+  "@incorrectAnswers": {
     "type": "text",
     "placeholders": {}
   },
