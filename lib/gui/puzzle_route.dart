@@ -6,12 +6,9 @@ import '../localizations.dart';
 import '../model.dart';
 import '../puzzle_generator.dart';
 import 'math_puzzle.dart' as math_puzzle;
+import 'color_scheme_extensions.dart';
 
 class PuzzleRoute extends StatelessWidget {
-  // TODO: Is any elegant way to pass the colors down to widget tree?
-  static const Color answerColor = Colors.blue;
-  static const Color incorrectColor = Colors.red;
-  static const Color correctColor = Colors.green;
 
   final Configuration _configuration;
 
@@ -50,8 +47,7 @@ class PuzzleRoute extends StatelessWidget {
               return Expanded(
                 flex: 70,
                 child: Center(
-                  child: PuzzleWidget(
-                      puzzleModel, answerColor, correctColor, incorrectColor),
+                  child: PuzzleWidget(puzzleModel),
                 ),
               );
             }),
@@ -63,10 +59,7 @@ class PuzzleRoute extends StatelessWidget {
                     child: AnswerButtonsWidget(
                         _configuration,
                         puzzleModel,
-                        sessionModel,
-                        answerColor,
-                        correctColor,
-                        incorrectColor),
+                        sessionModel),
                   ),
                 );
               },
@@ -76,8 +69,7 @@ class PuzzleRoute extends StatelessWidget {
                 flex: 10,
                 child: Align(
                   alignment: Alignment.bottomRight,
-                  child: StatusBarWidget(_configuration, sessionModel,
-                      correctColor, incorrectColor),
+                  child: StatusBarWidget(_configuration, sessionModel),
                 ),
               );
             })
@@ -92,17 +84,11 @@ class AnswerButtonsWidget extends StatelessWidget {
   final Configuration _configuration;
   final PuzzleModel _puzzleModel;
   final SessionModel _sessionModel;
-  final Color _answerColor;
-  final Color _correctColor;
-  final Color _incorrectColor;
 
   AnswerButtonsWidget(
       this._configuration,
       this._puzzleModel,
-      this._sessionModel,
-      this._answerColor,
-      this._correctColor,
-      this._incorrectColor);
+      this._sessionModel);
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +99,7 @@ class AnswerButtonsWidget extends StatelessWidget {
         label: Text(
           AppLocalizations.of(context).showAnswerButton,
         ),
-        color: _answerColor,
+        color: Theme.of(context).colorScheme.answer,
         onPressed: _showAnswerCallback,
       );
     } else {
@@ -124,7 +110,7 @@ class AnswerButtonsWidget extends StatelessWidget {
           RaisedButton.icon(
               icon: Icon(Icons.close),
               label: Text(AppLocalizations.of(context).incorrectAnswerButton),
-              color: _incorrectColor,
+              color: Theme.of(context).colorScheme.incorrectAnswer,
               onPressed: () =>
                   _incorrectAnswerCallback(context, _sessionModel)),
           Spacer(flex: 3),
@@ -133,7 +119,7 @@ class AnswerButtonsWidget extends StatelessWidget {
               label: Text(
                 AppLocalizations.of(context).correctAnswerButton,
               ),
-              color: _correctColor,
+              color: Theme.of(context).colorScheme.correctAnswer,
               onPressed: () => _correctAnswerCallback(context, _sessionModel)),
           Spacer(flex: 10),
         ],
@@ -172,12 +158,8 @@ class AnswerButtonsWidget extends StatelessWidget {
 
 class PuzzleWidget extends StatelessWidget {
   final PuzzleModel _model;
-  final Color _answerColor;
-  final Color _correctColor;
-  final Color _incorrectColor;
 
-  PuzzleWidget(
-      this._model, this._answerColor, this._correctColor, this._incorrectColor);
+  PuzzleWidget(this._model);
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +173,7 @@ class PuzzleWidget extends StatelessWidget {
         ),
         Text(
           _model.puzzleAnswered ? '${_model.puzzle.answer}' : '?',
-          style: answerTheme.apply(color: _answerColor),
+          style: answerTheme.apply(color: Theme.of(context).colorScheme.answer),
         ),
       ],
     );
@@ -203,11 +185,8 @@ class StatusBarWidget extends StatelessWidget {
 
   final Configuration _configuration;
   final SessionModel _sessionModel;
-  final Color _correctColor;
-  final Color _incorrectColor;
 
-  StatusBarWidget(this._configuration, this._sessionModel, this._correctColor,
-      this._incorrectColor);
+  StatusBarWidget(this._configuration, this._sessionModel);
 
   @override
   Widget build(BuildContext context) {
@@ -227,12 +206,12 @@ class StatusBarWidget extends StatelessWidget {
         // Number or correct answers
         Text(
           '$correctAnswersCount',
-          style: textStyle.apply(color: _correctColor),
+          style: textStyle.apply(color: Theme.of(context).colorScheme.correctAnswer),
         ),
         Text(statusSeparator, style: textStyle),
         Text(
           '$incorrectAnswersCount',
-          style: textStyle.apply(color: _incorrectColor),
+          style: textStyle.apply(color: Theme.of(context).colorScheme.incorrectAnswer),
         ),
       ],
     );
