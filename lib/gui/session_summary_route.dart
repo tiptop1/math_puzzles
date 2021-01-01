@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +7,19 @@ import 'package:math_puzzles/gui/math_puzzle.dart';
 import 'package:math_puzzles/localizations.dart';
 
 import '../model.dart';
+import 'color_scheme_extensions.dart';
 
 class SessionSummaryRoute extends StatelessWidget {
   // TODO: Try to use Donut Pie Chart with percentage of correct answer inside (charts_flutter library).
   @override
   Widget build(BuildContext context) {
-    var _sessionModel =
+    var sessionModel =
         ModalRoute.of(context).settings.arguments as SessionModel;
+    var contextTheme = Theme.of(context);
+    var textThemeHeadline2 = contextTheme.textTheme.headline2;
+    var textThemeHeadline4 = contextTheme.textTheme.headline4;
+    var totalAnswersCount =
+        sessionModel.correctAnswersCount + sessionModel.incorrectAnswersCount;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).sessionSummary),
@@ -19,44 +27,55 @@ class SessionSummaryRoute extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: createActions(context),
       ),
-      body: Container(
-        child: Center(
-          child: charts.PieChart(
-            _createSeriesList(context, _sessionModel),
-            animate: false,
-            defaultRenderer: charts.ArcRendererConfig(
-              arcWidth: 120,
-              // new code below
-              arcRendererDecorators: [
-                charts.ArcLabelDecorator(
-                  showLeaderLines: false,
-                  // outsideLabelStyleSpec: charts.TextStyleSpec(fontSize: 18),
-                  insideLabelStyleSpec: charts.TextStyleSpec(fontSize: 18),
-                  labelPosition: charts.ArcLabelPosition.inside,
-                )
-              ],
-            ),
-            behaviors: [
-              // our title behaviour
-              charts.DatumLegend(
-                position: charts.BehaviorPosition.bottom,
-                outsideJustification:
-                    charts.OutsideJustification.middleDrawArea,
-                horizontalFirst: false,
-                cellPadding: EdgeInsets.only(right: 4.0, bottom: 4.0),
-                showMeasures: true,
-                desiredMaxColumns: 2,
-                desiredMaxRows: 2,
-                legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
-                measureFormatter: (num value) => '',
-                entryTextStyle: charts.TextStyleSpec(
-                    color: charts.MaterialPalette.black,
-                    fontFamily: 'Roboto',
-                    fontSize: 16),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('${AppLocalizations.of(context).correctAnswers}: ',
+                  style: textThemeHeadline4),
+              Text(
+                '${sessionModel.correctAnswersCount}',
+                style: textThemeHeadline4.apply(
+                    color: contextTheme.colorScheme.correctAnswer),
+              ),
+              Text(
+                '/',
+                style: textThemeHeadline4,
+              ),
+              Text(
+                '${totalAnswersCount}',
+                style: textThemeHeadline4.apply(
+                    color: contextTheme.colorScheme.incorrectAnswer),
               ),
             ],
           ),
-        ),
+          Expanded(
+            child: Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(50.0),
+                  child: charts.PieChart(
+                    _createSeriesList(context, sessionModel),
+                    animate: false,
+                    defaultRenderer: charts.ArcRendererConfig(
+                      arcWidth: 50,
+                      startAngle: 4 / 5 * pi,
+                      arcLength: 7 / 5 * pi,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    '${_calculatePercent(sessionModel.correctAnswersCount, totalAnswersCount)}%',
+                    style: textThemeHeadline2.apply(
+                        color: Theme.of(context).colorScheme.correctAnswer),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -69,20 +88,24 @@ class SessionSummaryRoute extends StatelessWidget {
         domainFn: (AnswersCount answersCount, _) => answersCount.category,
         measureFn: (AnswersCount answersCount, _) => answersCount.count,
         colorFn: (AnswersCount answersCount, _) => answersCount.color,
-        labelAccessorFn: (AnswersCount answersCount, _) =>
-            answersCount.count.toString(),
         data: [
           AnswersCount(
               sessionModel.correctAnswersCount,
               AppLocalizations.of(context).correctAnswers,
-              charts.ColorUtil.fromDartColor(Colors.green)),
+              charts.ColorUtil.fromDartColor(
+                  Theme.of(context).colorScheme.correctAnswer)),
           AnswersCount(
               sessionModel.incorrectAnswersCount,
               AppLocalizations.of(context).incorrectAnswers,
-              charts.ColorUtil.fromDartColor(Colors.red)),
+              charts.ColorUtil.fromDartColor(
+                  Theme.of(context).colorScheme.incorrectAnswer)),
         ],
       )
     ];
+  }
+
+  int _calculatePercent(int value, int wholeValue) {
+    return ((value * 100) / wholeValue).round();
   }
 }
 
