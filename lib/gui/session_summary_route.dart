@@ -9,8 +9,10 @@ import 'package:math_puzzles/localizations.dart';
 import '../model.dart';
 import 'color_scheme_extensions.dart';
 
+// TODO: Invalid route text.
+// TODO: Polish text is to long and overflowing screen.
+// TODO: Percentage value overlap chart in landscape position.
 class SessionSummaryRoute extends StatelessWidget {
-  // TODO: Try to use Donut Pie Chart with percentage of correct answer inside (charts_flutter library).
   @override
   Widget build(BuildContext context) {
     var sessionModel =
