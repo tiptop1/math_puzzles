@@ -8,6 +8,9 @@ import '../puzzle_generator.dart';
 import 'math_puzzle.dart' as math_puzzle;
 import 'color_scheme_extensions.dart';
 
+// TODO: Change question if answer is presented - e.g. "Is result correct?".
+// TODO: Buttons for score answer should have fixed width.
+// TODO: Incomplete rendered question on Motorola One if device in landscape position.
 class PuzzleRoute extends StatelessWidget {
 
   final Configuration _configuration;
@@ -149,6 +152,12 @@ class AnswerButtonsWidget extends StatelessWidget {
     _puzzleModel.puzzle = PuzzleGeneratorManager()
         .findNextEnabledGenerator(parameterValues)
         .generate(parameterValues);
+    if (_sessionModel.correctAnswersCount +
+        _sessionModel.incorrectAnswersCount >=
+        _configuration.parameters[Configuration.paramPuzzlesCount].value) {
+      Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
+          arguments: sessionModel);
+    }
   }
 
   void _showAnswerCallback() {
