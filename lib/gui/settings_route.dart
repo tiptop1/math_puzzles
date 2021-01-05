@@ -95,7 +95,7 @@ class SettingsRouteState extends State<SettingsRoute> {
     var currParamValue = parameter.value;
     return ListTile(
       title: Text(
-          '${AppLocalizations.of(context).dynamicMessage(parameter.definition.name)}: ${currParamValue}'),
+          '${AppLocalizations.of(context).dynamicMessage(parameter.definition.name)}: ${_translate(context, currParamValue)}'),
       onTap: () {
         _showEditParameterDialog(parameter).then((newParamValue) {
           if (newParamValue != null && newParamValue != currParamValue) {
@@ -138,9 +138,21 @@ class SettingsRouteState extends State<SettingsRoute> {
           children: dialogChildren),
     );
   }
+
+  String _translate(BuildContext context, dynamic paramValue) {
+    var translatedValue;
+    if (paramValue is bool) {
+      var appLocaliztion = AppLocalizations.of(context);
+      translatedValue = (paramValue ? appLocaliztion.boolTrue : appLocaliztion.boolFalse);
+    } else if (paramValue is String) {
+      translatedValue = AppLocalizations.of(context).dynamicMessage(paramValue);
+    } else {
+      translatedValue = paramValue?.toString();
+    }
+    return translatedValue;
+  }
 }
 
-// TODO: Should it be stateful widget? Do I realy need keep _groupValue?
 class BoolRadioButtonGroup extends StatefulWidget {
   final bool currentValue;
 
