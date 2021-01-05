@@ -1,76 +1,76 @@
 {
   "@@last_modified": "2020-12-27T23:17:38.458860",
-  "applicationTitle": "Math Puzzles",
+  "applicationTitle": "Zagadki matematyczne",
   "@applicationTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "newSessionMenu": "New session",
+  "newSessionMenu": "Nowa sesja",
   "@newSessionMenu": {
     "type": "text",
     "placeholders": {}
   },
-  "settingsMenu": "Settings",
+  "settingsMenu": "Ustawienia",
   "@settingsMenu": {
     "type": "text",
     "placeholders": {}
   },
-  "puzzleQuestion": "What's the answer?",
+  "puzzleQuestion": "Jaka jest odpowied\u017a?",
   "@puzzleQuestion": {
     "type": "text",
     "placeholders": {}
   },
-  "showAnswerButton": "Show answer",
+  "showAnswerButton": "Poka\u017c odpowied\u017a",
   "@showAnswerButton": {
     "type": "text",
     "placeholders": {}
   },
-  "correctAnswerButton": "Correct",
+  "correctAnswerButton": "Prawid\u0142owa",
   "@correctAnswerButton": {
     "type": "text",
     "placeholders": {}
   },
-  "incorrectAnswerButton": "Incorrect",
+  "incorrectAnswerButton": "B\u0142\u0119dna",
   "@incorrectAnswerButton": {
     "type": "text",
     "placeholders": {}
   },
-  "sessionSummary": "Session summary",
+  "sessionSummary": "Podsumowanie sesji",
   "@sessionSummary": {
     "type": "text",
     "placeholders": {}
   },
-  "correctAnswers": "Correct answers",
+  "correctAnswers": "Prawid\u0142owa odpowied\u017a",
   "@correctAnswers": {
     "type": "text",
     "placeholders": {}
   },
-  "incorrectAnswers": "Incorrect answers",
+  "incorrectAnswers": "B\u0142\u0119dna odpowied\u017a",
   "@incorrectAnswers": {
     "type": "text",
     "placeholders": {}
   },
-  "boolTrue": "Yes",
+  "boolTrue": "Tak",
   "@boolTrue": {
     "type": "text",
     "placeholders": {}
   },
-  "boolFalse": "No",
+  "boolFalse": "Nie",
   "@boolFalse": {
     "type": "text",
     "placeholders": {}
   },
-  "intTypeValidator": "Expected integer value.",
+  "intTypeValidator": "Wymagana liczba ca\u0142kowita.",
   "@intTypeValidator": {
     "type": "text",
     "placeholders": {}
   },
-  "boolTypeValidator": "Expected logic value - \"true\" or \"false\".",
+  "boolTypeValidator": "Wymagana warto\u015b\u0107 logiczna - \"Tak\" lub \"Nie\".",
   "@boolTypeValidator": {
     "type": "text",
     "placeholders": {}
   },
-  "numParameterScopeValidator": "Allowed value between {minValue} and {maxValue}.",
+  "numParameterScopeValidator": "Dozwolona warto\u015b\u0107 pomi\u0119dzy {minValue} i {maxValue}.",
   "@numParameterScopeValidator": {
     "type": "text",
     "placeholders": {
@@ -78,57 +78,57 @@
       "maxValue": {}
     }
   },
-  "additionGenerator": "Addition",
+  "additionGenerator": "Dodawanie",
   "@additionGenerator": {
     "type": "text",
     "placeholders": {}
   },
-  "additionGenerator_enabled": "Enabled",
+  "additionGenerator_enabled": "W\u0142\u0105cz",
   "@additionGenerator_enabled": {
     "type": "text",
     "placeholders": {}
   },
-  "additionGenerator_maxResult": "Max result",
+  "additionGenerator_maxResult": "Wynik maksymalny",
   "@additionGenerator_maxResult": {
     "type": "text",
     "placeholders": {}
   },
-  "additionGenerator_fractionDigits": "Number of digits after the decimal point",
+  "additionGenerator_fractionDigits": "Ilo\u015b\u0107 cyfr po kropce",
   "@additionGenerator_fractionDigits": {
     "type": "text",
     "placeholders": {}
   },
-  "percentageGenerator": "Percentage",
+  "percentageGenerator": "Procentowanie",
   "@percentageGenerator": {
     "type": "text",
     "placeholders": {}
   },
-  "percentageGenerator_enabled": "Enabled",
+  "percentageGenerator_enabled": "W\u0142\u0105cz",
   "@percentageGenerator_enabled": {
     "type": "text",
     "placeholders": {}
   },
-  "percentageGenerator_maxResult": "Max result",
+  "percentageGenerator_maxResult": "Wynik maksymalny",
   "@percentageGenerator_maxResult": {
     "type": "text",
     "placeholders": {}
   },
-  "percentageGenerator_fractionDigits": "Number of digits after the decimal point",
+  "percentageGenerator_fractionDigits": "Ilo\u015b\u0107 cyfr po kropce",
   "@percentageGenerator_fractionDigits": {
     "type": "text",
     "placeholders": {}
   },
-  "multiplicationTableGenerator": "Multiplication Table",
+  "multiplicationTableGenerator": "Tabliczka mno\u017cenia",
   "@multiplicationTableGenerator": {
     "type": "text",
     "placeholders": {}
   },
-  "multiplicationTableGenerator_enabled": "Enabled",
+  "multiplicationTableGenerator_enabled": "W\u0142\u0105cz",
   "@multiplicationTableGenerator_enabled": {
     "type": "text",
     "placeholders": {}
   },
-  "multiplicationTableGenerator_multiplicationTimes": "Multiplication times",
+  "multiplicationTableGenerator_multiplicationTimes": "Rozmiar tabliczki mno\u017cenia",
   "@multiplicationTableGenerator_multiplicationTimes": {
     "type": "text",
     "placeholders": {}
@@ -138,7 +138,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "session_puzzlesCount": "Number of puzzles",
+  "session_puzzlesCount": "Ilo\u015b\u0107 zagadek",
   "@session_puzzlesCount": {
     "type": "text",
     "placeholders": {}
