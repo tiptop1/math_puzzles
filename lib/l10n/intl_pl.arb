@@ -40,12 +40,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "correctAnswers": "Prawid\u0142owa odpowied\u017a",
+  "correctAnswers": "Prawid\u0142owe odpowiedzi",
   "@correctAnswers": {
     "type": "text",
     "placeholders": {}
   },
-  "incorrectAnswers": "B\u0142\u0119dna odpowied\u017a",
+  "incorrectAnswers": "B\u0142\u0119dne odpowiedzi",
   "@incorrectAnswers": {
     "type": "text",
     "placeholders": {}
