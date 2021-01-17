@@ -46,7 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "percentageGenerator_fractionDigits" : MessageLookupByLibrary.simpleMessage("Ilość cyfr po kropce"),
     "percentageGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Wynik maksymalny"),
     "puzzleQuestion" : MessageLookupByLibrary.simpleMessage("Jaka jest odpowiedź?"),
-    "session" : MessageLookupByLibrary.simpleMessage("Session"),
+    "session" : MessageLookupByLibrary.simpleMessage("Sesja"),
     "sessionSummary" : MessageLookupByLibrary.simpleMessage("Podsumowanie sesji"),
     "session_puzzlesCount" : MessageLookupByLibrary.simpleMessage("Ilość zagadek"),
     "settingsMenu" : MessageLookupByLibrary.simpleMessage("Ustawienia"),
