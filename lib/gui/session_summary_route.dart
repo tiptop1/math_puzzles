@@ -31,52 +31,66 @@ class SessionSummaryRoute extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text('${AppLocalizations.of(context).correctAnswers}: ',
-                  style: textThemeHeadline4),
-              Text(
-                '${sessionModel.correctAnswersCount}',
-                style: textThemeHeadline4.apply(
-                    color: contextTheme.colorScheme.correctAnswer),
-              ),
-              Text(
-                '/',
-                style: textThemeHeadline4,
-              ),
-              Text(
-                '${totalAnswersCount}',
-                style: textThemeHeadline4.apply(
-                    color: contextTheme.colorScheme.incorrectAnswer),
-              ),
-            ],
-          ),
           Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(50.0),
-                  child: charts.PieChart(
-                    _createSeriesList(context, sessionModel),
-                    animate: false,
-                    defaultRenderer: charts.ArcRendererConfig(
-                      arcWidth: 50,
-                      startAngle: 4 / 5 * pi,
-                      arcLength: 7 / 5 * pi,
-                    ),
+            flex: 1,
+            child: FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text('${AppLocalizations.of(context).correctAnswers}: '),
+                  Text(
+                    '${sessionModel.correctAnswersCount}',
+                    style: TextStyle(
+                        color: contextTheme.colorScheme.correctAnswer),
                   ),
-                ),
-                Center(
-                  child: Text(
-                    '${_calculatePercent(sessionModel.correctAnswersCount, totalAnswersCount)}%',
-                    style: textThemeHeadline2.apply(
-                        color: Theme.of(context).colorScheme.correctAnswer),
+                  Text(
+                    '/',
                   ),
-                ),
-              ],
+                  Text(
+                    '${totalAnswersCount}',
+                    style: TextStyle(
+                        color: contextTheme.colorScheme.incorrectAnswer),
+                  ),
+                ],
+              ),
             ),
           ),
+          Expanded(
+            flex: 10,
+            child: Container(
+              margin: const EdgeInsets.all(50.0),
+              child: charts.PieChart(
+                _createSeriesList(context, sessionModel),
+                animate: false,
+                defaultRenderer: charts.ArcRendererConfig(
+                  arcWidth: 30,
+                  startAngle: 4 / 5 * pi,
+                  arcLength: 7 / 5 * pi,
+                ),
+                behaviors: [
+                  // our title behaviour
+                  charts.DatumLegend(
+                    position: charts.BehaviorPosition.bottom,
+                    outsideJustification:
+                        charts.OutsideJustification.middleDrawArea,
+                    horizontalFirst: false,
+                    cellPadding: EdgeInsets.only(right: 4.0, bottom: 4.0),
+                    showMeasures: true,
+                    desiredMaxColumns: 2,
+                    desiredMaxRows: 2,
+                    legendDefaultMeasure:
+                        charts.LegendDefaultMeasure.firstValue,
+                    measureFormatter: (num value) =>
+                        '${_calculatePercent(value, totalAnswersCount)}%',
+                    entryTextStyle: charts.TextStyleSpec(
+                        color: charts.MaterialPalette.black,
+                        fontFamily: 'Roboto',
+                        fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -93,12 +107,12 @@ class SessionSummaryRoute extends StatelessWidget {
         data: [
           AnswersCount(
               sessionModel.correctAnswersCount,
-              AppLocalizations.of(context).correctAnswers,
+              '${AppLocalizations.of(context).correctAnswers}:',
               charts.ColorUtil.fromDartColor(
                   Theme.of(context).colorScheme.correctAnswer)),
           AnswersCount(
               sessionModel.incorrectAnswersCount,
-              AppLocalizations.of(context).incorrectAnswers,
+              '${AppLocalizations.of(context).incorrectAnswers}:',
               charts.ColorUtil.fromDartColor(
                   Theme.of(context).colorScheme.incorrectAnswer)),
         ],
