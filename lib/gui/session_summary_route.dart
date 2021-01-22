@@ -29,69 +29,36 @@ class SessionSummaryRoute extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: createActions(context),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: FittedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text('${AppLocalizations.of(context).correctAnswers}: '),
-                  Text(
-                    '${sessionModel.correctAnswersCount}',
-                    style: TextStyle(
-                        color: contextTheme.colorScheme.correctAnswer),
-                  ),
-                  Text(
-                    '/',
-                  ),
-                  Text(
-                    '${totalAnswersCount}',
-                    style: TextStyle(
-                        color: contextTheme.colorScheme.incorrectAnswer),
-                  ),
-                ],
-              ),
-            ),
+      body: Container(
+        margin: const EdgeInsets.all(50.0),
+        child: charts.PieChart(
+          _createSeriesList(context, sessionModel),
+          animate: false,
+          defaultRenderer: charts.ArcRendererConfig(
+            arcWidth: 30,
+            startAngle: 4 / 5 * pi,
+            arcLength: 7 / 5 * pi,
           ),
-          Expanded(
-            flex: 10,
-            child: Container(
-              margin: const EdgeInsets.all(50.0),
-              child: charts.PieChart(
-                _createSeriesList(context, sessionModel),
-                animate: false,
-                defaultRenderer: charts.ArcRendererConfig(
-                  arcWidth: 30,
-                  startAngle: 4 / 5 * pi,
-                  arcLength: 7 / 5 * pi,
-                ),
-                behaviors: [
-                  // our title behaviour
-                  charts.DatumLegend(
-                    position: charts.BehaviorPosition.bottom,
-                    outsideJustification:
-                        charts.OutsideJustification.middleDrawArea,
-                    horizontalFirst: false,
-                    cellPadding: EdgeInsets.only(right: 4.0, bottom: 4.0),
-                    showMeasures: true,
-                    desiredMaxColumns: 2,
-                    desiredMaxRows: 2,
-                    legendDefaultMeasure:
-                        charts.LegendDefaultMeasure.firstValue,
-                    measureFormatter: (num value) =>
-                        '${_calculatePercent(value, totalAnswersCount)}%',
-                    entryTextStyle: charts.TextStyleSpec(
-                        color: charts.MaterialPalette.black,
-                        fontFamily: 'Roboto',
-                        fontSize: 16),
-                  ),
-                ],
-              ),
+          behaviors: [
+            // our title behaviour
+            charts.DatumLegend(
+              position: charts.BehaviorPosition.bottom,
+              outsideJustification: charts.OutsideJustification.middleDrawArea,
+              horizontalFirst: false,
+              cellPadding: EdgeInsets.only(right: 4.0, bottom: 4.0),
+              showMeasures: true,
+              desiredMaxColumns: 2,
+              desiredMaxRows: 2,
+              legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
+              measureFormatter: (num value) =>
+                  '${value} (${_calculatePercent(value, totalAnswersCount)}%)',
+              entryTextStyle: charts.TextStyleSpec(
+                  color: charts.MaterialPalette.black,
+                  fontFamily: 'Roboto',
+                  fontSize: 20),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
