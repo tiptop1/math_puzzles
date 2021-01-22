@@ -8,9 +8,7 @@ import '../puzzle_generator.dart';
 import 'color_scheme_extensions.dart';
 import 'math_puzzle.dart' as math_puzzle;
 
-// TODO: Change question if answer is presented - e.g. "Is result correct?".
 // TODO: Buttons for score answer should have fixed width.
-// TODO: Incomplete rendered question on Motorola One if device in landscape position.
 class PuzzleRoute extends StatelessWidget {
   final Configuration _configuration;
 
@@ -19,64 +17,58 @@ class PuzzleRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var parameterValues = _toValues(_configuration.parameters);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).applicationTitle),
-        leading: null,
-        automaticallyImplyLeading: false,
-        actions: math_puzzle.createActions(context),
-      ),
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<PuzzleModel>(
-              create: (_) => PuzzleModel(PuzzleGeneratorManager()
-                  .findNextEnabledGenerator(parameterValues)
-                  .generate(parameterValues))),
-          ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
-        ],
-        child: Column(
-          children: [
-            Expanded(
-              flex: 10,
-              child: FittedBox(
-                child: Center(
-                  child: Text(
-                    AppLocalizations.of(context).puzzleQuestion,
-                    // style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-              ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<PuzzleModel>(
+            create: (_) => PuzzleModel(PuzzleGeneratorManager()
+                .findNextEnabledGenerator(parameterValues)
+                .generate(parameterValues))),
+        ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
+      ],
+      child: Consumer<PuzzleModel>(
+        builder: (context, puzzleModel, child) {
+          var title = puzzleModel.puzzleAnswered
+              ? AppLocalizations.of(context).answerRateTitle
+              : AppLocalizations.of(context).puzzleTitle;
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(title),
+              leading: null,
+              automaticallyImplyLeading: false,
+              actions: math_puzzle.createActions(context),
             ),
-            Consumer<PuzzleModel>(builder: (context, puzzleModel, child) {
-              return Expanded(
-                flex: 70,
-                child: Center(
-                  child: PuzzleWidget(puzzleModel),
-                ),
-              );
-            }),
-            Consumer2<PuzzleModel, SessionModel>(
-              builder: (context, puzzleModel, sessionModel, child) {
-                return Expanded(
-                  flex: 10,
+            body: Column(
+              children: [
+                Expanded(
+                  flex: 70,
                   child: Center(
-                    child: AnswerButtonsWidget(
-                        _configuration, puzzleModel, sessionModel),
+                    child: PuzzleWidget(puzzleModel),
                   ),
-                );
-              },
-            ),
-            Consumer<SessionModel>(builder: (context, sessionModel, child) {
-              return Expanded(
-                flex: 10,
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: StatusBarWidget(_configuration, sessionModel),
                 ),
-              );
-            })
-          ],
-        ),
+                Expanded(
+                  flex: 10,
+                  child: Consumer<SessionModel>(
+                      builder: (context, sessionModel, child) {
+                    return Center(
+                      child: AnswerButtonsWidget(
+                          _configuration, puzzleModel, sessionModel),
+                    );
+                  }),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Consumer<SessionModel>(
+                      builder: (context, sessionModel, child) {
+                    return Align(
+                      alignment: Alignment.bottomRight,
+                      child: StatusBarWidget(_configuration, sessionModel),
+                    );
+                  }),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -95,6 +87,7 @@ class AnswerButtonsWidget extends StatelessWidget {
     Widget widget;
     if (!_puzzleModel.puzzleAnswered) {
       widget = RaisedButton.icon(
+        // TODO: Try to find better icon - something like question mark should be OK
         icon: Icon(Icons.question_answer),
         label: Text(
           AppLocalizations.of(context).showAnswerButton,
