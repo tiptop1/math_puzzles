@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-12-27T23:17:38.458860",
+  "@@last_modified": "2021-01-22T13:46:03.369750",
   "applicationTitle": "Math Puzzles",
   "@applicationTitle": {
     "type": "text",
@@ -15,8 +15,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "puzzleQuestion": "What's the answer?",
-  "@puzzleQuestion": {
+  "puzzleTitle": "Puzzle",
+  "@puzzleTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answerRateTitle": "Answer rate",
+  "@answerRateTitle": {
     "type": "text",
     "placeholders": {}
   },
@@ -35,8 +40,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "sessionSummary": "Session summary",
-  "@sessionSummary": {
+  "sessionSummaryTitle": "Session summary",
+  "@sessionSummaryTitle": {
     "type": "text",
     "placeholders": {}
   },

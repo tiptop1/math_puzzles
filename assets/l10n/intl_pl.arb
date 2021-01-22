@@ -15,8 +15,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "puzzleQuestion": "Jaka jest odpowied\u017a?",
-  "@puzzleQuestion": {
+  "puzzleTitle": "Zagadka",
+  "@puzzleTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answerRateTitle": "Ocena odpowiedzi",
+  "@answerRateTitle": {
     "type": "text",
     "placeholders": {}
   },
