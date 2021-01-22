@@ -133,7 +133,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "session": "Session",
+  "session": "Sesja",
   "@session": {
     "type": "text",
     "placeholders": {}
