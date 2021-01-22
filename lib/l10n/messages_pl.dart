@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "additionGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Włącz"),
     "additionGenerator_fractionDigits" : MessageLookupByLibrary.simpleMessage("Ilość cyfr po kropce"),
     "additionGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Wynik maksymalny"),
+    "answerRateTitle" : MessageLookupByLibrary.simpleMessage("Ocena odpowiedzi"),
     "applicationTitle" : MessageLookupByLibrary.simpleMessage("Zagadki matematyczne"),
     "boolFalse" : MessageLookupByLibrary.simpleMessage("Nie"),
     "boolTrue" : MessageLookupByLibrary.simpleMessage("Tak"),
@@ -45,9 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "percentageGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Włącz"),
     "percentageGenerator_fractionDigits" : MessageLookupByLibrary.simpleMessage("Ilość cyfr po kropce"),
     "percentageGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Wynik maksymalny"),
-    "puzzleQuestion" : MessageLookupByLibrary.simpleMessage("Jaka jest odpowiedź?"),
+    "puzzleTitle" : MessageLookupByLibrary.simpleMessage("Zagadka"),
     "session" : MessageLookupByLibrary.simpleMessage("Sesja"),
-    "sessionSummary" : MessageLookupByLibrary.simpleMessage("Podsumowanie sesji"),
     "session_puzzlesCount" : MessageLookupByLibrary.simpleMessage("Ilość zagadek"),
     "settingsMenu" : MessageLookupByLibrary.simpleMessage("Ustawienia"),
     "showAnswerButton" : MessageLookupByLibrary.simpleMessage("Pokaż odpowiedź")
