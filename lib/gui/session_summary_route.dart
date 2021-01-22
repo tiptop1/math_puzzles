@@ -9,22 +9,16 @@ import 'package:math_puzzles/localizations.dart';
 import '../model.dart';
 import 'color_scheme_extensions.dart';
 
-// TODO: Invalid route text.
-// TODO: Polish text is to long and overflowing screen.
-// TODO: Percentage value overlap chart in landscape position.
 class SessionSummaryRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var sessionModel =
         ModalRoute.of(context).settings.arguments as SessionModel;
-    var contextTheme = Theme.of(context);
-    var textThemeHeadline2 = contextTheme.textTheme.headline2;
-    var textThemeHeadline4 = contextTheme.textTheme.headline4;
     var totalAnswersCount =
         sessionModel.correctAnswersCount + sessionModel.incorrectAnswersCount;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).sessionSummary),
+        title: Text(AppLocalizations.of(context).sessionSummaryTitle),
         leading: null,
         automaticallyImplyLeading: false,
         actions: createActions(context),
