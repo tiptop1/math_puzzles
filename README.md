@@ -22,16 +22,16 @@ $ flutter pub run build_runner build gui
 If some translated strings have been changed (added) it's necessary to regenerate translation
 bundles in following steps:
 Extract translations to .arb files:
-$ flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/localizations.dart
-The command create file lib\l10n\intl_messages.arb. This is English tranlastion - rename it to lib\l10n\intl_en.arb
+$ flutter pub run intl_translation:extract_to_arb --output-dir=assets/l10n lib/localizations.dart
+The command create file assets\l10n\intl_messages.arb. This is English tranlastion - rename it to assets\l10n\intl_en.arb
 Based on the file, create translation files for required languages - e.g. intl_pl.arb.
 
 If you created translation files for required languages, run command:
 non-Windows OS:
-$ flutter pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/localizations.dart lib/l10n/intl_*.arb
+$ flutter pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/localizations.dart assets/l10n/intl_*.arb
 
 Windows (doesn't support file name wildcarding):
-$ flutter pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/localizations.dart lib/l10n/intl_pl.arb lib/l10n/intl_en.arb
+$ flutter pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/localizations.dart assets/l10n/intl_pl.arb assets/l10n/intl_en.arb
 
 After translation regeneration don't miss to regenerate dynamic method invocation reflectors - see section 'Annotations and dynamic method invocation'
 
