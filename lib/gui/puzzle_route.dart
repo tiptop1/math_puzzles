@@ -5,14 +5,13 @@ import '../configuration.dart';
 import '../localizations.dart';
 import '../model.dart';
 import '../puzzle_generator.dart';
-import 'math_puzzle.dart' as math_puzzle;
 import 'color_scheme_extensions.dart';
+import 'math_puzzle.dart' as math_puzzle;
 
 // TODO: Change question if answer is presented - e.g. "Is result correct?".
 // TODO: Buttons for score answer should have fixed width.
 // TODO: Incomplete rendered question on Motorola One if device in landscape position.
 class PuzzleRoute extends StatelessWidget {
-
   final Configuration _configuration;
 
   PuzzleRoute(this._configuration);
@@ -39,10 +38,12 @@ class PuzzleRoute extends StatelessWidget {
           children: [
             Expanded(
               flex: 10,
-              child: Center(
-                child: Text(
-                  AppLocalizations.of(context).puzzleQuestion,
-                  style: Theme.of(context).textTheme.headline4,
+              child: FittedBox(
+                child: Center(
+                  child: Text(
+                    AppLocalizations.of(context).puzzleQuestion,
+                    // style: Theme.of(context).textTheme.headline4,
+                  ),
                 ),
               ),
             ),
@@ -60,9 +61,7 @@ class PuzzleRoute extends StatelessWidget {
                   flex: 10,
                   child: Center(
                     child: AnswerButtonsWidget(
-                        _configuration,
-                        puzzleModel,
-                        sessionModel),
+                        _configuration, puzzleModel, sessionModel),
                   ),
                 );
               },
@@ -89,9 +88,7 @@ class AnswerButtonsWidget extends StatelessWidget {
   final SessionModel _sessionModel;
 
   AnswerButtonsWidget(
-      this._configuration,
-      this._puzzleModel,
-      this._sessionModel);
+      this._configuration, this._puzzleModel, this._sessionModel);
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +150,7 @@ class AnswerButtonsWidget extends StatelessWidget {
         .findNextEnabledGenerator(parameterValues)
         .generate(parameterValues);
     if (_sessionModel.correctAnswersCount +
-        _sessionModel.incorrectAnswersCount >=
+            _sessionModel.incorrectAnswersCount >=
         _configuration.parameters[Configuration.paramPuzzlesCount].value) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
@@ -215,12 +212,14 @@ class StatusBarWidget extends StatelessWidget {
         // Number or correct answers
         Text(
           '$correctAnswersCount',
-          style: textStyle.apply(color: Theme.of(context).colorScheme.correctAnswer),
+          style: textStyle.apply(
+              color: Theme.of(context).colorScheme.correctAnswer),
         ),
         Text(statusSeparator, style: textStyle),
         Text(
           '$incorrectAnswersCount',
-          style: textStyle.apply(color: Theme.of(context).colorScheme.incorrectAnswer),
+          style: textStyle.apply(
+              color: Theme.of(context).colorScheme.incorrectAnswer),
         ),
       ],
     );
