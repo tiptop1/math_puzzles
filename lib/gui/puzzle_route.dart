@@ -8,7 +8,6 @@ import '../puzzle_generator.dart';
 import 'color_scheme_extensions.dart';
 import 'math_puzzle.dart' as math_puzzle;
 
-// TODO: Buttons for score answer should have fixed width.
 class PuzzleRoute extends StatelessWidget {
   final Configuration _configuration;
 
@@ -88,7 +87,7 @@ class AnswerButtonsWidget extends StatelessWidget {
     if (!_puzzleModel.puzzleAnswered) {
       widget = RaisedButton.icon(
         // TODO: Try to find better icon - something like question mark should be OK
-        icon: Icon(Icons.question_answer),
+        icon: Icon(Icons.help_outline),
         label: Text(
           AppLocalizations.of(context).showAnswerButton,
         ),
@@ -99,22 +98,29 @@ class AnswerButtonsWidget extends StatelessWidget {
       widget = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Spacer(flex: 10),
-          RaisedButton.icon(
-              icon: Icon(Icons.close),
-              label: Text(AppLocalizations.of(context).incorrectAnswerButton),
-              color: Theme.of(context).colorScheme.incorrectAnswer,
-              onPressed: () =>
-                  _incorrectAnswerCallback(context, _sessionModel)),
-          Spacer(flex: 3),
-          RaisedButton.icon(
-              icon: Icon(Icons.check),
-              label: Text(
-                AppLocalizations.of(context).correctAnswerButton,
-              ),
-              color: Theme.of(context).colorScheme.correctAnswer,
-              onPressed: () => _correctAnswerCallback(context, _sessionModel)),
-          Spacer(flex: 10),
+          Spacer(flex: 2),
+          Expanded(
+            flex: 10,
+            child: RaisedButton.icon(
+                icon: Icon(Icons.close),
+                label: Text(AppLocalizations.of(context).incorrectAnswerButton),
+                color: Theme.of(context).colorScheme.incorrectAnswer,
+                onPressed: () =>
+                    _incorrectAnswerCallback(context, _sessionModel)),
+          ),
+          Spacer(flex: 2),
+          Expanded(
+            flex: 10,
+            child: RaisedButton.icon(
+                icon: Icon(Icons.check),
+                label: Text(
+                  AppLocalizations.of(context).correctAnswerButton,
+                ),
+                color: Theme.of(context).colorScheme.correctAnswer,
+                onPressed: () =>
+                    _correctAnswerCallback(context, _sessionModel)),
+          ),
+          Spacer(flex: 2),
         ],
       );
     }
