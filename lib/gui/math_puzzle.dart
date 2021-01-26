@@ -35,6 +35,8 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
         Locale('en'),
         Locale('pl'),
       ],
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context).applicationTitle,
       initialRoute: Route.puzzle,
@@ -54,11 +56,19 @@ List<Widget> createActions(BuildContext context) {
       itemBuilder: (buildContext) {
         return [
           PopupMenuItem<String>(
-              value: Route.puzzle,
-              child: Text(AppLocalizations.of(context).newSessionMenu)),
+            value: Route.puzzle,
+            child: ListTile(
+              leading: Icon(Icons.article_outlined),
+              title: Text(AppLocalizations.of(context).newSessionMenu),
+            ),
+          ),
           PopupMenuItem<String>(
-              value: Route.settings,
-              child: Text(AppLocalizations.of(context).settingsMenu)),
+            value: Route.settings,
+            child: ListTile(
+              leading: Icon(Icons.settings),
+              title: Text(AppLocalizations.of(context).settingsMenu),
+            ),
+          ),
         ];
       },
     )
