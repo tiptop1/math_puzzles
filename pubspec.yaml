@@ -38,6 +38,15 @@ dev_dependencies:
   intl_translation: ^0.17.1
   build_runner:
   pedantic: ^1.9.0
+  flutter_launcher_icons: "^0.7.0"
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/graphics/icon.png"
+  image_path_android: "assets/graphics/icon.png"
+  adaptive_icon_background: "assets/graphics/icon_background.png"
+  adaptive_icon_foreground: "assets/graphics/icon_foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
