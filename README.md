@@ -35,4 +35,6 @@ $ flutter pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-
 
 After translation regeneration don't miss to regenerate dynamic method invocation reflectors - see section 'Annotations and dynamic method invocation'
 
-
+### Generate launcher adaptive icons
+To create launcher adaptive icons run:
+$ flutter pub run flutter_launcher_icons:main
