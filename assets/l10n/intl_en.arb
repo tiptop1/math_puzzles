@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2021-01-22T13:46:03.369750",
+  "@@last_modified": "2021-02-24T23:44:56.283461",
   "applicationTitle": "Math Puzzles",
   "@applicationTitle": {
     "type": "text",
@@ -103,6 +103,26 @@
     "type": "text",
     "placeholders": {}
   },
+  "subtractionGenerator": "Subtraction",
+  "@subtractionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_enabled": "Enabled",
+  "@subtractionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_maxResult": "Max result",
+  "@subtractionGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_fractionDigits": "Number of digits after the decimal point",
+  "@subtractionGenerator_fractionDigits": {
+    "type": "text",
+    "placeholders": {}
+  },
   "percentageGenerator": "Percentage",
   "@percentageGenerator": {
     "type": "text",
@@ -135,6 +155,21 @@
   },
   "multiplicationTableGenerator_multiplicationTimes": "Multiplication times",
   "@multiplicationTableGenerator_multiplicationTimes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator": "Division",
+  "@divisionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator_enabled": "Enabled",
+  "@divisionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator_maxResult": "Max result",
+  "@divisionGenerator_maxResult": {
     "type": "text",
     "placeholders": {}
   },

@@ -34,6 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "boolTypeValidator" : MessageLookupByLibrary.simpleMessage("Wymagana wartość logiczna - \"Tak\" lub \"Nie\"."),
     "correctAnswerButton" : MessageLookupByLibrary.simpleMessage("Prawidłowa"),
     "correctAnswers" : MessageLookupByLibrary.simpleMessage("Prawidłowe odpowiedzi"),
+    "divisionGenerator" : MessageLookupByLibrary.simpleMessage("Dzielenie"),
+    "divisionGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Włącz"),
+    "divisionGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Wynik maksymalny"),
     "incorrectAnswerButton" : MessageLookupByLibrary.simpleMessage("Błędna"),
     "incorrectAnswers" : MessageLookupByLibrary.simpleMessage("Błędne odpowiedzi"),
     "intTypeValidator" : MessageLookupByLibrary.simpleMessage("Wymagana liczba całkowita."),
@@ -50,6 +53,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "session" : MessageLookupByLibrary.simpleMessage("Sesja"),
     "session_puzzlesCount" : MessageLookupByLibrary.simpleMessage("Ilość zagadek"),
     "settingsMenu" : MessageLookupByLibrary.simpleMessage("Ustawienia"),
-    "showAnswerButton" : MessageLookupByLibrary.simpleMessage("Pokaż odpowiedź")
+    "showAnswerButton" : MessageLookupByLibrary.simpleMessage("Pokaż odpowiedź"),
+    "subtractionGenerator" : MessageLookupByLibrary.simpleMessage("Odejmowanie"),
+    "subtractionGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Włącz"),
+    "subtractionGenerator_fractionDigits" : MessageLookupByLibrary.simpleMessage("Ilość cyfr po kropce"),
+    "subtractionGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Wynik maksymalny")
   };
 }

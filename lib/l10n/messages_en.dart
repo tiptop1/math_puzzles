@@ -34,6 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "boolTypeValidator" : MessageLookupByLibrary.simpleMessage("Expected logic value - \"true\" or \"false\"."),
     "correctAnswerButton" : MessageLookupByLibrary.simpleMessage("Correct"),
     "correctAnswers" : MessageLookupByLibrary.simpleMessage("Correct answers"),
+    "divisionGenerator" : MessageLookupByLibrary.simpleMessage("Division"),
+    "divisionGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Enabled"),
+    "divisionGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Max result"),
     "incorrectAnswerButton" : MessageLookupByLibrary.simpleMessage("Incorrect"),
     "incorrectAnswers" : MessageLookupByLibrary.simpleMessage("Incorrect answers"),
     "intTypeValidator" : MessageLookupByLibrary.simpleMessage("Expected integer value."),
@@ -51,6 +54,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "sessionSummaryTitle" : MessageLookupByLibrary.simpleMessage("Session summary"),
     "session_puzzlesCount" : MessageLookupByLibrary.simpleMessage("Number of puzzles"),
     "settingsMenu" : MessageLookupByLibrary.simpleMessage("Settings"),
-    "showAnswerButton" : MessageLookupByLibrary.simpleMessage("Show answer")
+    "showAnswerButton" : MessageLookupByLibrary.simpleMessage("Show answer"),
+    "subtractionGenerator" : MessageLookupByLibrary.simpleMessage("Subtraction"),
+    "subtractionGenerator_enabled" : MessageLookupByLibrary.simpleMessage("Enabled"),
+    "subtractionGenerator_fractionDigits" : MessageLookupByLibrary.simpleMessage("Number of digits after the decimal point"),
+    "subtractionGenerator_maxResult" : MessageLookupByLibrary.simpleMessage("Max result")
   };
 }

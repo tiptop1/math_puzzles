@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-12-27T23:17:38.458860",
+  "@@last_modified": "2021-02-24T23:44:56.283461",
   "applicationTitle": "Zagadki matematyczne",
   "@applicationTitle": {
     "type": "text",
@@ -103,6 +103,26 @@
     "type": "text",
     "placeholders": {}
   },
+  "subtractionGenerator": "Odejmowanie",
+  "@subtractionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_enabled": "Włącz",
+  "@subtractionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_maxResult": "Wynik maksymalny",
+  "@subtractionGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_fractionDigits": "Ilo\u015b\u0107 cyfr po kropce",
+  "@subtractionGenerator_fractionDigits": {
+    "type": "text",
+    "placeholders": {}
+  },
   "percentageGenerator": "Procentowanie",
   "@percentageGenerator": {
     "type": "text",
@@ -135,6 +155,21 @@
   },
   "multiplicationTableGenerator_multiplicationTimes": "Rozmiar tabliczki mno\u017cenia",
   "@multiplicationTableGenerator_multiplicationTimes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator": "Dzielenie",
+  "@divisionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator_enabled": "W\u0142\u0105cz",
+  "@divisionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator_maxResult": "Wynik maksymalny",
+  "@divisionGenerator_maxResult": {
     "type": "text",
     "placeholders": {}
   },
