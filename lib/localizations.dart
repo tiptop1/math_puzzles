@@ -36,8 +36,7 @@ class AppLocalizations {
 
   String get settingsMenu => Intl.message('Settings', name: 'settingsMenu');
 
-  String get puzzleTitle =>
-      Intl.message("Puzzle", name: 'puzzleTitle');
+  String get puzzleTitle => Intl.message("Puzzle", name: 'puzzleTitle');
 
   String get answerRateTitle =>
       Intl.message('Answer rate', name: 'answerRateTitle');
@@ -93,6 +92,20 @@ class AppLocalizations {
       Intl.message('Number of digits after the decimal point',
           name: 'additionGenerator_fractionDigits');
 
+  // Subtraction Generator
+  String subtractionGenerator() =>
+      Intl.message('Subtraction', name: 'subtractionGenerator');
+
+  String subtractionGenerator_enabled() =>
+      Intl.message('Enabled', name: 'subtractionGenerator_enabled');
+
+  String subtractionGenerator_maxResult() =>
+      Intl.message('Max result', name: 'subtractionGenerator_maxResult');
+
+  String subtractionGenerator_fractionDigits() =>
+      Intl.message('Number of digits after the decimal point',
+          name: 'subtractionGenerator_fractionDigits');
+
   // Percentage Generator
   String percentageGenerator() =>
       Intl.message('Percentage', name: 'percentageGenerator');
@@ -117,6 +130,16 @@ class AppLocalizations {
   String multiplicationTableGenerator_multiplicationTimes() =>
       Intl.message('Multiplication times',
           name: 'multiplicationTableGenerator_multiplicationTimes');
+
+  // Division Generator
+  String divisionGenerator() =>
+      Intl.message('Division', name: 'divisionGenerator');
+
+  String divisionGenerator_enabled() =>
+      Intl.message('Enabled', name: 'divisionGenerator_enabled');
+
+  String divisionGenerator_maxResult() =>
+      Intl.message('Max result', name: 'divisionGenerator_maxResult');
 
   // General parameters
   String session() => Intl.message('Session', name: 'session');
