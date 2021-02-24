@@ -50,10 +50,8 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
-    int maxResult = _getRequiredParameter(
-        AdditionPuzzleGenerator.paramMaxResult, parameters);
-    int fractionDigits = _getRequiredParameter(
-        AdditionPuzzleGenerator.paramFractionDigits, parameters);
+    var maxResult = _getRequiredParameter(paramMaxResult, parameters);
+    var fractionDigits = _getRequiredParameter(paramFractionDigits, parameters);
 
     // a + b = c
     var c = Decimal.parse(
@@ -64,6 +62,40 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
     var b = c - a;
 
     return Puzzle('$a + $b', '$c');
+  }
+}
+
+@ParameterDefinition(SubtractionPuzzleGenerator.paramEnabled, true,
+    validators: [BoolTypeValidator()])
+@ParameterDefinition(SubtractionPuzzleGenerator.paramMaxResult, 1000,
+    validators: [IntTypeValidator(), NumParameterScopeValidator(1, 10000)])
+@ParameterDefinition(SubtractionPuzzleGenerator.paramFractionDigits, 0,
+    validators: [IntTypeValidator(), NumParameterScopeValidator(0, 4)])
+@metadataReflector
+class SubtractionPuzzleGenerator extends PuzzleGenerator {
+  static const String _name = 'subtractionGenerator';
+  static const String paramEnabled =
+      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramMaxResult = '$_name.maxResult';
+  static const String paramFractionDigits = '$_name.fractionDigits';
+
+  final Random _random;
+
+  const SubtractionPuzzleGenerator(this._random) : super(_name);
+
+  @override
+  Puzzle generate(Map<String, Object> parameters) {
+    var maxResult = _getRequiredParameter(paramMaxResult, parameters);
+    var fractionDigits = _getRequiredParameter(paramFractionDigits, parameters);
+
+    // a - b = c
+    var c = Decimal.parse(
+        (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
+    var b = Decimal.parse(
+        (_random.nextDouble() * c.toInt()).toStringAsFixed(fractionDigits));
+    var a = c + b;
+
+    return Puzzle('$a - $b', '$c');
   }
 }
 
@@ -85,15 +117,37 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
-    var a = _random.nextInt((_getRequiredParameter(
-            MultiplicationTablePuzzleGenerator.paramMultiplicationTimes,
-            parameters) as int) +
-        1);
-    var b = _random.nextInt((_getRequiredParameter(
-            MultiplicationTablePuzzleGenerator.paramMultiplicationTimes,
-            parameters) as int) +
-        1);
-    return Puzzle('$a * $b', '${a * b}');
+    var multiplicationTimes =
+        _getRequiredParameter(paramMultiplicationTimes, parameters) as int;
+    var a = _random.nextInt(multiplicationTimes + 1);
+    var b = _random.nextInt(multiplicationTimes + 1);
+    return Puzzle('$a \u00D7 $b', '${a * b}');
+  }
+}
+
+@ParameterDefinition(DivisionPuzzleGenerator.paramEnabled, true,
+    validators: [BoolTypeValidator()])
+@ParameterDefinition(DivisionPuzzleGenerator.paramMaxResult, 10,
+    validators: [IntTypeValidator(), NumParameterScopeValidator(10, 1000)])
+@metadataReflector
+class DivisionPuzzleGenerator extends PuzzleGenerator {
+  static const String _name = 'divisionGenerator';
+  static const String paramEnabled =
+      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramMaxResult = '$_name.maxResult';
+
+  final Random _random;
+
+  const DivisionPuzzleGenerator(this._random) : super(_name);
+
+  @override
+  Puzzle generate(Map<String, Object> parameters) {
+    var maxResult = _getRequiredParameter(paramMaxResult, parameters) as int;
+    // a / b = c
+    var c = _random.nextInt(maxResult + 1);
+    var b = _random.nextInt(maxResult + 1);
+    var a = b * c;
+    return Puzzle('$a \u00F7 $b', '$c');
   }
 }
 
@@ -121,7 +175,7 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
     var percentage = _random.nextInt(100);
     var result = ((percentage / 100) * number)
         .toStringAsFixed(_getRequiredParameter(fractionDigits, parameters));
-    return Puzzle('$percentage% * $number', result);
+    return Puzzle('$percentage% \u00D7 $number', result);
   }
 }
 
