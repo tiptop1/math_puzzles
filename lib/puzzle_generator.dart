@@ -189,7 +189,9 @@ class PuzzleGeneratorManager {
     var random = Random();
     generators = List.unmodifiable([
       AdditionPuzzleGenerator(random),
+      SubtractionPuzzleGenerator(random),
       MultiplicationTablePuzzleGenerator(random),
+      DivisionPuzzleGenerator(random),
       PercentagePuzzleGenerator(random)
     ]);
   }
