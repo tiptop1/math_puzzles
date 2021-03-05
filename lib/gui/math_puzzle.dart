@@ -34,6 +34,7 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
       supportedLocales: const [
         Locale('en'),
         Locale('pl'),
+        Locale('de'),
       ],
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),

@@ -1,0 +1,186 @@
+{
+  "@@last_modified": "2021-02-24T23:44:56.283461",
+  "applicationTitle": "Mathe-R\u00E4tsel",
+  "@applicationTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newSessionMenu": "Neue Sitzung",
+  "@newSessionMenu": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingsMenu": "Anwendungseinstellungen",
+  "@settingsMenu": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "puzzleTitle": "Puzzle",
+  "@puzzleTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answerRateTitle": "Antwortrate",
+  "@answerRateTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showAnswerButton": "Zeige die Antwort",
+  "@showAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "correctAnswerButton": "Richtig",
+  "@correctAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "incorrectAnswerButton": "Falsch",
+  "@incorrectAnswerButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sessionSummaryTitle": "Sitzungszusammenfassung",
+  "@sessionSummaryTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "correctAnswers": "Korrekte Antworten",
+  "@correctAnswers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "incorrectAnswers": "Falsche Antworten",
+  "@incorrectAnswers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "boolTrue": "Ja",
+  "@boolTrue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "boolFalse": "Nein",
+  "@boolFalse": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "intTypeValidator": "Erwarteter ganzzahliger Wert.",
+  "@intTypeValidator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "boolTypeValidator": "Erwarteter logischer Wert - \"wahr\" or \"falsch\".",
+  "@boolTypeValidator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "numParameterScopeValidator": "Zulässiger Wert zwischen {minValue} und {maxValue}.",
+  "@numParameterScopeValidator": {
+    "type": "text",
+    "placeholders": {
+      "minValue": {},
+      "maxValue": {}
+    }
+  },
+  "additionGenerator": "Zusatz",
+  "@additionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "additionGenerator_enabled": "Aktiviert",
+  "@additionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "additionGenerator_maxResult": "Maximales Ergebnis",
+  "@additionGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "additionGenerator_fractionDigits": "Anzahl der Stellen nach dem Dezimalpunkt",
+  "@additionGenerator_fractionDigits": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator": "Subtraktion",
+  "@subtractionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_enabled": "Aktiviert",
+  "@subtractionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_maxResult": "Maximales Ergebnis",
+  "@subtractionGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subtractionGenerator_fractionDigits": "Anzahl der Stellen nach dem Dezimalpunkt",
+  "@subtractionGenerator_fractionDigits": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator": "Prozentsatz",
+  "@percentageGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator_enabled": "Aktiviert",
+  "@percentageGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator_maxResult": "Maximales Ergebnis",
+  "@percentageGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "percentageGenerator_fractionDigits": "Anzahl der Stellen nach dem Dezimalpunkt",
+  "@percentageGenerator_fractionDigits": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator": "Multiplikationstabelle",
+  "@multiplicationTableGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator_enabled": "Aktiviert",
+  "@multiplicationTableGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator_multiplicationTimes": "Multiplikationszeiten",
+  "@multiplicationTableGenerator_multiplicationTimes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator": "Teilung",
+  "@divisionGenerator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator_enabled": "Aktiviert",
+  "@divisionGenerator_enabled": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "divisionGenerator_maxResult": "Maximales Ergebnis",
+  "@divisionGenerator_maxResult": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "session": "Session",
+  "@session": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "session_puzzlesCount": "Mathe-R\u00E4tsel",
+  "@session_puzzlesCount": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
