@@ -36,7 +36,7 @@ class AppLocalizations {
 
   String get settingsMenu => Intl.message('Settings', name: 'settingsMenu');
 
-  String get puzzleTitle => Intl.message("Puzzle", name: 'puzzleTitle');
+  String get puzzleTitle => Intl.message('Puzzle', name: 'puzzleTitle');
 
   String get answerRateTitle =>
       Intl.message('Answer rate', name: 'answerRateTitle');
