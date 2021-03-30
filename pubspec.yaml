@@ -25,20 +25,21 @@ dependencies:
   decimal:
   shared_preferences:
   reflectable:
-  charts_flutter: ^0.9.0
+  charts_flutter:
+  pedantic:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   test:
-  intl_translation: ^0.17.1
+  ## intl_translation: ^0.17.0
   build_runner:
-  pedantic: ^1.9.0
-  flutter_launcher_icons: "^0.7.0"
+
+  flutter_launcher_icons:
 
 flutter_icons:
   ios: true
