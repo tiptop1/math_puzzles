@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:math_puzzles/localizations.dart';
 
-import '../configuration.dart';
+import '../config/configuration.dart';
 
 class SettingsRoute extends StatefulWidget {
   final Configuration _configuration;

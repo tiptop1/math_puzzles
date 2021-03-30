@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:math_puzzles/configuration.dart';
+import 'package:math_puzzles/config/configuration.dart';
 import 'package:math_puzzles/gui/initialization.dart';
 import 'package:math_puzzles/gui/main.reflectable.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';

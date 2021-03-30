@@ -5,7 +5,7 @@ import 'package:math_puzzles/gui/session_summary_route.dart';
 import 'package:math_puzzles/gui/settings_route.dart';
 import 'package:math_puzzles/localizations.dart';
 
-import '../configuration.dart';
+import '../config/configuration.dart';
 
 class Route {
   static const String puzzle = '/';

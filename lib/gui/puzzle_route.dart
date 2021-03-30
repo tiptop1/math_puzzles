@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../configuration.dart';
+import '../config/configuration.dart';
 import '../localizations.dart';
 import '../model.dart';
 import '../puzzle_generator.dart';
@@ -135,7 +135,7 @@ class AnswerButtonsWidget extends StatelessWidget {
         .generate(parameterValues);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
-        _configuration.parameters[Configuration.paramPuzzlesCount].value) {
+        _configuration.parameters[Configuration.sessionParamGroup].value) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
     }
@@ -150,7 +150,7 @@ class AnswerButtonsWidget extends StatelessWidget {
         .generate(parameterValues);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
-        _configuration.parameters[Configuration.paramPuzzlesCount].value) {
+        _configuration.parameters[Configuration.sessionParamGroup].value) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
     }
@@ -196,7 +196,7 @@ class StatusBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var puzzlesCount =
-        _configuration.parameters[Configuration.paramPuzzlesCount].value;
+        _configuration.parameters[Configuration.sessionParamGroup].value;
     var correctAnswersCount = _sessionModel.correctAnswersCount;
     var incorrectAnswersCount = _sessionModel.incorrectAnswersCount;
     var textStyle = Theme.of(context).textTheme.headline6;

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
-import 'package:math_puzzles/configuration.dart';
+import 'package:math_puzzles/config/configuration.dart';
 import 'package:math_puzzles/puzzle.dart';
 import 'package:reflectable/capability.dart';
 import 'package:reflectable/reflectable.dart';
