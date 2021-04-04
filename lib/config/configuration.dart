@@ -6,15 +6,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// The class load, keep and store application parameters.
 class Configuration {
-  static const String parameterGroupSep = '.';
+  static const String groupSeparator = '.';
+  static const String groupSeparatorPattern = '\\$groupSeparator';
 
   static const String sessionParamGroup = 'session';
   static const String puzzlesCountParam = 'puzzlesCount';
   static const int defaultValuePuzzlesCount = 20;
 
-  static final List<ParameterDefinition> _parameterDefinitions = _createParameterDefinitions();
+  static final List<ParameterDefinition> _parameterDefinitions =
+      _createParameterDefinitions();
 
-  final Map<String, dynamic> _parameters = {};
+  final Map<String, dynamic> _scalarParameters = {};
 
   Configuration._internal();
 
@@ -33,10 +35,12 @@ class Configuration {
         var value = sharedPrefs.get(k);
         // Check value of loaded parameter - if not valid, set default value.
         var paramDef = findParameterDefinition(k);
-        if (paramDef is ScalarParameterDefinition && paramDef.checkConversion(value) == null && paramDef.validate(value) == null) {
-          config._parameters[k] = sharedPrefs.get(k);
+        if (paramDef is ScalarParameterDefinition &&
+            paramDef.checkConversion(value) == null &&
+            paramDef.validate(value) == null) {
+          config._scalarParameters[k] = sharedPrefs.get(k);
         } else {
-          config._parameters[k] = defaultValues[k];
+          config._scalarParameters[k] = defaultValues[k];
         }
       } else {
         unawaited(sharedPrefs.remove(k));
@@ -45,8 +49,8 @@ class Configuration {
 
     // Add default values for parameters not loaded yet
     for (var k in defaultValues.keys) {
-      if (!config._parameters.containsKey(k)) {
-        config._parameters[k] = defaultValues[k];
+      if (!config._scalarParameters.containsKey(k)) {
+        config._scalarParameters[k] = defaultValues[k];
       }
     }
 
@@ -55,7 +59,7 @@ class Configuration {
 
   void store() async {
     var prefs = await SharedPreferences.getInstance();
-    _parameters.forEach((name, param) {
+    _scalarParameters.forEach((name, param) {
       dynamic value = param.value;
       if (value is int) {
         prefs.setInt(name, value);
@@ -67,30 +71,74 @@ class Configuration {
         prefs.setString(name, value);
       } else {
         throw Exception(
-            'Parameter of name $name has unsupported type ${value
-                ?.runtimeType}.');
+            'Parameter of name $name has unsupported type ${value?.runtimeType}.');
       }
     });
   }
 
-  Map<String, dynamic> get parameters => Map.unmodifiable(_parameters);
+  Map<String, dynamic> get parameters => Map.unmodifiable(_scalarParameters);
 
   List<ParameterDefinition> get parameterDefinitions =>
       List.unmodifiable(_parameterDefinitions);
 
   /// Set known (having definition) parameter [name] [value].
-  void setParameterValue(String name, dynamic value) {
+  void addScalarParameter(String name, dynamic value) {
     var def = findParameterDefinition(name);
     if (def != null) {
-
-      _parameters[name] = value;
+      if (def is ScalarParameterDefinition) {
+        if (def.checkConversion(value) == null) {
+          var convertedValue = def.convert(value);
+          if (def.validate(convertedValue) == null) {
+            _scalarParameters[name] = convertedValue;
+          } else {
+            throw Exception("Parameter '$name' has not valid value.");
+          }
+        } else {
+          throw Exception(
+              "Definition for parameter '$name' allow other value type.");
+        }
+      } else {
+        throw Exception("Parameter '$name' is not scalar value.");
+      }
     } else {
-      throw Exception('Definition for parameter \'$name\' unknown.');
+      throw Exception("Definition for parameter '$name' unknown.");
     }
   }
 
-  static ParameterDefinition findParameterDefinition(String parameterName) {
-    throw UnimplementedError('The method not implemented yet!');
+  static ParameterDefinition findParameterDefinition(String name) {
+    ParameterDefinition paramDef;
+    var groupName = groupParameterName(name);
+    if (groupName == null) {
+      paramDef = _parameterDefinitions.firstWhere((d) => d.name == name);
+    } else {
+      var groupParameterDefinition =
+          _parameterDefinitions.firstWhere((d) => d.name == groupName);
+      if (groupParameterDefinition is GroupParameterDefinition) {
+        paramDef = groupParameterDefinition.children
+            .firstWhere((d) => d.name == childParameterName(name));
+      }
+    }
+    return paramDef;
+  }
+
+  static String groupParameterName(String name) {
+    String group;
+    var index = name.indexOf(groupSeparatorPattern);
+    if (index > -1) {
+      group = name.substring(0, index);
+    }
+    return group;
+  }
+
+  static String childParameterName(String name) {
+    String child;
+    var index = name.indexOf(groupSeparatorPattern);
+    if (index > -1) {
+      child = name.substring(index + 1);
+    } else {
+      child = name;
+    }
+    return child;
   }
 
   static List<Object> _readMetadata(PuzzleGenerator generator) {
@@ -101,24 +149,19 @@ class Configuration {
   static Map<String, dynamic> _readDefaultValues(
       List<ParameterDefinition> parameterDefinitions) {
     var defaultValues = {};
-    parameterDefinitions.forEach((def) =>
-        _collectDefaultValues('', def, defaultValues));
-    return Map.unmodifiable(defaultValues);
-  }
-
-  /// Recurrent method to find all default values of [paramDef] parameter definition.
-  static void _collectDefaultValues(String parentParamName,
-      ParameterDefinition paramDef, Map<String, dynamic> defaultVal) {
-    if (paramDef is GroupParameterDefinition) {
-      paramDef.children.forEach((child) =>
-          _collectDefaultValues('${paramDef.name}.', child, defaultVal));
-    } else if (paramDef is ScalarParameterDefinition) {
-      defaultVal['$parentParamName$parameterGroupSep${paramDef.name}'] =
-          paramDef.defaultValue;
-    } else {
-      throw Exception('Not supported type ${paramDef.runtimeType
-          .toString()} of parameter definition.');
+    for (var def in parameterDefinitions) {
+      if (def is ScalarParameterDefinition) {
+        defaultValues[def.name] = def.defaultValue;
+      } else if (def is GroupParameterDefinition) {
+        def.children.forEach((d) =>
+            defaultValues['${def.name}$groupSeparator${d.name}'] =
+                d.defaultValue);
+      } else {
+        throw Exception(
+            "Unsupported parameter definition of type ${def.runtimeType.toString()} for parameter name '${def.name}'.");
+      }
     }
+    return Map.unmodifiable(defaultValues);
   }
 
   static List<ParameterDefinition> _readParameterDefinitions(
@@ -136,14 +179,21 @@ class Configuration {
     var parameterDefinitions = [];
 
     // Add some default parameter definitions
-    var sessionParameterGroup = GroupParameterDefinition(sessionParamGroup, [
-      IntegerParameterDefinition(
-        puzzlesCountParam, defaultValuePuzzlesCount, validators: [
-        NumParameterScopeValidator(1, 1000),
-      ],),
-    ], order: 100,);
+    var sessionGroupParameterDefinition = GroupParameterDefinition(
+      sessionParamGroup,
+      [
+        IntParameterDefinition(
+          puzzlesCountParam,
+          defaultValuePuzzlesCount,
+          validators: [
+            NumParameterScopeValidator(1, 1000),
+          ],
+        ),
+      ],
+      order: 100,
+    );
 
-    parameterDefinitions.add(sessionParameterGroup);
+    parameterDefinitions.add(sessionGroupParameterDefinition);
 
     // Get parameter definitions from puzzle generators
     for (var gen in PuzzleGeneratorManager().generators) {
@@ -153,6 +203,4 @@ class Configuration {
 
     return List.unmodifiable(parameterDefinitions);
   }
-
-
 }

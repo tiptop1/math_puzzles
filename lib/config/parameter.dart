@@ -9,7 +9,7 @@ class ParameterDefinition<T> {
 }
 
 class GroupParameterDefinition extends ParameterDefinition {
-  final List<ParameterDefinition> children;
+  final List<ScalarParameterDefinition> children;
 
   const GroupParameterDefinition(String name, this.children, {int order = 0})
       : super(name, order: order);
@@ -76,8 +76,8 @@ class BoolParameterDefinition extends ScalarParameterDefinition<bool> {
   }
 }
 
-class IntegerParameterDefinition extends ScalarParameterDefinition<int> {
-  const IntegerParameterDefinition(String name, int defaultValue,
+class IntParameterDefinition extends ScalarParameterDefinition<int> {
+  const IntParameterDefinition(String name, int defaultValue,
       {int order, List<ParameterValidator> validators})
       : super(name, defaultValue, order: order, validators: validators);
 
