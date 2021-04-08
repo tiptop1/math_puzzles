@@ -15,13 +15,13 @@ class PuzzleRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var parameterValues = _toValues(_configuration.parameters);
+    var parameters = _configuration.parameters;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<PuzzleModel>(
             create: (_) => PuzzleModel(PuzzleGeneratorManager()
-                .findNextEnabledGenerator(parameterValues)
-                .generate(parameterValues))),
+                .findNextEnabledGenerator(parameters)
+                .generate(parameters))),
         ChangeNotifierProvider<SessionModel>(create: (_) => SessionModel()),
       ],
       child: Consumer<PuzzleModel>(
@@ -129,10 +129,10 @@ class AnswerButtonsWidget extends StatelessWidget {
 
   void _correctAnswerCallback(BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseCorrectAnswersCount();
-    var parameterValues = _toValues(_configuration.parameters);
+    var parameters = _configuration.parameters;
     _puzzleModel.puzzle = PuzzleGeneratorManager()
-        .findNextEnabledGenerator(parameterValues)
-        .generate(parameterValues);
+        .findNextEnabledGenerator(parameters)
+        .generate(parameters);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
         _configuration.parameters[Configuration.sessionParamGroup].value) {
@@ -144,10 +144,10 @@ class AnswerButtonsWidget extends StatelessWidget {
   void _incorrectAnswerCallback(
       BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseIncorrectAnswersCount();
-    var parameterValues = _toValues(_configuration.parameters);
+    var parameters = _configuration.parameters;
     _puzzleModel.puzzle = PuzzleGeneratorManager()
-        .findNextEnabledGenerator(parameterValues)
-        .generate(parameterValues);
+        .findNextEnabledGenerator(parameters)
+        .generate(parameters);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
         _configuration.parameters[Configuration.sessionParamGroup].value) {
@@ -225,6 +225,3 @@ class StatusBarWidget extends StatelessWidget {
   }
 }
 
-Map<String, dynamic> _toValues(Map<String, Parameter> parameters) {
-  return parameters.map((name, parameter) => MapEntry(name, parameter.value));
-}
