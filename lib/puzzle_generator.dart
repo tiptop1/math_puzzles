@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
-import 'package:math_puzzles/config/configuration.dart';
+import 'package:math_puzzles/config/parameter.dart';
 import 'package:math_puzzles/puzzle.dart';
 import 'package:reflectable/capability.dart';
 import 'package:reflectable/reflectable.dart';
+
+import 'config/validator.dart';
 
 class Reflector extends Reflectable {
   const Reflector() : super(metadataCapability);
@@ -15,9 +17,11 @@ const metadataReflector = Reflector();
 @metadataReflector
 abstract class PuzzleGenerator {
   static const String paramEnabledPostfix = 'enabled';
-  final String name;
+  final String _name;
 
-  const PuzzleGenerator(this.name);
+  const PuzzleGenerator(this._name);
+
+  String get name => _name;
 
   Puzzle generate(Map<String, Object> parameters);
 
@@ -30,23 +34,28 @@ abstract class PuzzleGenerator {
   }
 }
 
-@ParameterDefinition(AdditionPuzzleGenerator.paramEnabled, true,
-    validators: [BoolTypeValidator()])
-@ParameterDefinition(AdditionPuzzleGenerator.paramMaxResult, 1000,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(1, 10000)])
-@ParameterDefinition(AdditionPuzzleGenerator.paramFractionDigits, 0,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(0, 4)])
 @metadataReflector
+@GroupParameterDefinition(
+    AdditionPuzzleGenerator.nname,
+    [
+      BoolParameterDefinition(AdditionPuzzleGenerator.paramEnabled, true,
+          order: 1),
+      IntParameterDefinition(AdditionPuzzleGenerator.paramMaxResult, 1000,
+          order: 2, validators: [NumParameterScopeValidator(1, 10000)]),
+      IntParameterDefinition(AdditionPuzzleGenerator.paramFractionDigits, 0,
+          order: 3, validators: [NumParameterScopeValidator(0, 4)]),
+    ],
+    order: 1)
 class AdditionPuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'additionGenerator';
+  static const String nname = 'additionGenerator';
   static const String paramEnabled =
-      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
-  static const String paramMaxResult = '$_name.maxResult';
-  static const String paramFractionDigits = '$_name.fractionDigits';
+      '$nname.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramMaxResult = '$nname.maxResult';
+  static const String paramFractionDigits = '$nname.fractionDigits';
 
   final Random _random;
 
-  const AdditionPuzzleGenerator(this._random) : super(_name);
+  const AdditionPuzzleGenerator(this._random) : super(nname);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -65,23 +74,28 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
   }
 }
 
-@ParameterDefinition(SubtractionPuzzleGenerator.paramEnabled, true,
-    validators: [BoolTypeValidator()])
-@ParameterDefinition(SubtractionPuzzleGenerator.paramMaxResult, 1000,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(1, 10000)])
-@ParameterDefinition(SubtractionPuzzleGenerator.paramFractionDigits, 0,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(0, 4)])
 @metadataReflector
+@GroupParameterDefinition(
+    SubtractionPuzzleGenerator.nname,
+    [
+      BoolParameterDefinition(SubtractionPuzzleGenerator.paramEnabled, true,
+          order: 1),
+      IntParameterDefinition(SubtractionPuzzleGenerator.paramMaxResult, 1000,
+          order: 2, validators: [NumParameterScopeValidator(1, 10000)]),
+      IntParameterDefinition(SubtractionPuzzleGenerator.paramFractionDigits, 0,
+          order: 3, validators: [NumParameterScopeValidator(0, 4)]),
+    ],
+    order: 2)
 class SubtractionPuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'subtractionGenerator';
+  static const String nname = 'subtractionGenerator';
   static const String paramEnabled =
-      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
-  static const String paramMaxResult = '$_name.maxResult';
-  static const String paramFractionDigits = '$_name.fractionDigits';
+      '$nname.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramMaxResult = '$nname.maxResult';
+  static const String paramFractionDigits = '$nname.fractionDigits';
 
   final Random _random;
 
-  const SubtractionPuzzleGenerator(this._random) : super(_name);
+  const SubtractionPuzzleGenerator(this._random) : super(nname);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -99,21 +113,27 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
   }
 }
 
-@ParameterDefinition(MultiplicationTablePuzzleGenerator.paramEnabled, true,
-    validators: [BoolTypeValidator()])
-@ParameterDefinition(
-    MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(10, 1000)])
 @metadataReflector
+@GroupParameterDefinition(
+    MultiplicationTablePuzzleGenerator.nname,
+    [
+      BoolParameterDefinition(
+          MultiplicationTablePuzzleGenerator.paramEnabled, true,
+          order: 1),
+      IntParameterDefinition(
+          MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
+          order: 2, validators: [NumParameterScopeValidator(10, 1000)]),
+    ],
+    order: 3)
 class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'multiplicationTableGenerator';
+  static const String nname = 'multiplicationTableGenerator';
   static const String paramEnabled =
-      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
-  static const String paramMultiplicationTimes = '$_name.multiplicationTimes';
+      '$nname.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramMultiplicationTimes = '$nname.multiplicationTimes';
 
   final Random _random;
 
-  const MultiplicationTablePuzzleGenerator(this._random) : super(_name);
+  const MultiplicationTablePuzzleGenerator(this._random) : super(nname);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -125,20 +145,25 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   }
 }
 
-@ParameterDefinition(DivisionPuzzleGenerator.paramEnabled, true,
-    validators: [BoolTypeValidator()])
-@ParameterDefinition(DivisionPuzzleGenerator.paramMaxResult, 10,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(10, 1000)])
 @metadataReflector
+@GroupParameterDefinition(
+    DivisionPuzzleGenerator.nname,
+    [
+      BoolParameterDefinition(DivisionPuzzleGenerator.paramEnabled, true,
+          order: 1),
+      IntParameterDefinition(DivisionPuzzleGenerator.paramMaxResult, 10,
+          order: 2, validators: [NumParameterScopeValidator(10, 1000)]),
+    ],
+    order: 4)
 class DivisionPuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'divisionGenerator';
+  static const String nname = 'divisionGenerator';
   static const String paramEnabled =
-      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
-  static const String paramMaxResult = '$_name.maxResult';
+      '$nname.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String paramMaxResult = '$nname.maxResult';
 
   final Random _random;
 
-  const DivisionPuzzleGenerator(this._random) : super(_name);
+  const DivisionPuzzleGenerator(this._random) : super(nname);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
@@ -151,23 +176,28 @@ class DivisionPuzzleGenerator extends PuzzleGenerator {
   }
 }
 
-@ParameterDefinition(PercentagePuzzleGenerator.paramEnabled, true,
-    validators: [BoolTypeValidator()])
-@ParameterDefinition(PercentagePuzzleGenerator.maxResult, 100,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(1, 1000)])
-@ParameterDefinition(PercentagePuzzleGenerator.fractionDigits, 2,
-    validators: [IntTypeValidator(), NumParameterScopeValidator(0, 4)])
 @metadataReflector
+@GroupParameterDefinition(
+    PercentagePuzzleGenerator.nname,
+    [
+      BoolParameterDefinition(PercentagePuzzleGenerator.paramEnabled, true,
+          order: 1),
+      IntParameterDefinition(PercentagePuzzleGenerator.maxResult, 100,
+          order: 2, validators: [NumParameterScopeValidator(1, 1000)]),
+      IntParameterDefinition(PercentagePuzzleGenerator.fractionDigits, 2,
+          order: 3, validators: [NumParameterScopeValidator(0, 4)])
+    ],
+    order: 5)
 class PercentagePuzzleGenerator extends PuzzleGenerator {
-  static const String _name = 'percentageGenerator';
+  static const String nname = 'percentageGenerator';
   static const String paramEnabled =
-      '$_name.${PuzzleGenerator.paramEnabledPostfix}';
-  static const String maxResult = '$_name.maxResult';
-  static const String fractionDigits = '$_name.fractionDigits';
+      '$nname.${PuzzleGenerator.paramEnabledPostfix}';
+  static const String maxResult = '$nname.maxResult';
+  static const String fractionDigits = '$nname.fractionDigits';
 
   final Random _random;
 
-  const PercentagePuzzleGenerator(this._random) : super(_name);
+  const PercentagePuzzleGenerator(this._random) : super(nname);
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
