@@ -78,7 +78,7 @@ class BoolParameterDefinition extends ScalarParameterDefinition<bool> {
 
 class IntParameterDefinition extends ScalarParameterDefinition<int> {
   const IntParameterDefinition(String name, int defaultValue,
-      {int order, List<ParameterValidator> validators})
+      {int order, List<ParameterValidator<int>> validators})
       : super(name, defaultValue, order: order, validators: validators);
 
   @override

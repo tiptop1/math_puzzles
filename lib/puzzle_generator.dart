@@ -41,9 +41,9 @@ abstract class PuzzleGenerator {
       BoolParameterDefinition(AdditionPuzzleGenerator.paramEnabled, true,
           order: 1),
       IntParameterDefinition(AdditionPuzzleGenerator.paramMaxResult, 1000,
-          order: 2, validators: [NumParameterScopeValidator(1, 10000)]),
+          order: 2, validators: [IntParameterScopeValidator(1, 10000)]),
       IntParameterDefinition(AdditionPuzzleGenerator.paramFractionDigits, 0,
-          order: 3, validators: [NumParameterScopeValidator(0, 4)]),
+          order: 3, validators: [IntParameterScopeValidator(0, 4)]),
     ],
     order: 1)
 class AdditionPuzzleGenerator extends PuzzleGenerator {
@@ -81,9 +81,9 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
       BoolParameterDefinition(SubtractionPuzzleGenerator.paramEnabled, true,
           order: 1),
       IntParameterDefinition(SubtractionPuzzleGenerator.paramMaxResult, 1000,
-          order: 2, validators: [NumParameterScopeValidator(1, 10000)]),
+          order: 2, validators: [IntParameterScopeValidator(1, 10000)]),
       IntParameterDefinition(SubtractionPuzzleGenerator.paramFractionDigits, 0,
-          order: 3, validators: [NumParameterScopeValidator(0, 4)]),
+          order: 3, validators: [IntParameterScopeValidator(0, 4)]),
     ],
     order: 2)
 class SubtractionPuzzleGenerator extends PuzzleGenerator {
@@ -122,7 +122,7 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
           order: 1),
       IntParameterDefinition(
           MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
-          order: 2, validators: [NumParameterScopeValidator(10, 1000)]),
+          order: 2, validators: [IntParameterScopeValidator(10, 1000)]),
     ],
     order: 3)
 class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
@@ -152,7 +152,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
       BoolParameterDefinition(DivisionPuzzleGenerator.paramEnabled, true,
           order: 1),
       IntParameterDefinition(DivisionPuzzleGenerator.paramMaxResult, 10,
-          order: 2, validators: [NumParameterScopeValidator(10, 1000)]),
+          order: 2, validators: [IntParameterScopeValidator(10, 1000)]),
     ],
     order: 4)
 class DivisionPuzzleGenerator extends PuzzleGenerator {
@@ -183,9 +183,9 @@ class DivisionPuzzleGenerator extends PuzzleGenerator {
       BoolParameterDefinition(PercentagePuzzleGenerator.paramEnabled, true,
           order: 1),
       IntParameterDefinition(PercentagePuzzleGenerator.maxResult, 100,
-          order: 2, validators: [NumParameterScopeValidator(1, 1000)]),
+          order: 2, validators: [IntParameterScopeValidator(1, 1000)]),
       IntParameterDefinition(PercentagePuzzleGenerator.fractionDigits, 2,
-          order: 3, validators: [NumParameterScopeValidator(0, 4)])
+          order: 3, validators: [IntParameterScopeValidator(0, 4)])
     ],
     order: 5)
 class PercentagePuzzleGenerator extends PuzzleGenerator {

@@ -15,7 +15,7 @@ class PuzzleRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var parameters = _configuration.parameters;
+    var parameters = _configuration.parameterValues;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<PuzzleModel>(
@@ -129,13 +129,13 @@ class AnswerButtonsWidget extends StatelessWidget {
 
   void _correctAnswerCallback(BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseCorrectAnswersCount();
-    var parameters = _configuration.parameters;
+    var parameters = _configuration.parameterValues;
     _puzzleModel.puzzle = PuzzleGeneratorManager()
         .findNextEnabledGenerator(parameters)
         .generate(parameters);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
-        _configuration.parameters[Configuration.sessionParamGroup].value) {
+        _configuration.parameterValues[Configuration.sessionParamGroup].value) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
     }
@@ -144,13 +144,13 @@ class AnswerButtonsWidget extends StatelessWidget {
   void _incorrectAnswerCallback(
       BuildContext context, SessionModel sessionModel) {
     _sessionModel.increaseIncorrectAnswersCount();
-    var parameters = _configuration.parameters;
+    var parameters = _configuration.parameterValues;
     _puzzleModel.puzzle = PuzzleGeneratorManager()
         .findNextEnabledGenerator(parameters)
         .generate(parameters);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
-        _configuration.parameters[Configuration.sessionParamGroup].value) {
+        _configuration.parameterValues[Configuration.sessionParamGroup].value) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
     }
@@ -196,7 +196,7 @@ class StatusBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var puzzlesCount =
-        _configuration.parameters[Configuration.sessionParamGroup].value;
+        _configuration.parameterValues[Configuration.sessionParamGroup].value;
     var correctAnswersCount = _sessionModel.correctAnswersCount;
     var incorrectAnswersCount = _sessionModel.incorrectAnswersCount;
     var textStyle = Theme.of(context).textTheme.headline6;

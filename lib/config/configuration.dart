@@ -16,7 +16,7 @@ class Configuration {
   static final List<ParameterDefinition> _parameterDefinitions =
       _createParameterDefinitions();
 
-  final Map<String, dynamic> _scalarParameters = {};
+  final Map<String, dynamic> _parameterValues = {};
 
   Configuration._internal();
 
@@ -38,9 +38,9 @@ class Configuration {
         if (paramDef is ScalarParameterDefinition &&
             paramDef.checkConversion(value) == null &&
             paramDef.validate(value) == null) {
-          config._scalarParameters[k] = sharedPrefs.get(k);
+          config._parameterValues[k] = sharedPrefs.get(k);
         } else {
-          config._scalarParameters[k] = defaultValues[k];
+          config._parameterValues[k] = defaultValues[k];
         }
       } else {
         unawaited(sharedPrefs.remove(k));
@@ -49,8 +49,8 @@ class Configuration {
 
     // Add default values for parameters not loaded yet
     for (var k in defaultValues.keys) {
-      if (!config._scalarParameters.containsKey(k)) {
-        config._scalarParameters[k] = defaultValues[k];
+      if (!config._parameterValues.containsKey(k)) {
+        config._parameterValues[k] = defaultValues[k];
       }
     }
 
@@ -59,7 +59,7 @@ class Configuration {
 
   void store() async {
     var prefs = await SharedPreferences.getInstance();
-    _scalarParameters.forEach((name, param) {
+    _parameterValues.forEach((name, param) {
       dynamic value = param.value;
       if (value is int) {
         prefs.setInt(name, value);
@@ -76,20 +76,20 @@ class Configuration {
     });
   }
 
-  Map<String, dynamic> get parameters => Map.unmodifiable(_scalarParameters);
+  Map<String, dynamic> get parameterValues => Map.unmodifiable(_parameterValues);
 
   List<ParameterDefinition> get parameterDefinitions =>
       List.unmodifiable(_parameterDefinitions);
 
   /// Set known (having definition) parameter [name] [value].
-  void addScalarParameter(String name, dynamic value) {
+  void setParameterValue(String name, dynamic value) {
     var def = findParameterDefinition(name);
     if (def != null) {
       if (def is ScalarParameterDefinition) {
         if (def.checkConversion(value) == null) {
           var convertedValue = def.convert(value);
           if (def.validate(convertedValue) == null) {
-            _scalarParameters[name] = convertedValue;
+            _parameterValues[name] = convertedValue;
           } else {
             throw Exception("Parameter '$name' has not valid value.");
           }
@@ -186,7 +186,7 @@ class Configuration {
           puzzlesCountParam,
           defaultValuePuzzlesCount,
           validators: [
-            NumParameterScopeValidator(1, 1000),
+            IntParameterScopeValidator(1, 1000),
           ],
         ),
       ],
