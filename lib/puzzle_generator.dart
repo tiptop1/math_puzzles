@@ -29,7 +29,7 @@ abstract class PuzzleGenerator {
     if (parameters.containsKey(name)) {
       return parameters[name];
     } else {
-      throw Exception('Required paramerter "$name" not provided.');
+      throw Exception('Required parameter "$name" not provided.');
     }
   }
 }
