@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// The class load, keep and store application parameters.
 class Configuration {
   static const String groupSeparator = '.';
-  static const String groupSeparatorPattern = '\\$groupSeparator';
 
   static const String sessionParamGroup = 'session';
   static const String puzzlesCountParam = 'puzzlesCount';
@@ -112,7 +111,7 @@ class Configuration {
       paramDef = _parameterDefinitions.firstWhere((d) => d.name == name);
     } else {
       var groupParameterDefinition =
-          _parameterDefinitions.firstWhere((d) => d.name == groupName);
+          _parameterDefinitions.firstWhere((d) => d.name == groupName, orElse: ()=> null);
       if (groupParameterDefinition is GroupParameterDefinition) {
         paramDef = groupParameterDefinition.children
             .firstWhere((d) => d.name == childParameterName(name));
@@ -123,7 +122,7 @@ class Configuration {
 
   static String groupParameterName(String name) {
     String group;
-    var index = name.indexOf(groupSeparatorPattern);
+    var index = name.indexOf(groupSeparator);
     if (index > -1) {
       group = name.substring(0, index);
     }
@@ -132,7 +131,7 @@ class Configuration {
 
   static String childParameterName(String name) {
     String child;
-    var index = name.indexOf(groupSeparatorPattern);
+    var index = name.indexOf(groupSeparator);
     if (index > -1) {
       child = name.substring(index + 1);
     } else {
