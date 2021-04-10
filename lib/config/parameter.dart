@@ -95,7 +95,7 @@ class IntParameterDefinition extends ScalarParameterDefinition<int> {
   @override
   ParametrizedMessage checkConversion(dynamic value) {
     ParametrizedMessage msg;
-    if ((value is String && int.tryParse(value) == null) || !value is int) {
+    if ((value is String && int.tryParse(value) == null) || value is! int) {
       msg = ParametrizedMessage('intTypeValidator');
     }
     return msg;
