@@ -9,7 +9,7 @@ class Configuration {
   static const String groupSeparator = '.';
 
   static const String sessionParamGroup = 'session';
-  static const String puzzlesCountParam = 'puzzlesCount';
+  static const String puzzlesCountParam = '$sessionParamGroup${groupSeparator}puzzlesCount';
   static const int defaultValuePuzzlesCount = 20;
 
   static final List<ParameterDefinition> _parameterDefinitions =
@@ -153,8 +153,7 @@ class Configuration {
         defaultValues[def.name] = def.defaultValue;
       } else if (def is GroupParameterDefinition) {
         def.children.forEach((d) =>
-            defaultValues['${def.name}$groupSeparator${d.name}'] =
-                d.defaultValue);
+            defaultValues[d.name] = d.defaultValue);
       } else {
         throw Exception(
             "Unsupported parameter definition of type ${def.runtimeType.toString()} for parameter name '${def.name}'.");

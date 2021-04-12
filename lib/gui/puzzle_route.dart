@@ -135,7 +135,7 @@ class AnswerButtonsWidget extends StatelessWidget {
         .generate(parameters);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
-        _configuration.parameterValues[Configuration.sessionParamGroup].value) {
+        _configuration.parameterValues[Configuration.puzzlesCountParam]) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
     }
@@ -150,7 +150,7 @@ class AnswerButtonsWidget extends StatelessWidget {
         .generate(parameters);
     if (_sessionModel.correctAnswersCount +
             _sessionModel.incorrectAnswersCount >=
-        _configuration.parameterValues[Configuration.sessionParamGroup].value) {
+        _configuration.parameterValues[Configuration.puzzlesCountParam]) {
       Navigator.pushNamed(context, math_puzzle.Route.sessionSummary,
           arguments: sessionModel);
     }
@@ -196,7 +196,7 @@ class StatusBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var puzzlesCount =
-        _configuration.parameterValues[Configuration.sessionParamGroup].value;
+        _configuration.parameterValues[Configuration.puzzlesCountParam];
     var correctAnswersCount = _sessionModel.correctAnswersCount;
     var incorrectAnswersCount = _sessionModel.incorrectAnswersCount;
     var textStyle = Theme.of(context).textTheme.headline6;
