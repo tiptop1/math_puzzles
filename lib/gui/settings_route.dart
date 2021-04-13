@@ -38,17 +38,24 @@ class SettingsRouteState extends State<SettingsRoute> {
   /// and nulls for dividers.
   List<ParameterDefinition> _flattenParameterDefinitions(
       List<ParameterDefinition> paramDefinitions) {
-    var defs = [] as List<ParameterDefinition>;
-    for (var paramDef in paramDefinitions) {
-      if (defs.isNotEmpty) {
-        defs.add(null);
+    var sortedParamDefs = List<ParameterDefinition>.filled(paramDefinitions.length, null);
+    List.copyRange(sortedParamDefs, 0, paramDefinitions);
+    sortedParamDefs.sort((a, b) => a.order - b.order);
+
+    var flattenParamDefs = <ParameterDefinition>[];
+    for (var paramDef in sortedParamDefs) {
+      if (flattenParamDefs.isNotEmpty) {
+        flattenParamDefs.add(null);
       }
-      defs.add(paramDef);
+      flattenParamDefs.add(paramDef);
       if (paramDef is GroupParameterDefinition) {
-        defs.addAll(paramDef.children);
+        var sortedChildren = List<ParameterDefinition>.filled(paramDef.children.length, null);
+        List.copyRange(sortedChildren, 0, paramDef.children);
+        sortedChildren.sort((a, b) => a.order - b.order);
+        flattenParamDefs.addAll(sortedChildren);
       }
     }
-    return defs;
+    return flattenParamDefs;
   }
 
   Widget _listItemBuilder(
