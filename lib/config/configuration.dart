@@ -9,7 +9,8 @@ class Configuration {
   static const String groupSeparator = '.';
 
   static const String sessionParamGroup = 'session';
-  static const String puzzlesCountParam = '$sessionParamGroup${groupSeparator}puzzlesCount';
+  static const String puzzlesCountParam =
+      '$sessionParamGroup${groupSeparator}puzzlesCount';
   static const int defaultValuePuzzlesCount = 20;
 
   static final List<ParameterDefinition> _parameterDefinitions =
@@ -75,7 +76,8 @@ class Configuration {
     });
   }
 
-  Map<String, dynamic> get parameterValues => Map.unmodifiable(_parameterValues);
+  Map<String, dynamic> get parameterValues =>
+      Map.unmodifiable(_parameterValues);
 
   List<ParameterDefinition> get parameterDefinitions =>
       List.unmodifiable(_parameterDefinitions);
@@ -110,11 +112,11 @@ class Configuration {
     if (groupName == null) {
       paramDef = _parameterDefinitions.firstWhere((d) => d.name == name);
     } else {
-      var groupParameterDefinition =
-          _parameterDefinitions.firstWhere((d) => d.name == groupName, orElse: ()=> null);
+      var groupParameterDefinition = _parameterDefinitions
+          .firstWhere((d) => d.name == groupName, orElse: () => null);
       if (groupParameterDefinition is GroupParameterDefinition) {
-        paramDef = groupParameterDefinition.children
-            .firstWhere((d) => d.name == childParameterName(name));
+        paramDef =
+            groupParameterDefinition.children.firstWhere((d) => d.name == name);
       }
     }
     return paramDef;
@@ -152,8 +154,7 @@ class Configuration {
       if (def is ScalarParameterDefinition) {
         defaultValues[def.name] = def.defaultValue;
       } else if (def is GroupParameterDefinition) {
-        def.children.forEach((d) =>
-            defaultValues[d.name] = d.defaultValue);
+        def.children.forEach((d) => defaultValues[d.name] = d.defaultValue);
       } else {
         throw Exception(
             "Unsupported parameter definition of type ${def.runtimeType.toString()} for parameter name '${def.name}'.");
