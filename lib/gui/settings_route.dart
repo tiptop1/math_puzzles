@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:math_puzzles/config/parameter.dart';
-import 'package:math_puzzles/config/validator.dart';
 import 'package:math_puzzles/localizations.dart';
 
 import '../config/configuration.dart';
@@ -38,7 +37,8 @@ class SettingsRouteState extends State<SettingsRoute> {
   /// and nulls for dividers.
   List<ParameterDefinition> _flattenParameterDefinitions(
       List<ParameterDefinition> paramDefinitions) {
-    var sortedParamDefs = List<ParameterDefinition>.filled(paramDefinitions.length, null);
+    var sortedParamDefs =
+        List<ParameterDefinition>.filled(paramDefinitions.length, null);
     List.copyRange(sortedParamDefs, 0, paramDefinitions);
     sortedParamDefs.sort((a, b) => a.order - b.order);
 
@@ -49,7 +49,8 @@ class SettingsRouteState extends State<SettingsRoute> {
       }
       flattenParamDefs.add(paramDef);
       if (paramDef is GroupParameterDefinition) {
-        var sortedChildren = List<ParameterDefinition>.filled(paramDef.children.length, null);
+        var sortedChildren =
+            List<ParameterDefinition>.filled(paramDef.children.length, null);
         List.copyRange(sortedChildren, 0, paramDef.children);
         sortedChildren.sort((a, b) => a.order - b.order);
         flattenParamDefs.addAll(sortedChildren);
@@ -66,7 +67,8 @@ class SettingsRouteState extends State<SettingsRoute> {
     var paramDef = flattenParamDefinitions[i];
     var listItemWidget;
     if (paramDef is ScalarParameterDefinition) {
-      listItemWidget = _createScalarParameterDefinitionItem(context, paramDef, paramValues[paramDef.name]);
+      listItemWidget = _createScalarParameterDefinitionItem(
+          context, paramDef, paramValues[paramDef.name]);
     } else if (paramDef is GroupParameterDefinition) {
       listItemWidget = _createGroupParameterDefinitionItem(context, paramDef);
     } else {
@@ -75,13 +77,14 @@ class SettingsRouteState extends State<SettingsRoute> {
     return listItemWidget;
   }
 
-  Widget _createScalarParameterDefinitionItem(
-      BuildContext context, ScalarParameterDefinition paramDefinition, dynamic paramValue) {
+  Widget _createScalarParameterDefinitionItem(BuildContext context,
+      ScalarParameterDefinition paramDefinition, dynamic paramValue) {
     return ListTile(
       title: Text(
           '${AppLocalizations.of(context).dynamicMessage(paramDefinition.name)}: ${_translate(context, paramValue)}'),
       onTap: () {
-        _showEditParameterDialog(paramDefinition, paramValue).then((newParamValue) {
+        _showEditParameterDialog(paramDefinition, paramValue)
+            .then((newParamValue) {
           if (newParamValue != null && newParamValue != paramValue) {
             setState(() {
               widget._configuration
@@ -93,7 +96,8 @@ class SettingsRouteState extends State<SettingsRoute> {
     );
   }
 
-  Widget _createGroupParameterDefinitionItem(BuildContext context, GroupParameterDefinition paramDef) {
+  Widget _createGroupParameterDefinitionItem(
+      BuildContext context, GroupParameterDefinition paramDef) {
     return ListTile(
       title: Text(
         AppLocalizations.of(context).dynamicMessage(paramDef.name),
@@ -102,12 +106,13 @@ class SettingsRouteState extends State<SettingsRoute> {
     );
   }
 
-  Future<dynamic> _showEditParameterDialog(ScalarParameterDefinition paramDef, dynamic paramValue) async {
+  Future<dynamic> _showEditParameterDialog(
+      ScalarParameterDefinition paramDef, dynamic paramValue) async {
     var dialogChildren;
     if (paramValue is bool) {
       dialogChildren = [BoolRadioButtonGroup(paramValue)];
     } else if (paramValue is int) {
-      dialogChildren = [NumericInputField(paramDef, paramValue)];
+      dialogChildren = [IntInputField(paramDef, paramValue)];
     } else {
       throw UnsupportedError('Dialogs not supported for parameter of type '
           '${paramValue?.runtimeType}.');
@@ -116,8 +121,8 @@ class SettingsRouteState extends State<SettingsRoute> {
       context: context,
       barrierDismissible: false,
       builder: (context) => SimpleDialog(
-          title: Text(AppLocalizations.of(context)
-              .dynamicMessage(paramDef.name)),
+          title:
+              Text(AppLocalizations.of(context).dynamicMessage(paramDef.name)),
           children: dialogChildren),
     );
   }
@@ -125,9 +130,8 @@ class SettingsRouteState extends State<SettingsRoute> {
   String _translate(BuildContext context, dynamic paramValue) {
     var translatedValue;
     if (paramValue is bool) {
-      var appLocaliztion = AppLocalizations.of(context);
-      translatedValue =
-          (paramValue ? appLocaliztion.boolTrue : appLocaliztion.boolFalse);
+      var appLoc = AppLocalizations.of(context);
+      translatedValue = (paramValue ? appLoc.boolTrue : appLoc.boolFalse);
     } else if (paramValue is String) {
       translatedValue = AppLocalizations.of(context).dynamicMessage(paramValue);
     } else {
@@ -188,17 +192,17 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
   }
 }
 
-class NumericInputField extends StatefulWidget {
+class IntInputField extends StatefulWidget {
   final ScalarParameterDefinition _paramDef;
   final dynamic _paramValue;
 
-  NumericInputField(this._paramDef, this._paramValue);
+  IntInputField(this._paramDef, this._paramValue);
 
   @override
-  State createState() => _NumericInputFieldState();
+  State createState() => _IntInputFieldState();
 }
 
-class _NumericInputFieldState extends State<NumericInputField> {
+class _IntInputFieldState extends State<IntInputField> {
   final _formKey = GlobalKey<FormState>();
   final _controller = TextEditingController();
 
@@ -217,67 +221,28 @@ class _NumericInputFieldState extends State<NumericInputField> {
   @override
   Widget build(BuildContext context) {
     _controller.text = widget._paramValue.toString();
-    var paramDefinition = widget._paramDef;
+    var paramDef = widget._paramDef;
     return Form(
       key: _formKey,
       child: TextFormField(
         controller: _controller,
         keyboardType:
-            _textInputTypeByParameterType(paramDefinition.defaultValue),
-        validator: (value) =>
-            _validateValue(context, value, paramDefinition.validators),
+            TextInputType.numberWithOptions(signed: false, decimal: true),
+        validator: (value) {
+          var parametrizedMsg = paramDef.checkConversion(value);
+          parametrizedMsg ??= paramDef.validate(paramDef.convert(value));
+          return parametrizedMsg != null
+              ? AppLocalizations.of(context).dynamicMessage(
+                  parametrizedMsg.message,
+                  args: parametrizedMsg.parameters)
+              : null;
+        },
         onEditingComplete: () {
           if (_formKey.currentState.validate()) {
-            Navigator.pop(
-                context,
-                _asParameterType(
-                    _controller.text, paramDefinition.defaultValue));
+            Navigator.pop(context, paramDef.convert(_controller.text));
           }
         },
       ),
     );
-  }
-
-  String _validateValue(
-      BuildContext context, String value, List<ParameterValidator> validators) {
-    var strMsg;
-    for (var i = 0; i < validators.length; i++) {
-      var validator = validators[i];
-      var parametrizedMsg = validator.validate(value);
-      if (parametrizedMsg != null) {
-        strMsg = AppLocalizations.of(context).dynamicMessage(
-            parametrizedMsg.message,
-            args: parametrizedMsg.parameters);
-        break;
-      }
-    }
-    return strMsg;
-  }
-
-  // TODO: Maybe the method should be put in ParameterDefinition
-  dynamic _asParameterType(String value, dynamic defaultValue) {
-    dynamic parameterValue;
-    if (defaultValue is int) {
-      parameterValue = int.parse(value);
-    } else if (defaultValue is double) {
-      parameterValue = double.parse(value);
-    } else {
-      throw UnsupportedError(
-          'Parameter type ${defaultValue.runtimeType} not supported!');
-    }
-    return parameterValue;
-  }
-
-  TextInputType _textInputTypeByParameterType(dynamic value) {
-    bool decimal;
-    if (value is int) {
-      decimal = false;
-    } else if (value is double) {
-      decimal = true;
-    } else {
-      throw UnsupportedError(
-          'Parameter type ${value.runtimeType} not supported!');
-    }
-    return TextInputType.numberWithOptions(signed: false, decimal: decimal);
   }
 }
