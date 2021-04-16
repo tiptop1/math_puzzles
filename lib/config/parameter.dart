@@ -24,10 +24,12 @@ abstract class ScalarParameterDefinition<T> extends ParameterDefinition {
 
   ParametrizedMessage validate(T value) {
     ParametrizedMessage msg;
-    for (var v in validators) {
-      msg = v.validate(value);
-      if (msg != null) {
-        break;
+    if (validators != null && validators.isNotEmpty) {
+      for (var v in validators) {
+        msg = v.validate(value);
+        if (msg != null) {
+          break;
+        }
       }
     }
     return msg;
@@ -95,7 +97,7 @@ class IntParameterDefinition extends ScalarParameterDefinition<int> {
   @override
   ParametrizedMessage checkConversion(dynamic value) {
     ParametrizedMessage msg;
-    if ((value is String && int.tryParse(value) == null) || value is! int) {
+    if ((value is! int && value is! String) || (value is String && int.tryParse(value) == null)) {
       msg = ParametrizedMessage('intTypeValidator');
     }
     return msg;
