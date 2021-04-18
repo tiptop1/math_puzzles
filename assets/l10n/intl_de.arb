@@ -45,12 +45,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "correctAnswers": "Korrekte Antworten",
+  "correctAnswers": "Korrekte",
   "@correctAnswers": {
     "type": "text",
     "placeholders": {}
   },
-  "incorrectAnswers": "Falsche Antworten",
+  "incorrectAnswers": "Falsche",
   "@incorrectAnswers": {
     "type": "text",
     "placeholders": {}

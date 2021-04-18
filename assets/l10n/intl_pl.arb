@@ -40,17 +40,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "sessionSummary": "Podsumowanie sesji",
-  "@sessionSummary": {
+  "sessionSummaryTitle": "Podsumowanie sesji",
+  "@sessionSummaryTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "correctAnswers": "Prawid\u0142owe odpowiedzi",
+  "correctAnswers": "Prawid\u0142owe",
   "@correctAnswers": {
     "type": "text",
     "placeholders": {}
   },
-  "incorrectAnswers": "B\u0142\u0119dne odpowiedzi",
+  "incorrectAnswers": "B\u0142\u0119dne",
   "@incorrectAnswers": {
     "type": "text",
     "placeholders": {}

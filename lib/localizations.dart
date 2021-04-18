@@ -54,10 +54,10 @@ class AppLocalizations {
       Intl.message('Session summary', name: 'sessionSummaryTitle');
 
   String get correctAnswers =>
-      Intl.message('Correct answers', name: 'correctAnswers');
+      Intl.message('Correct', name: 'correctAnswers');
 
   String get incorrectAnswers =>
-      Intl.message('Incorrect answers', name: 'incorrectAnswers');
+      Intl.message('Incorrect', name: 'incorrectAnswers');
 
   String get boolTrue => Intl.message('Yes', name: 'boolTrue');
 
@@ -74,7 +74,7 @@ class AppLocalizations {
           name: 'boolTypeValidator');
 
   String numParameterScopeValidator(num minValue, num maxValue) =>
-      Intl.message('Allowed value between $minValue and ${maxValue}.',
+      Intl.message('Allowed value between $minValue and $maxValue.',
           name: 'numParameterScopeValidator', args: [minValue, maxValue]);
 
   // Puzzle generator parameters
