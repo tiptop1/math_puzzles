@@ -59,8 +59,7 @@ class Configuration {
 
   void store() async {
     var prefs = await SharedPreferences.getInstance();
-    _parameterValues.forEach((name, param) {
-      dynamic value = param.value;
+    _parameterValues.forEach((name, value) {
       if (value is int) {
         prefs.setInt(name, value);
       } else if (value is double) {
