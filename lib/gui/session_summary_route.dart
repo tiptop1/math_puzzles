@@ -45,7 +45,8 @@ class SessionSummaryRoute extends StatelessWidget {
               desiredMaxRows: 2,
               legendDefaultMeasure: charts.LegendDefaultMeasure.firstValue,
               measureFormatter: (num value) =>
-                  '${value} (${_calculatePercent(value, totalAnswersCount)}%)',
+                  '$value (${_calculatePercent(value, totalAnswersCount)}%)',
+
               entryTextStyle: charts.TextStyleSpec(
                   color: charts.MaterialPalette.black,
                   fontFamily: 'Roboto',
