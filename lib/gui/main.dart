@@ -4,7 +4,6 @@ import 'package:math_puzzles/gui/initialization.dart';
 import 'package:math_puzzles/gui/main.reflectable.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';
 
-// TODO: Add support for dark mode.
 void main() {
   // Set up reflection support.
   initializeReflectable();
