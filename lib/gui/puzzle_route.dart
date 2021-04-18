@@ -39,13 +39,12 @@ class PuzzleRoute extends StatelessWidget {
             body: Column(
               children: [
                 Expanded(
-                  flex: 70,
+                  flex: 7,
                   child: Center(
                     child: PuzzleWidget(puzzleModel),
                   ),
                 ),
                 Expanded(
-                  flex: 10,
                   child: Consumer<SessionModel>(
                       builder: (context, sessionModel, child) {
                     return Center(
@@ -55,7 +54,6 @@ class PuzzleRoute extends StatelessWidget {
                   }),
                 ),
                 Expanded(
-                  flex: 10,
                   child: Consumer<SessionModel>(
                       builder: (context, sessionModel, child) {
                     return Align(
@@ -85,13 +83,13 @@ class AnswerButtonsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget widget;
     if (!_puzzleModel.puzzleAnswered) {
-      widget = RaisedButton.icon(
+      widget = ElevatedButton.icon(
         // TODO: Try to find better icon - something like question mark should be OK
         icon: Icon(Icons.help_outline),
         label: Text(
           AppLocalizations.of(context).showAnswerButton,
         ),
-        color: Theme.of(context).colorScheme.answer,
+        style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.answer),
         onPressed: _showAnswerCallback,
       );
     } else {
@@ -101,22 +99,22 @@ class AnswerButtonsWidget extends StatelessWidget {
           Spacer(flex: 2),
           Expanded(
             flex: 10,
-            child: RaisedButton.icon(
+            child: ElevatedButton.icon(
                 icon: Icon(Icons.close),
                 label: Text(AppLocalizations.of(context).incorrectAnswerButton),
-                color: Theme.of(context).colorScheme.incorrectAnswer,
+                style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.incorrectAnswer),
                 onPressed: () =>
                     _incorrectAnswerCallback(context, _sessionModel)),
           ),
           Spacer(flex: 2),
           Expanded(
             flex: 10,
-            child: RaisedButton.icon(
+            child: ElevatedButton.icon(
                 icon: Icon(Icons.check),
                 label: Text(
                   AppLocalizations.of(context).correctAnswerButton,
                 ),
-                color: Theme.of(context).colorScheme.correctAnswer,
+                style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.correctAnswer),
                 onPressed: () =>
                     _correctAnswerCallback(context, _sessionModel)),
           ),
@@ -224,4 +222,3 @@ class StatusBarWidget extends StatelessWidget {
     );
   }
 }
-
