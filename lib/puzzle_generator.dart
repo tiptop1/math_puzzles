@@ -170,7 +170,7 @@ class DivisionPuzzleGenerator extends PuzzleGenerator {
     var maxResult = _getRequiredParameter(paramMaxResult, parameters) as int;
     // a / b = c
     var c = _random.nextInt(maxResult + 1);
-    var b = _random.nextInt(maxResult + 1);
+    var b = _random.nextInt(maxResult) + 1;
     var a = b * c;
     return Puzzle('$a \u00F7 $b', '$c');
   }
