@@ -40,8 +40,12 @@ class PuzzleRoute extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 7,
-                  child: Center(
-                    child: PuzzleWidget(puzzleModel),
+                  child: Padding(
+                    padding: EdgeInsets.all(30.0),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: PuzzleWidget(puzzleModel),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -89,7 +93,8 @@ class AnswerButtonsWidget extends StatelessWidget {
         label: Text(
           AppLocalizations.of(context).showAnswerButton,
         ),
-        style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.answer),
+        style: ElevatedButton.styleFrom(
+            primary: Theme.of(context).colorScheme.answer),
         onPressed: _showAnswerCallback,
       );
     } else {
@@ -102,7 +107,8 @@ class AnswerButtonsWidget extends StatelessWidget {
             child: ElevatedButton.icon(
                 icon: Icon(Icons.close),
                 label: Text(AppLocalizations.of(context).incorrectAnswerButton),
-                style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.incorrectAnswer),
+                style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).colorScheme.incorrectAnswer),
                 onPressed: () =>
                     _incorrectAnswerCallback(context, _sessionModel)),
           ),
@@ -114,7 +120,8 @@ class AnswerButtonsWidget extends StatelessWidget {
                 label: Text(
                   AppLocalizations.of(context).correctAnswerButton,
                 ),
-                style: ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.correctAnswer),
+                style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).colorScheme.correctAnswer),
                 onPressed: () =>
                     _correctAnswerCallback(context, _sessionModel)),
           ),
@@ -167,18 +174,17 @@ class PuzzleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var answerTheme = Theme.of(context).textTheme.headline5;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          '${_model.puzzle.question} = ',
-          style: answerTheme,
-        ),
-        Text(
-          _model.puzzleAnswered ? '${_model.puzzle.answer}' : '?',
-          style: answerTheme.apply(color: Theme.of(context).colorScheme.answer),
-        ),
-      ],
+    return Text.rich(
+      TextSpan(
+          text: '${_model.puzzle.question} = ',
+          children: <TextSpan>[
+            TextSpan(
+                text: _model.puzzleAnswered ? '${_model.puzzle.answer}' : '?',
+                style: answerTheme.apply(
+                    color: Theme.of(context).colorScheme.answer)),
+          ],
+          style: answerTheme),
+      // textScaleFactor: 2.0,
     );
   }
 }
