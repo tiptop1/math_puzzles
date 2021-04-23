@@ -48,7 +48,6 @@ class SessionSummaryRoute extends StatelessWidget {
                   '$value (${_calculatePercent(value, totalAnswersCount)}%)',
 
               entryTextStyle: charts.TextStyleSpec(
-                  color: charts.MaterialPalette.black,
                   fontFamily: 'Roboto',
                   fontSize: 20),
             ),
