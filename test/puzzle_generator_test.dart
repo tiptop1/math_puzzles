@@ -4,13 +4,9 @@ import 'package:decimal/decimal.dart';
 import 'package:math_puzzles/puzzle_generator.dart';
 import 'package:test/test.dart';
 
-import 'puzzle_generator_test.reflectable.dart';
-
 final RegExp operandRegexp = RegExp('\\d+(\.\\d+)?');
 
 void main() {
-  // Set up reflection support.
-  initializeReflectable();
   var _random = Random();
   test('AdditionPuzzleGenerator_integerAddition', () {
     PuzzleGenerator generator = AdditionPuzzleGenerator(_random);
@@ -70,7 +66,7 @@ void main() {
 }
 
 String getOperand(String str, int index) {
-  String operand;
+  var operand = '';
   var matches = operandRegexp.allMatches(str);
   if (matches.length > index) {
     matches.toList(growable: false).asMap().forEach((i, v) {

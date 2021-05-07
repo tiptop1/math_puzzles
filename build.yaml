@@ -4,6 +4,5 @@ targets:
       reflectable:
         generate_for:
           - lib/gui/main.dart
-          - test/puzzle_generator_test.dart
         options:
           formatted: true
