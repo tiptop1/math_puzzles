@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:math_puzzles/generated/l10n.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';
-import 'package:math_puzzles/localizations.dart';
 
 import '../model.dart';
 import 'color_scheme_extensions.dart';
@@ -13,7 +13,7 @@ class SessionSummaryRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var sessionModel =
-        ModalRoute.of(context).settings.arguments as SessionModel;
+        ModalRoute.of(context)!.settings.arguments as SessionModel;
     var totalAnswersCount =
         sessionModel.correctAnswersCount + sessionModel.incorrectAnswersCount;
     return Scaffold(
@@ -81,7 +81,7 @@ class SessionSummaryRoute extends StatelessWidget {
     ];
   }
 
-  int _calculatePercent(int value, int wholeValue) {
+  int _calculatePercent(num value, num wholeValue) {
     return ((value * 100) / wholeValue).round();
   }
 }

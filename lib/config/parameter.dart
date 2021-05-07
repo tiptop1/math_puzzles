@@ -20,11 +20,11 @@ abstract class ScalarParameterDefinition<T> extends ParameterDefinition {
   final List<ParameterValidator<T>> validators;
 
   const ScalarParameterDefinition(String name, this.defaultValue,
-      {int order, this.validators = const []}) : super(name, order: order);
+      {int order = 0, this.validators = const []}) : super(name, order: order);
 
-  ParametrizedMessage validate(T value) {
-    ParametrizedMessage msg;
-    if (validators != null && validators.isNotEmpty) {
+  ParametrizedMessage? validate(T value) {
+    ParametrizedMessage? msg;
+    if (validators.isNotEmpty) {
       for (var v in validators) {
         msg = v.validate(value);
         if (msg != null) {
@@ -35,26 +35,26 @@ abstract class ScalarParameterDefinition<T> extends ParameterDefinition {
     return msg;
   }
 
-  ParametrizedMessage checkConversion(dynamic value);
+  ParametrizedMessage? checkConversion(dynamic value);
 
   T convert(dynamic value);
 }
 
 class StringParameterDefinition extends ScalarParameterDefinition<String> {
   const StringParameterDefinition(String name, String defaultValue,
-      {int order, List<ParameterValidator> validators})
+      {int order = 0, List<ParameterValidator<String>> validators = const []})
       : super(name, defaultValue, order: order, validators: validators);
 
   @override
-  String convert(dynamic value)  => value?.toString();
+  String convert(dynamic value) => value.toString();
 
   @override
-  ParametrizedMessage checkConversion(dynamic value) => null;
+  ParametrizedMessage? checkConversion(dynamic value) => null;
 }
 
 class BoolParameterDefinition extends ScalarParameterDefinition<bool> {
   const BoolParameterDefinition(String name, bool defaultValue,
-      {int order, List<ParameterValidator> validators})
+      {int order = 0, List<ParameterValidator<bool>> validators = const[]})
       : super(name, defaultValue, order: order, validators: validators);
 
   @override
@@ -64,13 +64,15 @@ class BoolParameterDefinition extends ScalarParameterDefinition<bool> {
       boolValue = value;
     } else if (value is String) {
       boolValue = value.toLowerCase() == 'true';
+    } else {
+      throw Exception('Value ${value as String} could not be converter to bool type.');
     }
     return boolValue;
   }
 
   @override
-  ParametrizedMessage checkConversion(dynamic value) {
-    ParametrizedMessage msg;
+  ParametrizedMessage? checkConversion(dynamic value) {
+    var msg;
     if (!(value is String) && !(value is bool)) {
       msg = ParametrizedMessage('boolTypeValidator');
     }
@@ -80,23 +82,25 @@ class BoolParameterDefinition extends ScalarParameterDefinition<bool> {
 
 class IntParameterDefinition extends ScalarParameterDefinition<int> {
   const IntParameterDefinition(String name, int defaultValue,
-      {int order, List<ParameterValidator<int>> validators})
+      {int order = 0, List<ParameterValidator<int>> validators = const []})
       : super(name, defaultValue, order: order, validators: validators);
 
   @override
   int convert(dynamic value) {
-    int intValue;
+    var intValue;
     if (value is int) {
       intValue = value;
     } else if (value is String) {
       intValue = int.parse(value);
+    } else {
+      throw Exception('Value ${value.toString()} could not be converter to int type.');
     }
     return intValue;
   }
 
   @override
-  ParametrizedMessage checkConversion(dynamic value) {
-    ParametrizedMessage msg;
+  ParametrizedMessage? checkConversion(dynamic value) {
+    var msg;
     if ((value is! int && value is! String) || (value is String && int.tryParse(value) == null)) {
       msg = ParametrizedMessage('intTypeValidator');
     }

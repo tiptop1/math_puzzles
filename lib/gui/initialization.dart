@@ -6,8 +6,8 @@ class InitializationWidget extends StatefulWidget {
   final int delay;
 
   const InitializationWidget({
-    this.delay,
-    @required this.initializationCallback,
+    required this.delay,
+    required this.initializationCallback,
   });
 
   @override

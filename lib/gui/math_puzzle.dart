@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:math_puzzles/generated/l10n.dart';
 import 'package:math_puzzles/gui/puzzle_route.dart';
 import 'package:math_puzzles/gui/session_summary_route.dart';
 import 'package:math_puzzles/gui/settings_route.dart';
-import 'package:math_puzzles/localizations.dart';
 
 import '../config/configuration.dart';
 
@@ -27,7 +27,7 @@ class _MathPuzzleState extends State<MathPuzzleWidget> {
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: [
-        AppLocalizationsDelegate(),
+        AppLocalizationDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],

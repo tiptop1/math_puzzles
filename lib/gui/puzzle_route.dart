@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:math_puzzles/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 import '../config/configuration.dart';
-import '../localizations.dart';
 import '../model.dart';
 import '../puzzle_generator.dart';
 import 'color_scheme_extensions.dart';
@@ -180,7 +180,7 @@ class PuzzleWidget extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
                 text: _model.puzzleAnswered ? '${_model.puzzle.answer}' : '?',
-                style: answerTheme.apply(
+                style: answerTheme?.apply(
                     color: Theme.of(context).colorScheme.answer)),
           ],
           style: answerTheme),
@@ -215,13 +215,13 @@ class StatusBarWidget extends StatelessWidget {
         // Number or correct answers
         Text(
           '$correctAnswersCount',
-          style: textStyle.apply(
+          style: textStyle?.apply(
               color: Theme.of(context).colorScheme.correctAnswer),
         ),
         Text(statusSeparator, style: textStyle),
         Text(
           '$incorrectAnswersCount',
-          style: textStyle.apply(
+          style: textStyle?.apply(
               color: Theme.of(context).colorScheme.incorrectAnswer),
         ),
       ],

@@ -23,9 +23,9 @@ abstract class PuzzleGenerator {
 
   String get name => _name;
 
-  Puzzle generate(Map<String, Object> parameters);
+  Puzzle generate(Map<String, dynamic> parameters);
 
-  Object _getRequiredParameter(String name, Map<String, Object> parameters) {
+  dynamic _getRequiredParameter(String name, Map<String, dynamic> parameters) {
     if (parameters.containsKey(name)) {
       return parameters[name];
     } else {
@@ -58,7 +58,7 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
   const AdditionPuzzleGenerator(this._random) : super(nname);
 
   @override
-  Puzzle generate(Map<String, Object> parameters) {
+  Puzzle generate(Map<String, dynamic> parameters) {
     var maxResult = _getRequiredParameter(paramMaxResult, parameters);
     var fractionDigits = _getRequiredParameter(paramFractionDigits, parameters);
 
@@ -98,7 +98,7 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
   const SubtractionPuzzleGenerator(this._random) : super(nname);
 
   @override
-  Puzzle generate(Map<String, Object> parameters) {
+  Puzzle generate(Map<String, dynamic> parameters) {
     var maxResult = _getRequiredParameter(paramMaxResult, parameters);
     var fractionDigits = _getRequiredParameter(paramFractionDigits, parameters);
 
@@ -136,7 +136,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
   const MultiplicationTablePuzzleGenerator(this._random) : super(nname);
 
   @override
-  Puzzle generate(Map<String, Object> parameters) {
+  Puzzle generate(Map<String, dynamic> parameters) {
     var multiplicationTimes =
         _getRequiredParameter(paramMultiplicationTimes, parameters) as int;
     var a = _random.nextInt(multiplicationTimes + 1);
@@ -166,7 +166,7 @@ class DivisionPuzzleGenerator extends PuzzleGenerator {
   const DivisionPuzzleGenerator(this._random) : super(nname);
 
   @override
-  Puzzle generate(Map<String, Object> parameters) {
+  Puzzle generate(Map<String, dynamic> parameters) {
     var maxResult = _getRequiredParameter(paramMaxResult, parameters) as int;
     // a / b = c
     var c = _random.nextInt(maxResult + 1);
@@ -200,7 +200,7 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
   const PercentagePuzzleGenerator(this._random) : super(nname);
 
   @override
-  Puzzle generate(Map<String, Object> parameters) {
+  Puzzle generate(Map<String, dynamic> parameters) {
     var number = _random.nextInt(_getRequiredParameter(maxResult, parameters));
     var percentage = _random.nextInt(100);
     var result = ((percentage / 100) * number)
@@ -210,9 +210,9 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
 }
 
 class PuzzleGeneratorManager {
-  static PuzzleGeneratorManager _instance;
+  static late PuzzleGeneratorManager _instance;
 
-  List<PuzzleGenerator> generators;
+  late List<PuzzleGenerator> generators;
   int _enabledGeneratorIndex = -1;
 
   PuzzleGeneratorManager._internal() {
@@ -227,7 +227,7 @@ class PuzzleGeneratorManager {
   }
 
   factory PuzzleGeneratorManager() {
-    _instance ??= PuzzleGeneratorManager._internal();
+    _instance = PuzzleGeneratorManager._internal();
     return _instance;
   }
 

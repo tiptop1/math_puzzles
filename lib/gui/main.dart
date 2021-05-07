@@ -18,24 +18,24 @@ class MainWidget extends StatefulWidget {
 }
 
 class _MainState extends State<MainWidget> with WidgetsBindingObserver {
-  Configuration _configuration;
+  Configuration? _configuration;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      _configuration.store();
+      _configuration?.store();
     }
   }
 
@@ -43,7 +43,7 @@ class _MainState extends State<MainWidget> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     var widget;
     if (_configuration != null) {
-      widget = MathPuzzleWidget(_configuration);
+      widget = MathPuzzleWidget(_configuration!);
     } else {
       widget = InitializationWidget(
           delay: 2000,

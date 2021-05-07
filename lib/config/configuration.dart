@@ -105,14 +105,14 @@ class Configuration {
     }
   }
 
-  static ParameterDefinition findParameterDefinition(String name) {
-    ParameterDefinition paramDef;
+  static ParameterDefinition? findParameterDefinition(String name) {
+    ParameterDefinition? paramDef;
     var groupName = groupParameterName(name);
     if (groupName == null) {
       paramDef = _parameterDefinitions.firstWhere((d) => d.name == name);
     } else {
       var groupParameterDefinition = _parameterDefinitions
-          .firstWhere((d) => d.name == groupName, orElse: () => null);
+          .firstWhere((d) => d.name == groupName);
       if (groupParameterDefinition is GroupParameterDefinition) {
         paramDef =
             groupParameterDefinition.children.firstWhere((d) => d.name == name);
@@ -121,8 +121,8 @@ class Configuration {
     return paramDef;
   }
 
-  static String groupParameterName(String name) {
-    String group;
+  static String? groupParameterName(String name) {
+    var group;
     var index = name.indexOf(groupSeparator);
     if (index > -1) {
       group = name.substring(0, index);
@@ -180,8 +180,7 @@ class Configuration {
     var sessionGroupParameterDefinition = GroupParameterDefinition(
       sessionParamGroup,
       [
-        IntParameterDefinition(
-          puzzlesCountParam,
+        IntParameterDefinition(puzzlesCountParam,
           defaultValuePuzzlesCount,
           validators: [
             IntParameterScopeValidator(1, 1000),

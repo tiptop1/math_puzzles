@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:math_puzzles/config/parameter.dart';
-import 'package:math_puzzles/localizations.dart';
+import 'package:math_puzzles/generated/l10n.dart';
 
 import '../config/configuration.dart';
 
@@ -35,14 +35,14 @@ class SettingsRouteState extends State<SettingsRoute> {
 
   /// List items contains: parameters, strings for headline
   /// and nulls for dividers.
-  List<ParameterDefinition> _flattenParameterDefinitions(
+  List<ParameterDefinition?> _flattenParameterDefinitions(
       List<ParameterDefinition> paramDefinitions) {
     var sortedParamDefs =
-        List<ParameterDefinition>.filled(paramDefinitions.length, null);
+        List<ParameterDefinition?>.filled(paramDefinitions.length, null);
     List.copyRange(sortedParamDefs, 0, paramDefinitions);
-    sortedParamDefs.sort((a, b) => a.order - b.order);
+    sortedParamDefs.sort((a, b) => a!.order - b!.order);
 
-    var flattenParamDefs = <ParameterDefinition>[];
+    var flattenParamDefs = <ParameterDefinition?>[];
     for (var paramDef in sortedParamDefs) {
       if (flattenParamDefs.isNotEmpty) {
         flattenParamDefs.add(null);
@@ -50,9 +50,9 @@ class SettingsRouteState extends State<SettingsRoute> {
       flattenParamDefs.add(paramDef);
       if (paramDef is GroupParameterDefinition) {
         var sortedChildren =
-            List<ParameterDefinition>.filled(paramDef.children.length, null);
+            List<ParameterDefinition?>.filled(paramDef.children.length, null);
         List.copyRange(sortedChildren, 0, paramDef.children);
-        sortedChildren.sort((a, b) => a.order - b.order);
+        sortedChildren.sort((a, b) => a!.order - b!.order);
         flattenParamDefs.addAll(sortedChildren);
       }
     }
@@ -62,7 +62,7 @@ class SettingsRouteState extends State<SettingsRoute> {
   Widget _listItemBuilder(
       BuildContext context,
       int i,
-      List<ParameterDefinition> flattenParamDefinitions,
+      List<ParameterDefinition?> flattenParamDefinitions,
       Map<String, dynamic> paramValues) {
     var paramDef = flattenParamDefinitions[i];
     var listItemWidget;
@@ -81,7 +81,7 @@ class SettingsRouteState extends State<SettingsRoute> {
       ScalarParameterDefinition paramDefinition, dynamic paramValue) {
     return ListTile(
       title: Text(
-          '${AppLocalizations.of(context).dynamicMessage(paramDefinition.name)}: ${_translate(context, paramValue)}'),
+          '${dynamicMessage(context, paramDefinition.name)}: ${_translate(context, paramValue)}'),
       onTap: () {
         _showEditParameterDialog(paramDefinition, paramValue)
             .then((newParamValue) {
@@ -100,7 +100,7 @@ class SettingsRouteState extends State<SettingsRoute> {
       BuildContext context, GroupParameterDefinition paramDef) {
     return ListTile(
       title: Text(
-        AppLocalizations.of(context).dynamicMessage(paramDef.name),
+        dynamicMessage(context, paramDef.name),
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
@@ -122,7 +122,7 @@ class SettingsRouteState extends State<SettingsRoute> {
       barrierDismissible: false,
       builder: (context) => SimpleDialog(
           title:
-              Text(AppLocalizations.of(context).dynamicMessage(paramDef.name)),
+              Text(dynamicMessage(context, paramDef.name)),
           children: dialogChildren),
     );
   }
@@ -133,12 +133,13 @@ class SettingsRouteState extends State<SettingsRoute> {
       var appLoc = AppLocalizations.of(context);
       translatedValue = (paramValue ? appLoc.boolTrue : appLoc.boolFalse);
     } else if (paramValue is String) {
-      translatedValue = AppLocalizations.of(context).dynamicMessage(paramValue);
+      translatedValue = dynamicMessage(context, paramValue);
     } else {
       translatedValue = paramValue?.toString();
     }
     return translatedValue;
   }
+
 }
 
 class BoolRadioButtonGroup extends StatefulWidget {
@@ -151,7 +152,7 @@ class BoolRadioButtonGroup extends StatefulWidget {
 }
 
 class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
-  bool _groupValue;
+  bool _groupValue = false;
 
   _BoolRadioButtonGroupState();
 
@@ -170,8 +171,8 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
           leading: Radio(
             value: true,
             groupValue: _groupValue,
-            onChanged: (bool value) {
-              setState(() => _groupValue = value);
+            onChanged: (bool? value) {
+              setState(() => _groupValue = (value ?? false));
               Navigator.pop(context, _groupValue);
             },
           ),
@@ -181,8 +182,8 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
           leading: Radio(
             value: false,
             groupValue: _groupValue,
-            onChanged: (bool value) {
-              setState(() => _groupValue = value);
+            onChanged: (bool? value) {
+              setState(() => _groupValue = (value ?? false));
               Navigator.pop(context, _groupValue);
             },
           ),
@@ -232,17 +233,41 @@ class _IntInputFieldState extends State<IntInputField> {
           var parametrizedMsg = paramDef.checkConversion(value);
           parametrizedMsg ??= paramDef.validate(paramDef.convert(value));
           return parametrizedMsg != null
-              ? AppLocalizations.of(context).dynamicMessage(
-                  parametrizedMsg.message,
+              ? dynamicMessage(context, parametrizedMsg.message,
                   args: parametrizedMsg.parameters)
               : null;
         },
         onEditingComplete: () {
-          if (_formKey.currentState.validate()) {
+          if (_formKey.currentState?.validate() != null) {
             Navigator.pop(context, paramDef.convert(_controller.text));
           }
         },
       ),
     );
   }
+}
+
+String dynamicMessage(BuildContext context, String name, {List<dynamic> args = const []}) {
+  var instanceMirror = invokingReflector.reflect(AppLocalizations.of(context));
+  var classMirror = instanceMirror.type;
+
+  // First of all check if requested method exists
+  var methodMirror;
+  var instanceMembers = classMirror.instanceMembers;
+  var methodName = name.replaceAll('\.', '_');
+  for (var memberName in instanceMembers.keys) {
+    if (memberName == methodName) {
+      methodMirror = instanceMembers[memberName];
+      break;
+    }
+  }
+
+  var message;
+  if (methodMirror != null) {
+    // If method exists - call it
+    message = instanceMirror.invoke(methodName, args);
+  } else {
+    message = '#$name#';
+  }
+  return message;
 }

@@ -14,7 +14,7 @@ abstract class ParameterValidator<T> {
   const ParameterValidator();
 
   /// If [value] valid return null otherwise errorMessage.
-  ParametrizedMessage validate(T value);
+  ParametrizedMessage? validate(T value);
 }
 
 /// Predefined value scope validator.
@@ -27,7 +27,7 @@ class IntParameterScopeValidator extends ParameterValidator<int> {
   const IntParameterScopeValidator(this.minValue, this.maxValue);
 
   @override
-  ParametrizedMessage validate(int value) {
+  ParametrizedMessage? validate(int value) {
     var msg;
     if (value < minValue || value > maxValue) {
       msg = ParametrizedMessage(name, parameters: [minValue, maxValue]);
@@ -40,7 +40,7 @@ class IntParameterScopeValidator extends ParameterValidator<int> {
 abstract class ValueConverter<F, T> {
   const ValueConverter();
 
-  ParametrizedMessage checkConversionPossibility(F value);
+  ParametrizedMessage? checkConversionPossibility(F value);
 
   T convert(F value);
 }
@@ -49,7 +49,7 @@ class StringToIntConverter extends ValueConverter<String, int> {
   const StringToIntConverter();
 
   @override
-  ParametrizedMessage checkConversionPossibility(String strValue) =>
+  ParametrizedMessage? checkConversionPossibility(String strValue) =>
       int.tryParse(strValue) == null
           ? ParametrizedMessage('intTypeValidator')
           : null;
