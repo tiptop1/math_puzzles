@@ -121,8 +121,7 @@ class SettingsRouteState extends State<SettingsRoute> {
       context: context,
       barrierDismissible: false,
       builder: (context) => SimpleDialog(
-          title:
-              Text(dynamicMessage(context, paramDef.name)),
+          title: Text(dynamicMessage(context, paramDef.name)),
           children: dialogChildren),
     );
   }
@@ -139,7 +138,6 @@ class SettingsRouteState extends State<SettingsRoute> {
     }
     return translatedValue;
   }
-
 }
 
 class BoolRadioButtonGroup extends StatefulWidget {
@@ -247,7 +245,8 @@ class _IntInputFieldState extends State<IntInputField> {
   }
 }
 
-String dynamicMessage(BuildContext context, String name, {List<dynamic> args = const []}) {
+String dynamicMessage(BuildContext context, String name,
+    {List<dynamic> args = const []}) {
   var instanceMirror = invokingReflector.reflect(AppLocalizations.of(context));
   var classMirror = instanceMirror.type;
 
@@ -265,7 +264,9 @@ String dynamicMessage(BuildContext context, String name, {List<dynamic> args = c
   var message;
   if (methodMirror != null) {
     // If method exists - call it
-    message = instanceMirror.invoke(methodName, args);
+      message = (args.isEmpty
+          ? instanceMirror.invokeGetter(methodName)
+          : instanceMirror.invoke(methodName, args));
   } else {
     message = '#$name#';
   }
