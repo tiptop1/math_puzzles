@@ -4,5 +4,5 @@ class Puzzle {
 
   Puzzle(this.question, this.answer);
 
-  bool isRightAnswer(String answer) => answer?.trim() == this.answer;
+  bool isRightAnswer(String answer) => answer.trim() == this.answer;
 }
