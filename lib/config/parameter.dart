@@ -22,11 +22,11 @@ abstract class ScalarParameterDefinition<T> extends ParameterDefinition {
   const ScalarParameterDefinition(String name, this.defaultValue,
       {int order = 0, this.validators = const []}) : super(name, order: order);
 
-  ParametrizedMessage? validate(T value) {
+  ParametrizedMessage? validate(T value, Map<String, dynamic> parameterValues) {
     ParametrizedMessage? msg;
     if (validators.isNotEmpty) {
       for (var v in validators) {
-        msg = v.validate(value);
+        msg = v.validate(value, parameterValues);
         if (msg != null) {
           break;
         }

@@ -1,3 +1,5 @@
+import 'package:math_puzzles/puzzle_generator.dart';
+
 /// Validation message returned by ParameterValidator for further message
 /// translation.
 class ParametrizedMessage {
@@ -14,7 +16,7 @@ abstract class ParameterValidator<T> {
   const ParameterValidator();
 
   /// If [value] valid return null otherwise errorMessage.
-  ParametrizedMessage? validate(T value);
+  ParametrizedMessage? validate(T value, Map<String, dynamic> parameterValues);
 }
 
 /// Predefined value scope validator.
@@ -27,10 +29,32 @@ class IntParameterScopeValidator extends ParameterValidator<int> {
   const IntParameterScopeValidator(this.minValue, this.maxValue);
 
   @override
-  ParametrizedMessage? validate(int value) {
+  ParametrizedMessage? validate(int value, Map<String, dynamic> parameterValues) {
     var msg;
     if (value < minValue || value > maxValue) {
       msg = ParametrizedMessage(name, parameters: [minValue, maxValue]);
+    }
+    return msg;
+  }
+}
+
+class GeneratorDisableValidator extends ParameterValidator<bool> {
+  static const name = 'generatorDisableValidator';
+
+  const GeneratorDisableValidator();
+
+  @override
+  ParametrizedMessage? validate(bool value, Map<String, dynamic> parameterValues) {
+    var msg;
+
+    if (!value) {
+      var enabledCount = 0;
+      for (var e in parameterValues.entries) {
+        if (e.key.endsWith(PuzzleGenerator.paramEnabledPostfix) && e.value) {
+          enabledCount++;
+        }
+      }
+      msg = enabledCount < 2 ? ParametrizedMessage(name) : null;
     }
     return msg;
   }

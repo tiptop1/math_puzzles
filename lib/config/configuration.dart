@@ -37,7 +37,7 @@ class Configuration {
         var paramDef = findParameterDefinition(k);
         if (paramDef is ScalarParameterDefinition &&
             paramDef.checkConversion(value) == null &&
-            paramDef.validate(value) == null) {
+            paramDef.validate(value, defaultValues) == null) {
           config._parameterValues[k] = sharedPrefs.get(k);
         } else {
           config._parameterValues[k] = defaultValues[k];
@@ -88,7 +88,7 @@ class Configuration {
       if (def is ScalarParameterDefinition) {
         if (def.checkConversion(value) == null) {
           var convertedValue = def.convert(value);
-          if (def.validate(convertedValue) == null) {
+          if (def.validate(convertedValue, _parameterValues) == null) {
             _parameterValues[name] = convertedValue;
           } else {
             throw Exception("Parameter '$name' has not valid value.");
