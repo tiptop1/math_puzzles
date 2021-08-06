@@ -227,7 +227,7 @@ class PuzzleGeneratorManager {
   }
 
   factory PuzzleGeneratorManager() {
-    _instance = PuzzleGeneratorManager._internal();
+    _instance ??= PuzzleGeneratorManager._internal();
     return _instance;
   }
 
