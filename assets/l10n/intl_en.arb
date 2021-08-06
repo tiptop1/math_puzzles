@@ -83,6 +83,14 @@
       "maxValue": {}
     }
   },
+  "generatorDisableValidator": "At least one generator must be enabled.",
+  "@generatorDisableValidator": {
+    "type": "text",
+    "placeholders": {
+      "minValue": {},
+      "maxValue": {}
+    }
+  },
   "additionGenerator": "Addition",
   "@additionGenerator": {
     "type": "text",

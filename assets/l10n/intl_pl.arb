@@ -83,6 +83,14 @@
       "maxValue": {}
     }
   },
+  "generatorDisableValidator": "Co najmniej jeden generator musi by\u0107 w\u0142aczony.",
+  "@generatorDisableValidator": {
+    "type": "text",
+    "placeholders": {
+      "minValue": {},
+      "maxValue": {}
+    }
+  },
   "additionGenerator": "Dodawanie",
   "@additionGenerator": {
     "type": "text",

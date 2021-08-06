@@ -75,8 +75,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "numParameterScopeValidator": "Zulässiger Wert zwischen {minValue} und {maxValue}.",
+  "numParameterScopeValidator": "Zul\u00E4ssiger Wert zwischen {minValue} und {maxValue}.",
   "@numParameterScopeValidator": {
+    "type": "text",
+    "placeholders": {
+      "minValue": {},
+      "maxValue": {}
+    }
+  },
+  "generatorDisableValidator": "Mindestens ein Generator muss aktiviert sein.",
+  "@generatorDisableValidator": {
     "type": "text",
     "placeholders": {
       "minValue": {},
