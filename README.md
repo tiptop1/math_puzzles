@@ -13,7 +13,8 @@ The project uses some external tools, so to build code you have to do some extra
 If some translated strings have been changed (added) it's necessary to regenerate translation
 bundles in following steps:
 flutter pub run intl_utils:generate
-Keep in mind that translation class AppLocalizations need dynamic methodo invocation.
+Keep in mind that translation class AppLocalizations need dynamic method invocation
+- so add invokingReflector before AppLocalizations class declaration.
 
 ### Annotations and dynamic method invocation
 To compile the project it's necessary to use build_runner package to generate code for reflectable
