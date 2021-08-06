@@ -112,7 +112,7 @@ class SettingsRouteState extends State<SettingsRoute> {
     if (paramValue is bool) {
       dialogChildren = [BoolRadioButtonGroup(paramValue)];
     } else if (paramValue is int) {
-      dialogChildren = [IntInputField(paramDef, paramValue)];
+      dialogChildren = [IntInputField(paramDef, paramValue, widget._configuration)];
     } else {
       throw UnsupportedError('Dialogs not supported for parameter of type '
           '${paramValue?.runtimeType}.');
@@ -194,8 +194,9 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
 class IntInputField extends StatefulWidget {
   final ScalarParameterDefinition _paramDef;
   final dynamic _paramValue;
+  final Configuration _configuration;
 
-  IntInputField(this._paramDef, this._paramValue);
+  IntInputField(this._paramDef, this._paramValue, this._configuration);
 
   @override
   State createState() => _IntInputFieldState();
@@ -229,14 +230,15 @@ class _IntInputFieldState extends State<IntInputField> {
             TextInputType.numberWithOptions(signed: false, decimal: true),
         validator: (value) {
           var parametrizedMsg = paramDef.checkConversion(value);
-          parametrizedMsg ??= paramDef.validate(paramDef.convert(value));
+          parametrizedMsg ??= paramDef.validate(paramDef.convert(value), widget._configuration.parameterValues);
           return parametrizedMsg != null
               ? dynamicMessage(context, parametrizedMsg.message,
                   args: parametrizedMsg.parameters)
               : null;
         },
         onEditingComplete: () {
-          if (_formKey.currentState?.validate() != null) {
+          var formState = _formKey.currentState;
+          if (formState != null && formState.validate()) {
             Navigator.pop(context, paramDef.convert(_controller.text));
           }
         },
