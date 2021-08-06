@@ -86,10 +86,7 @@
   "generatorDisableValidator": "At least one generator must be enabled.",
   "@generatorDisableValidator": {
     "type": "text",
-    "placeholders": {
-      "minValue": {},
-      "maxValue": {}
-    }
+    "placeholders": {}
   },
   "additionGenerator": "Addition",
   "@additionGenerator": {

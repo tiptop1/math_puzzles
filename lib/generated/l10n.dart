@@ -221,12 +221,12 @@ class AppLocalizations {
   }
 
   /// `At least one generator must be enabled.`
-  String generatorDisableValidator(Object minValue, Object maxValue) {
+  String get generatorDisableValidator {
     return Intl.message(
       'At least one generator must be enabled.',
       name: 'generatorDisableValidator',
       desc: '',
-      args: [minValue, maxValue],
+      args: [],
     );
   }
 
