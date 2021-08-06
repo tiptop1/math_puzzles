@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
+import 'package:logging/logging.dart';
 import 'package:math_puzzles/config/parameter.dart';
 import 'package:math_puzzles/puzzle.dart';
 import 'package:reflectable/capability.dart';
@@ -39,7 +40,7 @@ abstract class PuzzleGenerator {
     AdditionPuzzleGenerator.nname,
     [
       BoolParameterDefinition(AdditionPuzzleGenerator.paramEnabled, true,
-          order: 1),
+          order: 1, validators: [GeneratorDisableValidator()]),
       IntParameterDefinition(AdditionPuzzleGenerator.paramMaxResult, 1000,
           order: 2, validators: [IntParameterScopeValidator(1, 10000)]),
       IntParameterDefinition(AdditionPuzzleGenerator.paramFractionDigits, 0,
@@ -79,7 +80,7 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
     SubtractionPuzzleGenerator.nname,
     [
       BoolParameterDefinition(SubtractionPuzzleGenerator.paramEnabled, true,
-          order: 1),
+          order: 1, validators: [GeneratorDisableValidator()]),
       IntParameterDefinition(SubtractionPuzzleGenerator.paramMaxResult, 1000,
           order: 2, validators: [IntParameterScopeValidator(1, 10000)]),
       IntParameterDefinition(SubtractionPuzzleGenerator.paramFractionDigits, 0,
@@ -119,7 +120,7 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
     [
       BoolParameterDefinition(
           MultiplicationTablePuzzleGenerator.paramEnabled, true,
-          order: 1),
+          order: 1, validators: [GeneratorDisableValidator()]),
       IntParameterDefinition(
           MultiplicationTablePuzzleGenerator.paramMultiplicationTimes, 10,
           order: 2, validators: [IntParameterScopeValidator(10, 1000)]),
@@ -150,7 +151,7 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
     DivisionPuzzleGenerator.nname,
     [
       BoolParameterDefinition(DivisionPuzzleGenerator.paramEnabled, true,
-          order: 1),
+          order: 1, validators: [GeneratorDisableValidator()]),
       IntParameterDefinition(DivisionPuzzleGenerator.paramMaxResult, 10,
           order: 2, validators: [IntParameterScopeValidator(10, 1000)]),
     ],
@@ -181,7 +182,7 @@ class DivisionPuzzleGenerator extends PuzzleGenerator {
     PercentagePuzzleGenerator.nname,
     [
       BoolParameterDefinition(PercentagePuzzleGenerator.paramEnabled, true,
-          order: 1),
+          order: 1, validators: [GeneratorDisableValidator()]),
       IntParameterDefinition(PercentagePuzzleGenerator.maxResult, 100,
           order: 2, validators: [IntParameterScopeValidator(1, 1000)]),
       IntParameterDefinition(PercentagePuzzleGenerator.fractionDigits, 2,
@@ -210,7 +211,8 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
 }
 
 class PuzzleGeneratorManager {
-  static late PuzzleGeneratorManager _instance;
+  static final PuzzleGeneratorManager _instance = PuzzleGeneratorManager._internal();
+  final Logger log = Logger('PuzzleGeneratorManager');
 
   late List<PuzzleGenerator> generators;
   int _enabledGeneratorIndex = -1;
@@ -227,7 +229,6 @@ class PuzzleGeneratorManager {
   }
 
   factory PuzzleGeneratorManager() {
-    _instance ??= PuzzleGeneratorManager._internal();
     return _instance;
   }
 
@@ -235,8 +236,10 @@ class PuzzleGeneratorManager {
   PuzzleGenerator findNextEnabledGenerator(Map<String, dynamic> parameters) {
     var nextEnabledGenerator;
     var enabledGenerators = _findEnabledGenerators(parameters);
-    assert(enabledGenerators.isNotEmpty,
-        'All puzzle generators had been disable - at lease one must be enabled.');
+    if (enabledGenerators.isEmpty) {
+      log.warning('All generators are disabled - try to use first one.');
+      enabledGenerators[0] = generators[0];
+    }
 
     var i;
     var nextEnabledGeneratorIndex =
