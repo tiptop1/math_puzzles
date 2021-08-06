@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:math_puzzles/config/parameter.dart';
+import 'package:math_puzzles/config/validator.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 
 import '../config/configuration.dart';
@@ -110,9 +111,13 @@ class SettingsRouteState extends State<SettingsRoute> {
       ScalarParameterDefinition paramDef, dynamic paramValue) async {
     var dialogChildren;
     if (paramValue is bool) {
-      dialogChildren = [BoolRadioButtonGroup(paramValue)];
+      dialogChildren = [
+        BoolRadioButtonGroup(paramDef, paramValue, widget._configuration)
+      ];
     } else if (paramValue is int) {
-      dialogChildren = [IntInputField(paramDef, paramValue, widget._configuration)];
+      dialogChildren = [
+        IntInputField(paramDef, paramValue, widget._configuration)
+      ];
     } else {
       throw UnsupportedError('Dialogs not supported for parameter of type '
           '${paramValue?.runtimeType}.');
@@ -141,9 +146,11 @@ class SettingsRouteState extends State<SettingsRoute> {
 }
 
 class BoolRadioButtonGroup extends StatefulWidget {
-  final bool currentValue;
+  final ScalarParameterDefinition _paramDef;
+  final bool _paramValue;
+  final Configuration _configuration;
 
-  BoolRadioButtonGroup(this.currentValue);
+  BoolRadioButtonGroup(this._paramDef, this._paramValue, this._configuration);
 
   @override
   State createState() => _BoolRadioButtonGroupState();
@@ -151,43 +158,54 @@ class BoolRadioButtonGroup extends StatefulWidget {
 
 class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
   bool _groupValue = false;
+  ParametrizedMessage? _newValueValidationMsg;
 
   _BoolRadioButtonGroupState();
 
   @override
   void initState() {
     super.initState();
-    _groupValue = widget.currentValue;
+    _groupValue = widget._paramValue;
+    _newValueValidationMsg = widget._paramDef
+        .validate(_groupValue, widget._configuration.parameterValues);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          title: Text(AppLocalizations.of(context).boolTrue),
-          leading: Radio(
-            value: true,
-            groupValue: _groupValue,
-            onChanged: (bool? value) {
-              setState(() => _groupValue = (value ?? false));
-              Navigator.pop(context, _groupValue);
-            },
-          ),
+    var widgets = <Widget>[
+      ListTile(
+        title: Text(AppLocalizations.of(context).boolTrue),
+        leading: Radio(
+          value: true,
+          groupValue: _groupValue,
+          onChanged: onChangeHandler,
         ),
-        ListTile(
-          title: Text(AppLocalizations.of(context).boolFalse),
-          leading: Radio(
-            value: false,
-            groupValue: _groupValue,
-            onChanged: (bool? value) {
-              setState(() => _groupValue = (value ?? false));
-              Navigator.pop(context, _groupValue);
-            },
-          ),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context).boolFalse),
+        leading: Radio(
+          value: false,
+          groupValue: _groupValue,
+          onChanged: onChangeHandler,
         ),
-      ],
-    );
+      ),
+    ];
+
+    if (_newValueValidationMsg != null) {
+      widgets
+          .add(Text(dynamicMessage(context, _newValueValidationMsg!.message, args: _newValueValidationMsg!.parameters)));
+    }
+
+    return Column(children: widgets);
+  }
+
+  void onChangeHandler(bool? newValue) {
+    _newValueValidationMsg = widget._paramDef
+        .validate(newValue, widget._configuration.parameterValues);
+    setState(() => _groupValue = (newValue ?? false));
+    if (_newValueValidationMsg == null) {
+      Navigator.pop(context, _groupValue);
+    }
   }
 }
 
@@ -230,7 +248,8 @@ class _IntInputFieldState extends State<IntInputField> {
             TextInputType.numberWithOptions(signed: false, decimal: true),
         validator: (value) {
           var parametrizedMsg = paramDef.checkConversion(value);
-          parametrizedMsg ??= paramDef.validate(paramDef.convert(value), widget._configuration.parameterValues);
+          parametrizedMsg ??= paramDef.validate(
+              paramDef.convert(value), widget._configuration.parameterValues);
           return parametrizedMsg != null
               ? dynamicMessage(context, parametrizedMsg.message,
                   args: parametrizedMsg.parameters)
@@ -266,9 +285,9 @@ String dynamicMessage(BuildContext context, String name,
   var message;
   if (methodMirror != null) {
     // If method exists - call it
-      message = (args.isEmpty
-          ? instanceMirror.invokeGetter(methodName)
-          : instanceMirror.invoke(methodName, args));
+    message = (args.isEmpty
+        ? instanceMirror.invokeGetter(methodName)
+        : instanceMirror.invoke(methodName, args));
   } else {
     message = '#$name#';
   }
