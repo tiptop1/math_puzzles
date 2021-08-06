@@ -166,8 +166,6 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
   void initState() {
     super.initState();
     _groupValue = widget._paramValue;
-    _newValueValidationMsg = widget._paramDef
-        .validate(_groupValue, widget._configuration.parameterValues);
   }
 
   @override
@@ -191,9 +189,23 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
       ),
     ];
 
+    var divider;
+    var text;
+
     if (_newValueValidationMsg != null) {
-      widgets
-          .add(Text(dynamicMessage(context, _newValueValidationMsg!.message, args: _newValueValidationMsg!.parameters)));
+      var theme = Theme.of(context);
+      divider = Divider(color: theme.errorColor, thickness: 1.0,);
+      text = Text(
+          dynamicMessage(context, _newValueValidationMsg!.message,
+              args: _newValueValidationMsg!.parameters),
+          style: theme.textTheme.overline!.apply(color: theme.errorColor));
+    } else {
+      divider = Divider(color: Colors.grey, thickness: 1.0,);
+    }
+
+    widgets.add(divider);
+    if (text != null) {
+      widgets.add(text);
     }
 
     return Column(children: widgets);
