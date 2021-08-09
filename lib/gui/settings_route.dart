@@ -25,7 +25,10 @@ class SettingsRouteState extends State<SettingsRoute> {
     var flattenParamDefs = _flattenParameterDefinitions(
         widget._configuration.parameterDefinitions);
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: true),
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: Text(AppLocalizations.of(context).settingsMenu),
+      ),
       body: ListView.builder(
         itemCount: flattenParamDefs.length,
         itemBuilder: (context, i) => _listItemBuilder(context, i,
@@ -194,13 +197,19 @@ class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
 
     if (_newValueValidationMsg != null) {
       var theme = Theme.of(context);
-      divider = Divider(color: theme.errorColor, thickness: 1.0,);
+      divider = Divider(
+        color: theme.errorColor,
+        thickness: 1.0,
+      );
       text = Text(
           dynamicMessage(context, _newValueValidationMsg!.message,
               args: _newValueValidationMsg!.parameters),
           style: theme.textTheme.overline!.apply(color: theme.errorColor));
     } else {
-      divider = Divider(color: Colors.grey, thickness: 1.0,);
+      divider = Divider(
+        color: Colors.grey,
+        thickness: 1.0,
+      );
     }
 
     widgets.add(divider);
