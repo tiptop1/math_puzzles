@@ -112,19 +112,22 @@
      id="layer2"
      inkscape:label="Background">
     <rect
-       style="display:inline;fill:#ffccbc;stroke-width:0.467193;stroke-linejoin:round;stroke-dashoffset:1.54772;paint-order:markers stroke fill"
+       style="display:inline;fill:#f57f17;stroke-width:0.467193;stroke-linejoin:round;stroke-dashoffset:1.54772;paint-order:markers stroke fill"
        id="rect1730"
        width="276.26221"
        height="30.297153"
        x="-2.0823314"
        y="106.6614" />
     <rect
-       style="display:inline;fill:#81c784;stroke-width:0.630389;stroke-linejoin:round;stroke-dashoffset:1.54772;paint-order:markers stroke fill"
+       style="display:inline;fill:#42a5f5;stroke-width:0.630389;stroke-linejoin:round;stroke-dashoffset:1.54772;paint-order:markers stroke fill"
        id="rect1834"
        width="276.26221"
        height="109.33472"
        x="-2.0823314"
-       y="-2.6733184" />
+       y="-2.6733184"
+       inkscape:export-filename="/home/tiptop/projects/flutter/math_puzzles_publication_resources/promotion_gfx_en-1024x500.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
   </g>
   <g
      inkscape:label="Foreground"
