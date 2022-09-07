@@ -1,5 +1,4 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';

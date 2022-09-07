@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class InitializationWidget extends StatefulWidget {
   final VoidCallback initializationCallback;
@@ -18,14 +17,10 @@ class _InitializationWidgetState extends State<InitializationWidget> {
   @override
   void initState() {
     super.initState();
-    if (widget.delay != null) {
       Future.delayed(
         Duration(milliseconds: widget.delay),
         () => widget.initializationCallback(),
       );
-    } else {
-      widget.initializationCallback();
-    }
   }
 
   @override

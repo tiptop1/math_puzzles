@@ -4,7 +4,6 @@ import 'package:decimal/decimal.dart';
 import 'package:logging/logging.dart';
 import 'package:math_puzzles/config/parameter.dart';
 import 'package:math_puzzles/puzzle.dart';
-import 'package:reflectable/capability.dart';
 import 'package:reflectable/reflectable.dart';
 
 import 'config/validator.dart';
@@ -67,7 +66,7 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
     var c = Decimal.parse(
         (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
     var a = Decimal.parse(
-        (_random.nextDouble() * c.toInt()).toStringAsFixed(fractionDigits));
+        (_random.nextDouble() * c.toBigInt().toInt()).toStringAsFixed(fractionDigits));
 
     var b = c - a;
 
@@ -107,7 +106,7 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
     var c = Decimal.parse(
         (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
     var b = Decimal.parse(
-        (_random.nextDouble() * c.toInt()).toStringAsFixed(fractionDigits));
+        (_random.nextDouble() * c.toBigInt().toInt()).toStringAsFixed(fractionDigits));
     var a = c + b;
 
     return Puzzle('$a - $b', '$c');
