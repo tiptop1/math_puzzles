@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:decimal/decimal.dart';
-import 'package:math_puzzles/puzzle_generator.dart';
+import 'package:math_puzzles/utils/puzzle_generator.dart';
 import 'package:test/test.dart';
 
 final RegExp operandRegexp = RegExp('\\d+(\.\\d+)?');

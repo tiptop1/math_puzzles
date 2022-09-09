@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
-import '../config/configuration.dart';
-import '../model.dart';
-import '../puzzle_generator.dart';
+import '../data/config/configuration.dart';
+import '../data/model.dart';
+import '../utils/puzzle_generator.dart';
 import 'color_scheme_extensions.dart';
 import 'math_puzzle.dart' as math_puzzle;
 

@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:decimal/decimal.dart';
 import 'package:logging/logging.dart';
-import 'package:math_puzzles/config/parameter.dart';
-import 'package:math_puzzles/puzzle.dart';
 import 'package:reflectable/reflectable.dart';
 
-import 'config/validator.dart';
+import '../data/config/parameter.dart';
+import '../data/config/validator.dart';
+import '../data/puzzle.dart';
 
 class Reflector extends Reflectable {
   const Reflector() : super(metadataCapability);
@@ -65,8 +65,8 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
     // a + b = c
     var c = Decimal.parse(
         (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
-    var a = Decimal.parse(
-        (_random.nextDouble() * c.toBigInt().toInt()).toStringAsFixed(fractionDigits));
+    var a = Decimal.parse((_random.nextDouble() * c.toBigInt().toInt())
+        .toStringAsFixed(fractionDigits));
 
     var b = c - a;
 
@@ -105,8 +105,8 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
     // a - b = c
     var c = Decimal.parse(
         (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
-    var b = Decimal.parse(
-        (_random.nextDouble() * c.toBigInt().toInt()).toStringAsFixed(fractionDigits));
+    var b = Decimal.parse((_random.nextDouble() * c.toBigInt().toInt())
+        .toStringAsFixed(fractionDigits));
     var a = c + b;
 
     return Puzzle('$a - $b', '$c');
@@ -210,7 +210,8 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
 }
 
 class PuzzleGeneratorManager {
-  static final PuzzleGeneratorManager _instance = PuzzleGeneratorManager._internal();
+  static final PuzzleGeneratorManager _instance =
+      PuzzleGeneratorManager._internal();
   final Logger log = Logger('PuzzleGeneratorManager');
 
   late List<PuzzleGenerator> generators;

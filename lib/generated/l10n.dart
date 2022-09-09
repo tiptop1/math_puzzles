@@ -1,7 +1,6 @@
-// GENERATED CODE - BUT ADDED Reflector CLASS AND ITS INSTAnCE invokingReflector BY HAND
+// GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reflectable/reflectable.dart';
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -13,15 +12,6 @@ import 'intl/messages_all.dart';
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
-class Reflector extends Reflectable {
-  // declarationsCapacity - to find method
-  // invokingCapability - to invoke method
-  const Reflector() : super(declarationsCapability, instanceInvokeCapability);
-}
-
-const invokingReflector = Reflector();
-
-@invokingReflector
 class AppLocalizations {
   AppLocalizations();
 

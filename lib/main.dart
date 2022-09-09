@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:math_puzzles/config/configuration.dart';
 import 'package:math_puzzles/gui/initialization.dart';
 import 'package:math_puzzles/main.reflectable.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';
+
+import 'data/config/configuration.dart';
 
 void main() {
   // Set up reflection support.

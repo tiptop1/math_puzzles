@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:math_puzzles/puzzle.dart';
+import 'package:math_puzzles/data/puzzle.dart';
 
 class PuzzleModel extends ChangeNotifier {
   Puzzle _puzzle;

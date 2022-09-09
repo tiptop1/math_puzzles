@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 import 'package:math_puzzles/gui/math_puzzle.dart';
 
-import '../model.dart';
+import '../data/model.dart';
 import 'color_scheme_extensions.dart';
 
 class SessionSummaryRoute extends StatelessWidget {

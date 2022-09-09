@@ -1,4 +1,4 @@
-import 'package:math_puzzles/config/validator.dart';
+import 'validator.dart';
 
 /// The class could be used as annotation to define default configuration parameters.
 class ParameterDefinition<T> {

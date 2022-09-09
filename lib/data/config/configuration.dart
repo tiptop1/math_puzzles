@@ -1,8 +1,9 @@
-import 'package:math_puzzles/config/parameter.dart';
-import 'package:math_puzzles/config/validator.dart';
-import 'package:math_puzzles/puzzle_generator.dart';
+import 'package:math_puzzles/utils/puzzle_generator.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'parameter.dart';
+import 'validator.dart';
 
 /// The class load, keep and store application parameters.
 class Configuration {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:math_puzzles/config/parameter.dart';
-import 'package:math_puzzles/config/validator.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 
-import '../config/configuration.dart';
+import '../data/config/configuration.dart';
+import '../data/config/parameter.dart';
+import '../data/config/validator.dart';
 
 class SettingsRoute extends StatefulWidget {
   final Configuration _configuration;
