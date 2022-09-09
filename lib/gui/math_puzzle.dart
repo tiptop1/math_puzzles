@@ -13,40 +13,10 @@ class Route {
   static const String sessionSummary = '/sessionSummary';
 }
 
-class MathPuzzleWidget extends StatefulWidget {
-  final Configuration _configuration;
-
-  MathPuzzleWidget(this._configuration);
-
-  @override
-  _MathPuzzleState createState() => _MathPuzzleState();
-}
-
-class _MathPuzzleState extends State<MathPuzzleWidget> {
+class MathPuzzleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        AppLocalizationDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('pl'),
-        Locale('de'),
-      ],
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      onGenerateTitle: (BuildContext context) =>
-          AppLocalizations.of(context).applicationTitle,
-      initialRoute: Route.puzzle,
-      routes: {
-        Route.puzzle: (context) => PuzzleRoute(widget._configuration),
-        Route.settings: (context) => SettingsRoute(widget._configuration),
-        Route.sessionSummary: (context) => SessionSummaryRoute(),
-      },
-    );
+    return Scaffold();
   }
 }
 

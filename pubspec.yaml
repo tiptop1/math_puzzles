@@ -24,10 +24,10 @@ dependencies:
   provider: ^6.0.0
   decimal: ^2.0.0
   shared_preferences: ^2.0.5
-  reflectable: ^3.0.2
   fl_chart: ^0.55.1
   pedantic: ^1.11.0
   intl_utils: ^2.2.0
+  get_it: ^7.2.0
   logging: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.

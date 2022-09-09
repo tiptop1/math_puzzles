@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
-import '../data/config/configuration.dart';
+import '../data/data.config/configuration.dart';
 import '../data/model.dart';
 import '../utils/puzzle_generator.dart';
 import 'color_scheme_extensions.dart';

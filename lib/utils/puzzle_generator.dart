@@ -4,8 +4,8 @@ import 'package:decimal/decimal.dart';
 import 'package:logging/logging.dart';
 import 'package:reflectable/reflectable.dart';
 
-import '../data/config/parameter.dart';
-import '../data/config/validator.dart';
+import '../data/data.config/parameter.dart';
+import '../data/data.config/parameter_validators.dart';
 import '../data/puzzle.dart';
 
 class Reflector extends Reflectable {
