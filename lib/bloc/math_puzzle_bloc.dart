@@ -9,58 +9,72 @@ import '../data/puzzle.dart';
 import 'bloc.dart';
 
 class MathPuzzleBloc extends Bloc {
-  final StreamController<Lecture?> controller = StreamController<Lecture?>();
-  late Sink<Lecture?> sink;
-  late Stream<Lecture?> stream;
-  late PuzzleGeneratorManager generatorManager;
-  late Configuration configuration;
+  final StreamController<Lecture> _controller = StreamController<Lecture>();
+  late Sink<Lecture> _sink;
+  late PuzzleGeneratorManager _generatorManager;
+  late Configuration _configuration;
+  late Lecture _lecture;
+  late Stream<Lecture> stream;
 
   MathPuzzleBloc() {
-    generatorManager = PuzzleGeneratorManager();
-    sink = controller.sink;
-    sink.add(_initialLecture());
-    stream = controller.stream;
-    configuration = GetIt.I.get<Configuration>();
+    _generatorManager = PuzzleGeneratorManager();
+    _sink = _controller.sink;
+    _lecture = _initialLecture();
+    _sink.add(_lecture);
+    stream = _controller.stream;
+    _configuration = GetIt.I.get<Configuration>();
   }
 
-  void puzzleAnswered(Lecture lecture) => sink.add(Lecture(lecture.puzzle, true,
-      lecture.correctAnswersCount, lecture.incorrectAnswersCount));
+  void puzzleAnswered() {
+    _lecture = _lecture.copyWith(puzzleAnswered: true);
+    _sink.add(_lecture);
+  }
 
-  void rateAnswer(bool correct, Lecture lecture) {
-    var correctAnswersCount = lecture.correctAnswersCount;
-    var incorrectAnswersCount = lecture.incorrectAnswersCount;
+  void rateAnswer(bool correct) {
+    var correctAnswersCount = _lecture.correctAnswersCount;
+    var incorrectAnswersCount = _lecture.incorrectAnswersCount;
     if (correct) {
       correctAnswersCount++;
     } else {
       incorrectAnswersCount++;
     }
-    sink.add(Lecture(
-        lecture.puzzle, true, correctAnswersCount, incorrectAnswersCount));
+    _lecture = _lecture.copyWith(
+      puzzleAnswered: true,
+      correctAnswersCount: correctAnswersCount,
+      incorrectAnswersCount: incorrectAnswersCount,
+    );
+    _sink.add(_lecture);
   }
 
-  void nextPuzzle(Lecture lecture) {
-    var sessionsPuzzlesCount = configuration
+  void nextPuzzle() {
+    var sessionsPuzzlesCount = _configuration
         .parameters[Configuration.sessionsPuzzlesCountParam] as int;
-    var nextLecture;
-    if (lecture.correctAnswersCount + lecture.incorrectAnswersCount <
+    if (_lecture.correctAnswersCount + _lecture.incorrectAnswersCount <
         sessionsPuzzlesCount) {
-      nextLecture = Lecture(_generatePuzzle(), false,
-          lecture.correctAnswersCount, lecture.incorrectAnswersCount);
+      _lecture = _lecture.copyWith(
+        puzzle: _generatePuzzle(),
+        puzzleAnswered: false,
+      );
+    } else {
+      _lecture = _lecture.copyWith(finished: true);
     }
-    sink.add(nextLecture);
+    _sink.add(_lecture);
   }
 
-  void resetSession() => sink.add(_initialLecture());
+  void resetSession() {
+    _lecture = _initialLecture();
+    _sink.add(_lecture);
+  }
 
   @override
   void dispose() {
-    controller.close();
+    _controller.close();
   }
 
-  Lecture _initialLecture() => Lecture(_generatePuzzle(), false, 0, 0);
+  Lecture _initialLecture() => Lecture(_generatePuzzle(), false, false, 0, 0);
 
   Puzzle _generatePuzzle() {
-    var params = configuration.parameters;
-    return generatorManager.findNextEnabledGenerator(params).generate(params);
+    var params = _configuration.parameters;
+    return _generatorManager.findNextEnabledGenerator(params).generate(params);
   }
 }

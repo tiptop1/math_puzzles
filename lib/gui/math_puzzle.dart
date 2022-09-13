@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:math_puzzles/bloc/bloc_provider.dart';
+import 'package:math_puzzles/bloc/math_puzzle_bloc.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 import 'package:math_puzzles/gui/puzzle_route.dart';
 import 'package:math_puzzles/gui/session_summary_route.dart';
 import 'package:math_puzzles/gui/settings_route.dart';
 
+import '../bloc/bloc.dart';
 import '../data/config/configuration.dart';
+import '../data/lecture.dart';
 
 class Route {
   static const String puzzle = '/';
@@ -16,7 +20,11 @@ class Route {
 class MathPuzzleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    var bloc = BlocProvider.of<MathPuzzleBloc>(context);
+    return StreamBuilder<Lecture>(stream: bloc.stream, builder: (context, snapshot) {
+      var lecture = snapshot.data!;
+      return buildPuzzleRoute(lecture);
+    });
   }
 }
 
