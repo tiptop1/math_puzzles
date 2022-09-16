@@ -1,7 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Configuration {
-  static const sessionsPuzzlesCountParam = 'sessions.puzzlesCount';
+  static const sessionsPuzzlesCountParam = 'sessions.0.puzzlesCount.0';
+
+  static const additionGeneratorEnabledParam = 'additionGenerator.0.enabled.0';
+  static const additionGeneratorMaxResultParam = 'additionGenerator.0.maxResult.1';
+  static const additionGeneratorFractionDigits = 'additionGenerator.0.fractionDigits.2';
 
   static const Map<String, Object> defaultParameters = {
     sessionsPuzzlesCountParam: 20,
