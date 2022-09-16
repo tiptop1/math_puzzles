@@ -6,7 +6,7 @@ import 'package:math_puzzles/generated/l10n.dart';
 
 import '../data/config/configuration.dart';
 import '../data/lecture.dart';
-import '../utils/app_constnts_widget.dart';
+import '../utils/app_constants.dart';
 import 'math_puzzle_widget.dart';
 import 'session_summary_widget.dart';
 

@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import '../data/config/configuration.dart';
 import '../data/lecture.dart';
-import '../utils/app_constnts_widget.dart';
+import '../utils/app_constants.dart';
 
 class StatusBarWidget extends StatelessWidget {
   static const statusSeparator = '|';

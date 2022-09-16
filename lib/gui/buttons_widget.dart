@@ -6,7 +6,7 @@ import '../bloc/math_puzzle_bloc.dart';
 import '../data/config/configuration.dart';
 import '../data/lecture.dart';
 import '../generated/l10n.dart';
-import '../utils/app_constnts_widget.dart';
+import '../utils/app_constants.dart';
 
 class ButtonsWidget extends StatelessWidget {
   final Lecture _lecture;

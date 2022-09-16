@@ -6,7 +6,7 @@ import 'package:math_puzzles/generated/l10n.dart';
 import 'package:math_puzzles/gui/math_puzzle_route.dart';
 
 import '../data/lecture.dart';
-import '../utils/app_constnts_widget.dart';
+import '../utils/app_constants.dart';
 
 class SessionSummaryWidget extends StatelessWidget {
   final Lecture _lecture;

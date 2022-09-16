@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/lecture.dart';
-import '../utils/app_constnts_widget.dart';
+import '../utils/app_constants.dart';
 
 class PuzzleWidget extends StatelessWidget {
   final Lecture _lecture;

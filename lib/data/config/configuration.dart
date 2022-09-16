@@ -1,36 +1,41 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Configuration {
-  static const sessionsPuzzlesCountParam = 'sessions.0.puzzlesCount.0';
+  static const sessionsPuzzlesCountParam = 'sessionsPuzzlesCount';
 
-  static const additionGeneratorEnabledParam = 'additionGenerator.0.enabled.0';
-  static const additionGeneratorMaxResultParam = 'additionGenerator.0.maxResult.1';
-  static const additionGeneratorFractionDigits = 'additionGenerator.0.fractionDigits.2';
+  static const additionEnabledParam = 'additionEnabled';
+  static const additionMaxResultParam = 'additionMaxResult';
+  static const additionFractionDigits = 'additionFractionDigits';
 
-  static const subtractionGeneratorEnabledParam = 'subtractionGenerator.1.enabled.0';
-  static const subtractionGeneratorMaxResultParam = 'subtractionGenerator.1.maxResult.1';
-  static const subtractionGeneratorFractionDigitsParam = 'subtractionGenerator.1.fractionDigits.2';
+  static const subtractionEnabledParam = 'subtractionEnabled';
+  static const subtractionMaxResultParam = 'subtractionMaxResult';
+  static const subtractionFractionDigitsParam = 'subtractionFractionDigits';
+
+  static const multiplicationTableEnabledParam = 'multiplicationTableEnabled';
+  static const multiplicationTableTimesParam = 'multiplicationTableTimes';
+
+  static const divisionEnabledParam = 'divisionGenerator.enabled';
+  static const divisionMaxResultParam = 'divisionGenerator.maxResult';
+
+  static const percentageEnabledParam = 'percentage.enabled';
+  static const percentageMaxResultParam = 'percentage.maxResult';
+  static const percentageFractionDigitsParam = 'percentage.fractionDigits';
 
   static const Map<String, Object> defaultParameters = {
     sessionsPuzzlesCountParam: 20,
-
-    additionGeneratorEnabledParam: true,
-    additionGeneratorMaxResultParam: 100,
-    additionGeneratorFractionDigits: 2,
-
-    subtractionGeneratorEnabledParam: true,
-    subtractionGeneratorMaxResultParam: 100,
-    subtractionGeneratorFractionDigitsParam: 2,
-
-    'multiplicationTableGenerator.enabled': true,
-    'multiplicationTableGenerator.multiplicationTimes': 10,
-
-    'divisionGenerator.enabled': true,
-    'divisionGenerator.maxResult': 100,
-
-    'percentageGenerator.enabled': true,
-    'percentageGenerator.maxResult': 100,
-    'percentageGenerator.fractionDigits': 2,
+    additionEnabledParam: true,
+    additionMaxResultParam: 100,
+    additionFractionDigits: 2,
+    subtractionEnabledParam: true,
+    subtractionMaxResultParam: 100,
+    subtractionFractionDigitsParam: 2,
+    multiplicationTableEnabledParam: true,
+    multiplicationTableTimesParam: 10,
+    divisionEnabledParam: true,
+    divisionMaxResultParam: 100,
+    percentageEnabledParam: true,
+    percentageMaxResultParam: 100,
+    percentageFractionDigitsParam: 2,
   };
 
   final Map<String, Object> _parameters;
@@ -43,7 +48,10 @@ class Configuration {
     for (var name in defaultParameters.keys) {
       var defaultValue = defaultParameters[name];
       var storedValue = sharedPrefs.get(name);
-      parameters[name] = (storedValue == null || storedValue.runtimeType != defaultValue.runtimeType) ? defaultValue! : storedValue!;
+      parameters[name] = (storedValue == null ||
+              storedValue.runtimeType != defaultValue.runtimeType)
+          ? defaultValue!
+          : storedValue!;
     }
     return Configuration._internal(parameters);
   }
