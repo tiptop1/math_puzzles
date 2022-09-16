@@ -7,16 +7,20 @@ class Configuration {
   static const additionGeneratorMaxResultParam = 'additionGenerator.0.maxResult.1';
   static const additionGeneratorFractionDigits = 'additionGenerator.0.fractionDigits.2';
 
+  static const subtractionGeneratorEnabledParam = 'subtractionGenerator.1.enabled.0';
+  static const subtractionGeneratorMaxResultParam = 'subtractionGenerator.1.maxResult.1';
+  static const subtractionGeneratorFractionDigitsParam = 'subtractionGenerator.1.fractionDigits.2';
+
   static const Map<String, Object> defaultParameters = {
     sessionsPuzzlesCountParam: 20,
 
-    'additionGenerator.enabled': true,
-    'additionGenerator.maxResult': 100,
-    'additionGenerator.fractionDigits': 2,
+    additionGeneratorEnabledParam: true,
+    additionGeneratorMaxResultParam: 100,
+    additionGeneratorFractionDigits: 2,
 
-    'subtractionGenerator.enabled': true,
-    'subtractionGenerator.maxResult': 100,
-    'subtractionGenerator.fractionDigits': 2,
+    subtractionGeneratorEnabledParam: true,
+    subtractionGeneratorMaxResultParam: 100,
+    subtractionGeneratorFractionDigitsParam: 2,
 
     'multiplicationTableGenerator.enabled': true,
     'multiplicationTableGenerator.multiplicationTimes': 10,
