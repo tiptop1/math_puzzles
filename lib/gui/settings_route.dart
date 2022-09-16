@@ -6,9 +6,6 @@ import '../data/data.config/parameter.dart';
 import '../data/data.config/parameter_validators.dart';
 
 class SettingsRoute extends StatefulWidget {
-  final Configuration _configuration;
-
-  SettingsRoute(this._configuration);
 
   @override
   State createState() {

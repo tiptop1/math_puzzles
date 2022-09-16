@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:math_puzzles/data/config/configuration.dart';
 import 'package:math_puzzles/data/lecture.dart';
@@ -25,7 +26,7 @@ class MathPuzzleBloc extends Bloc {
     _configuration = GetIt.I.get<Configuration>();
   }
 
-  void puzzleAnswered() {
+  void markPuzzleAsAnswered() {
     _lecture = _lecture.copyWith(puzzleAnswered: true);
     _sink.add(_lecture);
   }
@@ -38,23 +39,8 @@ class MathPuzzleBloc extends Bloc {
     } else {
       incorrectAnswersCount++;
     }
-    _lecture = _lecture.copyWith(
-      puzzleAnswered: true,
-      correctAnswersCount: correctAnswersCount,
-      incorrectAnswersCount: incorrectAnswersCount,
-    );
-    _sink.add(_lecture);
-  }
-
-  void nextPuzzle() {
-    var sessionsPuzzlesCount = _configuration
-        .parameters[Configuration.sessionsPuzzlesCountParam] as int;
-    if (_lecture.correctAnswersCount + _lecture.incorrectAnswersCount <
-        sessionsPuzzlesCount) {
-      _lecture = _lecture.copyWith(
-        puzzle: _generatePuzzle(),
-        puzzleAnswered: false,
-      );
+    if (correctAnswersCount + incorrectAnswersCount < (_configuration.parameters[Configuration.sessionsPuzzlesCountParam] as int)) {
+      _lecture = Lecture(_generatePuzzle(), false, false, correctAnswersCount, incorrectAnswersCount);
     } else {
       _lecture = _lecture.copyWith(finished: true);
     }
