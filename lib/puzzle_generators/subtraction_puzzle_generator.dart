@@ -25,4 +25,10 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
 
     return Puzzle('$a - $b', '$c');
   }
+
+  @override
+  bool isEnabled(Map<String, Object> parameters) =>
+      parameters.containsKey(Configuration.subtractionEnabledParam)
+          ? parameters[Configuration.subtractionEnabledParam] as bool
+          : false;
 }

@@ -1,5 +1,3 @@
-import 'package:math_puzzles/utils/puzzle_generator.dart';
-
 /// Validation message returned by ParameterValidator for further message
 /// translation.
 class ParametrizedMessage {

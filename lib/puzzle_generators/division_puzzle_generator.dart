@@ -19,4 +19,10 @@ class DivisionPuzzleGenerator extends PuzzleGenerator {
     var a = b * c;
     return Puzzle('$a \u00F7 $b', '$c');
   }
+
+  @override
+  bool isEnabled(Map<String, Object> parameters) =>
+      parameters.containsKey(Configuration.divisionEnabledParam)
+          ? parameters[Configuration.divisionEnabledParam] as bool
+          : false;
 }

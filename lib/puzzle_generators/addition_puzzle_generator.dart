@@ -25,4 +25,10 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
 
     return Puzzle('$a + $b', '$c');
   }
+
+  @override
+  bool isEnabled(Map<String, Object> parameters) =>
+      parameters.containsKey(Configuration.additionEnabledParam)
+          ? parameters[Configuration.additionEnabledParam] as bool
+          : false;
 }

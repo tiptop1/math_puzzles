@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:math_puzzles/data/config/configuration.dart';
 import 'package:math_puzzles/data/lecture.dart';
-import 'package:math_puzzles/utils/puzzle_generator.dart';
 
 import '../data/puzzle.dart';
+import '../puzzle_generators/puzzle_generator_manager.dart';
 import 'bloc.dart';
 
 class MathPuzzleBloc extends Bloc {

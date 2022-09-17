@@ -19,4 +19,10 @@ class PercentagePuzzleGenerator extends PuzzleGenerator {
             Configuration.percentageFractionDigitsParam, parameters));
     return Puzzle('$percentage% \u00D7 $number', result);
   }
+
+  @override
+  bool isEnabled(Map<String, Object> parameters) =>
+      parameters.containsKey(Configuration.percentageEnabledParam)
+          ? parameters[Configuration.percentageEnabledParam] as bool
+          : false;
 }

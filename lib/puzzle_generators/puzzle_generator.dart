@@ -12,4 +12,6 @@ abstract class PuzzleGenerator {
       throw Exception('Required parameter "$name" not provided.');
     }
   }
+
+  bool isEnabled(Map<String, Object> parameters);
 }
