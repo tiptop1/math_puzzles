@@ -1,25 +1,31 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Configuration {
+  static const sesstionGroup = 'session';
   static const sessionsPuzzlesCountParam = 'sessionsPuzzlesCount';
 
+  static const additionGroup = 'addition';
   static const additionEnabledParam = 'additionEnabled';
   static const additionMaxResultParam = 'additionMaxResult';
   static const additionFractionDigits = 'additionFractionDigits';
 
+  static const subtractionGroup = 'subtraction';
   static const subtractionEnabledParam = 'subtractionEnabled';
   static const subtractionMaxResultParam = 'subtractionMaxResult';
   static const subtractionFractionDigitsParam = 'subtractionFractionDigits';
 
+  static const multiplicationTableGroup = 'multiplicationTable';
   static const multiplicationTableEnabledParam = 'multiplicationTableEnabled';
   static const multiplicationTableTimesParam = 'multiplicationTableTimes';
 
-  static const divisionEnabledParam = 'divisionGenerator.enabled';
-  static const divisionMaxResultParam = 'divisionGenerator.maxResult';
+  static const divisionGroup = 'division';
+  static const divisionEnabledParam = 'divisionGeneratorEnabled';
+  static const divisionMaxResultParam = 'divisionGeneratorMaxResult';
 
-  static const percentageEnabledParam = 'percentage.enabled';
-  static const percentageMaxResultParam = 'percentage.maxResult';
-  static const percentageFractionDigitsParam = 'percentage.fractionDigits';
+  static const percentageGroup = 'percentage';
+  static const percentageEnabledParam = 'percentageEnabled';
+  static const percentageMaxResultParam = 'percentageMaxResult';
+  static const percentageFractionDigitsParam = 'percentageFractionDigits';
 
   static const Map<String, Object> defaultParameters = {
     sessionsPuzzlesCountParam: 20,

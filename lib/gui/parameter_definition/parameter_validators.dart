@@ -18,16 +18,16 @@ abstract class ParameterValidator<T> {
 }
 
 /// Predefined value scope validator.
-class NumParameterScopeValidator extends ParameterValidator<num> {
+class IntParameterScopeValidator extends ParameterValidator<int> {
   static const String name = 'numParameterScopeValidator';
 
-  final num minValue;
-  final num maxValue;
+  final int minValue;
+  final int maxValue;
 
-  const NumParameterScopeValidator(this.minValue, this.maxValue);
+  const IntParameterScopeValidator(this.minValue, this.maxValue);
 
   @override
-  ParametrizedMessage? validate(num value) =>
+  ParametrizedMessage? validate(int value) =>
       (value < minValue || value > maxValue)
           ? ParametrizedMessage(name, parameters: [minValue, maxValue])
           : null;

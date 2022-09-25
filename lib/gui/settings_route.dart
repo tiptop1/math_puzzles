@@ -1,312 +1,142 @@
 import 'package:flutter/material.dart';
-import 'package:math_puzzles/generated/l10n.dart';
+import 'package:math_puzzles/bloc/bloc_provider.dart';
+import 'package:math_puzzles/gui/edit_int_parameter_widget.dart';
+import 'package:math_puzzles/gui/parameter_definition/parameter_definition.dart';
+import 'package:math_puzzles/utils/app_constants.dart';
 
-import '../data/data.config/configuration.dart';
-import '../data/data.config/parameter.dart';
-import '../data/data.config/parameter_validators.dart';
+import '../bloc/settings_bloc.dart';
+import '../data/config/configuration.dart';
+import '../generated/l10n.dart';
+import 'edit_bool_parameter_widget.dart';
 
-class SettingsRoute extends StatefulWidget {
-
-  @override
-  State createState() {
-    return SettingsRouteState();
-  }
-}
-
-class SettingsRouteState extends State<SettingsRoute> {
-  static const String sectionDivider = '.';
+class SettingsRoute extends StatelessWidget {
+  const SettingsRoute({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var flattenParamDefs = _flattenParameterDefinitions(
-        widget._configuration.parameterDefinitions);
+    var paramDefs =
+        _flatParameterDefinitions(AppConstants.parameterDefinitions);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
         title: Text(AppLocalizations.of(context).settingsMenu),
       ),
       body: ListView.builder(
-        itemCount: flattenParamDefs.length,
-        itemBuilder: (context, i) => _listItemBuilder(context, i,
-            flattenParamDefs, widget._configuration.parameterValues),
+        itemBuilder: (context, i) => _buildParameter(context, paramDefs[i]),
       ),
     );
   }
 
-  /// List items contains: parameters, strings for headline
-  /// and nulls for dividers.
-  List<ParameterDefinition?> _flattenParameterDefinitions(
-      List<ParameterDefinition> paramDefinitions) {
-    var sortedParamDefs =
-        List<ParameterDefinition?>.filled(paramDefinitions.length, null);
-    List.copyRange(sortedParamDefs, 0, paramDefinitions);
-    sortedParamDefs.sort((a, b) => a!.order - b!.order);
-
-    var flattenParamDefs = <ParameterDefinition?>[];
-    for (var paramDef in sortedParamDefs) {
-      if (flattenParamDefs.isNotEmpty) {
-        flattenParamDefs.add(null);
-      }
-      flattenParamDefs.add(paramDef);
-      if (paramDef is GroupParameterDefinition) {
-        var sortedChildren =
-            List<ParameterDefinition?>.filled(paramDef.children.length, null);
-        List.copyRange(sortedChildren, 0, paramDef.children);
-        sortedChildren.sort((a, b) => a!.order - b!.order);
-        flattenParamDefs.addAll(sortedChildren);
-      }
-    }
-    return flattenParamDefs;
-  }
-
-  Widget _listItemBuilder(
-      BuildContext context,
-      int i,
-      List<ParameterDefinition?> flattenParamDefinitions,
-      Map<String, dynamic> paramValues) {
-    var paramDef = flattenParamDefinitions[i];
-    var listItemWidget;
-    if (paramDef is ScalarParameterDefinition) {
-      listItemWidget = _createScalarParameterDefinitionItem(
-          context, paramDef, paramValues[paramDef.name]);
+  Widget _buildParameter(BuildContext context, ParameterDefinition? paramDef) {
+    var widget;
+    if (paramDef == null) {
+      widget = Divider(color: Colors.black, thickness: 2);
     } else if (paramDef is GroupParameterDefinition) {
-      listItemWidget = _createGroupParameterDefinitionItem(context, paramDef);
+      widget = _buildGroupParameter(context, paramDef);
+    } else if (paramDef is ValueParameterDefinition) {
+      widget = _buildValueParameter(context, paramDef);
     } else {
-      listItemWidget = Divider(color: Colors.black, thickness: 2);
+      throw UnsupportedError(
+          'Parameter definition for "${paramDef.name}" of type ${paramDef.runtimeType} is not supported.');
     }
-    return listItemWidget;
+    return widget;
   }
 
-  Widget _createScalarParameterDefinitionItem(BuildContext context,
-      ScalarParameterDefinition paramDefinition, dynamic paramValue) {
+  Widget _buildGroupParameter(
+      BuildContext context, GroupParameterDefinition groupDef) {
     return ListTile(
       title: Text(
-          '${dynamicMessage(context, paramDefinition.name)}: ${_translate(context, paramValue)}'),
-      onTap: () {
-        _showEditParameterDialog(paramDefinition, paramValue)
-            .then((newParamValue) {
-          if (newParamValue != null && newParamValue != paramValue) {
-            setState(() {
-              widget._configuration
-                  .setParameterValue(paramDefinition.name, newParamValue);
-            });
-          }
-        });
-      },
-    );
-  }
-
-  Widget _createGroupParameterDefinitionItem(
-      BuildContext context, GroupParameterDefinition paramDef) {
-    return ListTile(
-      title: Text(
-        dynamicMessage(context, paramDef.name),
+        _translate(context, groupDef.name),
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
 
-  Future<dynamic> _showEditParameterDialog(
-      ScalarParameterDefinition paramDef, dynamic paramValue) async {
+  // TODO: How to find translation in dynamic way?
+  String _translate(BuildContext context, String str) {
+    var localizations = AppLocalizations.of(context);
+    var translatedStr;
+    if (str == Configuration.sesstionGroup) {
+      translatedStr = localizations.session;
+    } else if (str == Configuration.additionGroup) {
+      translatedStr = localizations.additionGenerator;
+    } else if (str == Configuration.subtractionGroup) {
+      translatedStr = localizations.multiplicationTableGenerator;
+    } else if (str == Configuration.multiplicationTableGroup) {
+      translatedStr = localizations.multiplicationTableGenerator;
+    } else if (str == Configuration.divisionGroup) {
+      translatedStr = localizations.divisionGenerator;
+    } else if (str == Configuration.percentageGroup) {
+      translatedStr = localizations.percentageGenerator;
+    } else {
+      throw UnsupportedError('Could not find translation for "$str".');
+    }
+    return translatedStr;
+  }
+
+  List<ParameterDefinition?> _flatParameterDefinitions(
+      List<ParameterDefinition> paramDefs) {
+    var flattenList = <ParameterDefinition?>[];
+
+    for (var i = 0; i < paramDefs.length; i++) {
+      var paramDef = paramDefs[i];
+      var isGroup = paramDef is GroupParameterDefinition;
+      if (isGroup && i > 0) {
+        flattenList.add(null);
+      }
+
+      flattenList.add(paramDef);
+
+      if (isGroup) {
+        paramDef.children.forEach((e) => flattenList.add(e));
+      }
+
+      return flattenList;
+    }
+
+    return flattenList;
+  }
+
+  Widget _buildValueParameter(
+      BuildContext context, ValueParameterDefinition<Object> paramDef) {
+    var bloc = BlocProvider.of<SettingsBloc>(context);
+    var paramName = paramDef.name;
+    return StreamBuilder<Object>(
+        stream: bloc.getParametersValueStream(paramName),
+        builder: (context, snapshot) {
+          var paramVal = snapshot.data;
+          assert(paramVal != null, 'Parameter "$paramName" has null value');
+          return ListTile(
+            title: Text('${_translate(context, paramName)}: $paramVal'),
+            onTap: () {
+              _showEditParameterDialog(context, paramDef, paramVal!)
+                  .then((newParamVal) {
+                if (newParamVal != paramVal) {
+                  bloc.setParameterValue(paramDef.name, newParamVal);
+                }
+              });
+            },
+          );
+        });
+  }
+
+  Future<Object> _showEditParameterDialog(BuildContext context,
+      ValueParameterDefinition paramDef, Object paramVal) async {
     var dialogChildren;
-    if (paramValue is bool) {
-      dialogChildren = [
-        BoolRadioButtonGroup(paramDef, paramValue, widget._configuration)
-      ];
-    } else if (paramValue is int) {
-      dialogChildren = [
-        IntInputField(paramDef, paramValue, widget._configuration)
-      ];
+    if (paramVal is bool) {
+      dialogChildren = [EditBoolParameterWidget(paramDef, paramVal)];
+    } else if (paramVal is int) {
+      dialogChildren = [EditIntParameterWidget(paramDef, paramVal)];
     } else {
       throw UnsupportedError('Dialogs not supported for parameter of type '
-          '${paramValue?.runtimeType}.');
+          '${paramVal?.runtimeType}.');
     }
     return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => SimpleDialog(
-          title: Text(dynamicMessage(context, paramDef.name)),
+          title: Text(_translate(context, paramDef.name)),
           children: dialogChildren),
     );
   }
-
-  String _translate(BuildContext context, dynamic paramValue) {
-    var translatedValue;
-    if (paramValue is bool) {
-      var appLoc = AppLocalizations.of(context);
-      translatedValue = (paramValue ? appLoc.boolTrue : appLoc.boolFalse);
-    } else if (paramValue is String) {
-      translatedValue = dynamicMessage(context, paramValue);
-    } else {
-      translatedValue = paramValue?.toString();
-    }
-    return translatedValue;
-  }
-}
-
-class BoolRadioButtonGroup extends StatefulWidget {
-  final ScalarParameterDefinition _paramDef;
-  final bool _paramValue;
-  final Configuration _configuration;
-
-  BoolRadioButtonGroup(this._paramDef, this._paramValue, this._configuration);
-
-  @override
-  State createState() => _BoolRadioButtonGroupState();
-}
-
-class _BoolRadioButtonGroupState extends State<BoolRadioButtonGroup> {
-  bool _groupValue = false;
-  ParametrizedMessage? _newValueValidationMsg;
-
-  _BoolRadioButtonGroupState();
-
-  @override
-  void initState() {
-    super.initState();
-    _groupValue = widget._paramValue;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var widgets = <Widget>[
-      ListTile(
-        title: Text(AppLocalizations.of(context).boolTrue),
-        leading: Radio(
-          value: true,
-          groupValue: _groupValue,
-          onChanged: onChangeHandler,
-        ),
-      ),
-      ListTile(
-        title: Text(AppLocalizations.of(context).boolFalse),
-        leading: Radio(
-          value: false,
-          groupValue: _groupValue,
-          onChanged: onChangeHandler,
-        ),
-      ),
-    ];
-
-    var divider;
-    var text;
-
-    if (_newValueValidationMsg != null) {
-      var theme = Theme.of(context);
-      divider = Divider(
-        color: theme.errorColor,
-        thickness: 1.0,
-      );
-      text = Text(
-          dynamicMessage(context, _newValueValidationMsg!.message,
-              args: _newValueValidationMsg!.parameters),
-          style: theme.textTheme.overline!.apply(color: theme.errorColor));
-    } else {
-      divider = Divider(
-        color: Colors.grey,
-        thickness: 1.0,
-      );
-    }
-
-    widgets.add(divider);
-    if (text != null) {
-      widgets.add(text);
-    }
-
-    return Column(children: widgets);
-  }
-
-  void onChangeHandler(bool? newValue) {
-    _newValueValidationMsg = widget._paramDef
-        .validate(newValue, widget._configuration.parameterValues);
-    setState(() => _groupValue = (newValue ?? false));
-    if (_newValueValidationMsg == null) {
-      Navigator.pop(context, _groupValue);
-    }
-  }
-}
-
-class IntInputField extends StatefulWidget {
-  final ScalarParameterDefinition _paramDef;
-  final dynamic _paramValue;
-  final Configuration _configuration;
-
-  IntInputField(this._paramDef, this._paramValue, this._configuration);
-
-  @override
-  State createState() => _IntInputFieldState();
-}
-
-class _IntInputFieldState extends State<IntInputField> {
-  final _formKey = GlobalKey<FormState>();
-  final _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.text = widget._paramValue.toString();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _controller.text = widget._paramValue.toString();
-    var paramDef = widget._paramDef;
-    return Form(
-      key: _formKey,
-      child: TextFormField(
-        controller: _controller,
-        keyboardType:
-            TextInputType.numberWithOptions(signed: false, decimal: true),
-        validator: (value) {
-          var parametrizedMsg = paramDef.checkConversion(value);
-          parametrizedMsg ??= paramDef.validate(
-              paramDef.convert(value), widget._configuration.parameterValues);
-          return parametrizedMsg != null
-              ? dynamicMessage(context, parametrizedMsg.message,
-                  args: parametrizedMsg.parameters)
-              : null;
-        },
-        onEditingComplete: () {
-          var formState = _formKey.currentState;
-          if (formState != null && formState.validate()) {
-            Navigator.pop(context, paramDef.convert(_controller.text));
-          }
-        },
-      ),
-    );
-  }
-}
-
-String dynamicMessage(BuildContext context, String name,
-    {List<dynamic> args = const []}) {
-  var instanceMirror = invokingReflector.reflect(AppLocalizations.of(context));
-  var classMirror = instanceMirror.type;
-
-  // First of all check if requested method exists
-  var methodMirror;
-  var instanceMembers = classMirror.instanceMembers;
-  var methodName = name.replaceAll('\.', '_');
-  for (var memberName in instanceMembers.keys) {
-    if (memberName == methodName) {
-      methodMirror = instanceMembers[memberName];
-      break;
-    }
-  }
-
-  var message;
-  if (methodMirror != null) {
-    // If method exists - call it
-    message = (args.isEmpty
-        ? instanceMirror.invokeGetter(methodName)
-        : instanceMirror.invoke(methodName, args));
-  } else {
-    message = '#$name#';
-  }
-  return message;
 }
