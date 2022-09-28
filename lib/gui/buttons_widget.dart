@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 import '../bloc/bloc_provider.dart';
 import '../bloc/math_puzzle_bloc.dart';
-import '../data/config/configuration.dart';
 import '../data/lecture.dart';
 import '../generated/l10n.dart';
 import '../utils/app_constants.dart';
@@ -22,7 +20,7 @@ class ButtonsWidget extends StatelessWidget {
         // TODO: Try to find better icon - something like question mark should be OK
         icon: Icon(Icons.help_outline),
         label: Text(AppLocalizations.of(context).showAnswerButton),
-        style: ElevatedButton.styleFrom(primary: AppConstants.answerColor),
+        style: ElevatedButton.styleFrom(backgroundColor: AppConstants.answerColor),
         onPressed: () => bloc.markPuzzleAsAnswered(),
       );
     } else {
@@ -36,7 +34,7 @@ class ButtonsWidget extends StatelessWidget {
               icon: Icon(Icons.close),
               label: Text(AppLocalizations.of(context).incorrectAnswerButton),
               style: ElevatedButton.styleFrom(
-                  primary: AppConstants.incorrectAnswerColor),
+                  backgroundColor: AppConstants.incorrectAnswerColor),
               onPressed: () => bloc.rateAnswer(false),
             ),
           ),
@@ -49,7 +47,7 @@ class ButtonsWidget extends StatelessWidget {
                 AppLocalizations.of(context).correctAnswerButton,
               ),
               style: ElevatedButton.styleFrom(
-                  primary: AppConstants.correctAnswerColor),
+                  backgroundColor: AppConstants.correctAnswerColor),
               onPressed: () => bloc.rateAnswer(true),
             ),
           ),
