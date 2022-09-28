@@ -65,18 +65,18 @@
     "type": "text",
     "placeholders": {}
   },
-  "intTypeValidator": "Expected integer value.",
-  "@intTypeValidator": {
+  "intValueConverter": "Expected integer value.",
+  "@intValueConverter": {
     "type": "text",
     "placeholders": {}
   },
-  "boolTypeValidator": "Expected logic value - \"true\" or \"false\".",
-  "@boolTypeValidator": {
+  "boolValueConverter": "Expected logic value - \"true\" or \"false\".",
+  "@boolValueConverter": {
     "type": "text",
     "placeholders": {}
   },
-  "numParameterScopeValidator": "Allowed value between {minValue} and {maxValue}.",
-  "@numParameterScopeValidator": {
+  "intParameterScopeValidator": "Allowed value between {minValue} and {maxValue}.",
+  "@intParameterScopeValidator": {
     "type": "text",
     "placeholders": {
       "minValue": {},

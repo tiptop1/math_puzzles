@@ -65,18 +65,18 @@
     "type": "text",
     "placeholders": {}
   },
-  "intTypeValidator": "Erwarteter ganzzahliger Wert.",
-  "@intTypeValidator": {
+  "intValueConverter": "Erwarteter ganzzahliger Wert.",
+  "@intValueConverter": {
     "type": "text",
     "placeholders": {}
   },
-  "boolTypeValidator": "Erwarteter logischer Wert - \"wahr\" or \"falsch\".",
-  "@boolTypeValidator": {
+  "boolValueConverter": "Erwarteter logischer Wert - \"wahr\" or \"falsch\".",
+  "@boolValueConverter": {
     "type": "text",
     "placeholders": {}
   },
-  "numParameterScopeValidator": "Zul\u00E4ssiger Wert zwischen {minValue} und {maxValue}.",
-  "@numParameterScopeValidator": {
+  "intParameterScopeValidator": "Zul\u00E4ssiger Wert zwischen {minValue} und {maxValue}.",
+  "@intParameterScopeValidator": {
     "type": "text",
     "placeholders": {
       "minValue": {},

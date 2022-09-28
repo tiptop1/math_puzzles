@@ -181,30 +181,30 @@ class AppLocalizations {
   }
 
   /// `Expected integer value.`
-  String get intTypeValidator {
+  String get intValueConverter {
     return Intl.message(
       'Expected integer value.',
-      name: 'intTypeValidator',
+      name: 'intValueConverter',
       desc: '',
       args: [],
     );
   }
 
   /// `Expected logic value - "true" or "false".`
-  String get boolTypeValidator {
+  String get boolValueConverter {
     return Intl.message(
       'Expected logic value - "true" or "false".',
-      name: 'boolTypeValidator',
+      name: 'boolValueConverter',
       desc: '',
       args: [],
     );
   }
 
   /// `Allowed value between {minValue} and {maxValue}.`
-  String numParameterScopeValidator(Object minValue, Object maxValue) {
+  String intParameterScopeValidator(Object minValue, Object maxValue) {
     return Intl.message(
       'Allowed value between $minValue and $maxValue.',
-      name: 'numParameterScopeValidator',
+      name: 'intParameterScopeValidator',
       desc: '',
       args: [minValue, maxValue],
     );

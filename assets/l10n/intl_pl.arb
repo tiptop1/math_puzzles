@@ -65,18 +65,18 @@
     "type": "text",
     "placeholders": {}
   },
-  "intTypeValidator": "Wymagana liczba ca\u0142kowita.",
-  "@intTypeValidator": {
+  "intValueConverter": "Wymagana liczba ca\u0142kowita.",
+  "@intValueConverter": {
     "type": "text",
     "placeholders": {}
   },
-  "boolTypeValidator": "Wymagana warto\u015b\u0107 logiczna - \"Tak\" lub \"Nie\".",
-  "@boolTypeValidator": {
+  "boolValueConverter": "Wymagana warto\u015b\u0107 logiczna - \"Tak\" lub \"Nie\".",
+  "@boolValueConverter": {
     "type": "text",
     "placeholders": {}
   },
-  "numParameterScopeValidator": "Dozwolona warto\u015b\u0107 pomi\u0119dzy {minValue} i {maxValue}.",
-  "@numParameterScopeValidator": {
+  "intParameterScopeValidator": "Dozwolona warto\u015b\u0107 pomi\u0119dzy {minValue} i {maxValue}.",
+  "@intParameterScopeValidator": {
     "type": "text",
     "placeholders": {
       "minValue": {},
