@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:math_puzzles/bloc/bloc_provider.dart';
 import 'package:math_puzzles/bloc/math_puzzle_bloc.dart';
 import 'package:math_puzzles/generated/l10n.dart';
 
-import '../data/config/configuration.dart';
 import '../data/lecture.dart';
-import '../utils/app_constants.dart';
 import 'math_puzzle_widget.dart';
 import 'session_summary_widget.dart';
 
