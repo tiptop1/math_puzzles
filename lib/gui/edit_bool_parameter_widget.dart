@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../generated/l10n.dart';
 import 'parameter_definition/parameter_definition.dart';
-import 'parameter_definition/parameter_validators.dart';
 
 class EditBoolParameterWidget extends StatefulWidget {
   final ValueParameterDefinition _paramDefinition;
@@ -16,7 +15,7 @@ class EditBoolParameterWidget extends StatefulWidget {
 
 class _EditBoolParameterWidgetState extends State<EditBoolParameterWidget> {
   bool _groupValue = false;
-  ParametrizedMessage? _newValueValidationMsg;
+  String? _validationMsg;
 
   _EditBoolParameterWidgetState();
 
@@ -34,7 +33,7 @@ class _EditBoolParameterWidgetState extends State<EditBoolParameterWidget> {
         leading: Radio(
           value: true,
           groupValue: _groupValue,
-          onChanged: onChangeHandler,
+          onChanged: (bool? newValue) => onChangeHandler(context, newValue),
         ),
       ),
       ListTile(
@@ -42,7 +41,7 @@ class _EditBoolParameterWidgetState extends State<EditBoolParameterWidget> {
         leading: Radio(
           value: false,
           groupValue: _groupValue,
-          onChanged: onChangeHandler,
+          onChanged: (bool? newValue) => onChangeHandler(context, newValue),
         ),
       ),
     ];
@@ -50,15 +49,13 @@ class _EditBoolParameterWidgetState extends State<EditBoolParameterWidget> {
     var divider;
     var text;
 
-    if (_newValueValidationMsg != null) {
+    if (_validationMsg != null) {
       var theme = Theme.of(context);
       divider = Divider(
         color: theme.errorColor,
         thickness: 1.0,
       );
-      text = Text(
-          dynamicMessage(context, _newValueValidationMsg!.message,
-              args: _newValueValidationMsg!.parameters),
+      text = Text(_validationMsg!,
           style: theme.textTheme.overline!.apply(color: theme.errorColor));
     } else {
       divider = Divider(
@@ -75,10 +72,12 @@ class _EditBoolParameterWidgetState extends State<EditBoolParameterWidget> {
     return Column(children: widgets);
   }
 
-  void onChangeHandler(bool? newValue) {
-    _newValueValidationMsg = widget._paramDefinition.validateValue(newValue);
+  void onChangeHandler(BuildContext context, bool? newValue) {
+    _validationMsg = newValue == null
+        ? AppLocalizations.of(context).boolValueConverter
+        : widget._paramDefinition.validateValue(context, newValue);
     setState(() => _groupValue = (newValue ?? false));
-    if (_newValueValidationMsg == null) {
+    if (_validationMsg == null) {
       Navigator.pop(context, _groupValue);
     }
   }
