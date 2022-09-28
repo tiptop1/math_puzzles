@@ -57,7 +57,7 @@ class Configuration {
       parameters[name] = (storedValue == null ||
               storedValue.runtimeType != defaultValue.runtimeType)
           ? defaultValue!
-          : storedValue!;
+          : storedValue;
     }
     return Configuration._internal(parameters);
   }
