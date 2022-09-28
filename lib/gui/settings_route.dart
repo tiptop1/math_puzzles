@@ -129,7 +129,7 @@ class SettingsRoute extends StatelessWidget {
       dialogChildren = [EditIntParameterWidget(paramDef, paramVal)];
     } else {
       throw UnsupportedError('Dialogs not supported for parameter of type '
-          '${paramVal?.runtimeType}.');
+          '${paramVal.runtimeType}.');
     }
     return showDialog(
       context: context,
