@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:math_puzzles/data/config/configuration.dart';
 import 'package:math_puzzles/generated/l10n.dart';
-import 'package:math_puzzles/gui/math_puzzle_route.dart';
 
 import '../data/lecture.dart';
 import '../utils/app_constants.dart';
