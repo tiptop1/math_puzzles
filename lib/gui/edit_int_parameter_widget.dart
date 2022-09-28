@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_puzzles/generated/l10n.dart';
 
 import 'parameter_definition/parameter_definition.dart';
 
@@ -39,11 +40,8 @@ class _IntInputFieldState extends State<EditIntParameterWidget> {
         keyboardType:
         TextInputType.numberWithOptions(signed: false, decimal: true),
         validator: (value) {
-          var parametrizedMsg = paramDef.validateValue(paramDef.convert(value));
-          return parametrizedMsg != null
-              ? dynamicMessage(context, parametrizedMsg.message,
-              args: parametrizedMsg.parameters)
-              : null;
+          var convertedValue = paramDef.convertValue(value);
+            return convertedValue == null ? AppLocalizations.of(context).intValueConverter : paramDef.validateValue(context, convertedValue);
         },
         onEditingComplete: () {
           var formState = _formKey.currentState;
