@@ -17,12 +17,12 @@ class MathPuzzleBloc extends Bloc {
   late Stream<Lecture> stream;
 
   MathPuzzleBloc() {
+    _configuration = GetIt.I.get<Configuration>();
     _generatorManager = PuzzleGeneratorManager();
     _sink = _controller.sink;
     _lecture = _initialLecture();
     _sink.add(_lecture);
     stream = _controller.stream;
-    _configuration = GetIt.I.get<Configuration>();
   }
 
   void markPuzzleAsAnswered() {
