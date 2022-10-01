@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:math_puzzles/bloc/bloc_provider.dart';
-import 'package:math_puzzles/gui/edit_int_parameter_widget.dart';
-import 'package:math_puzzles/gui/parameter_definition/parameter_definition.dart';
-import 'package:math_puzzles/utils/app_constants.dart';
 
+import '../bloc/bloc_provider.dart';
 import '../bloc/settings_bloc.dart';
 import '../data/config/configuration.dart';
 import '../generated/l10n.dart';
+import '../utils/app_constants.dart';
 import 'edit_bool_parameter_widget.dart';
+import 'edit_int_parameter_widget.dart';
+import 'parameter_definition/parameter_definition.dart';
+import 'progress_indicator_widget.dart';
 
 class SettingsRoute extends StatelessWidget {
   const SettingsRoute({Key? key}) : super(key: key);
@@ -104,19 +105,25 @@ class SettingsRoute extends StatelessWidget {
     return StreamBuilder<Object>(
         stream: bloc.getParametersValueStream(paramName),
         builder: (context, snapshot) {
-          var paramVal = snapshot.data;
-          assert(paramVal != null, 'Parameter "$paramName" has null value');
-          return ListTile(
-            title: Text('${_translate(context, paramName)}: $paramVal'),
-            onTap: () {
-              _showEditParameterDialog(context, paramDef, paramVal!)
-                  .then((newParamVal) {
-                if (newParamVal != paramVal) {
-                  bloc.setParameterValue(paramDef.name, newParamVal);
-                }
-              });
-            },
-          );
+          var widget;
+          if (snapshot.hasData) {
+            var paramVal = snapshot.data;
+            assert(paramVal != null, 'Parameter "$paramName" has null value');
+            widget = ListTile(
+              title: Text('${_translate(context, paramName)}: $paramVal'),
+              onTap: () {
+                _showEditParameterDialog(context, paramDef, paramVal!)
+                    .then((newParamVal) {
+                  if (newParamVal != paramVal) {
+                    bloc.setParameterValue(paramDef.name, newParamVal);
+                  }
+                });
+              },
+            );
+          } else {
+            widget = ProgressIndicatorWidget();
+          }
+          return widget;
         });
   }
 
