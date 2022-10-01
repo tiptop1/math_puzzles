@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:math_puzzles/bloc/bloc_provider.dart';
-import 'package:math_puzzles/bloc/math_puzzle_bloc.dart';
-import 'package:math_puzzles/generated/l10n.dart';
 
+import '../bloc/bloc_provider.dart';
+import '../bloc/math_puzzle_bloc.dart';
 import '../data/lecture.dart';
+import '../generated/l10n.dart';
 import 'math_puzzle_widget.dart';
+import 'progress_indicator_widget.dart';
 import 'session_summary_widget.dart';
 
 class Route {
@@ -19,28 +20,35 @@ class MathPuzzleRoute extends StatelessWidget {
     return StreamBuilder<Lecture>(
         stream: bloc.stream,
         builder: (context, snapshot) {
-          var localizations = AppLocalizations.of(context);
-          var lecture = snapshot.data!;
-          var title = lecture.finished
-              ? localizations.sessionSummaryTitle
-              : (lecture.puzzleAnswered
-                  ? localizations.answerRateTitle
-                  : localizations.puzzleTitle);
-          return Scaffold(
-            appBar: AppBar(
-              leading: null,
-              title: Text(title),
-              automaticallyImplyLeading: false,
-              actions: createPopupMenuButton(context, bloc),
-            ),
-            body: lecture.finished
-                ? SessionSummaryWidget(lecture)
-                : MathPuzzleWidget(lecture),
-          );
+          var widget;
+          if (snapshot.hasData) {
+            var localizations = AppLocalizations.of(context);
+            var lecture = snapshot.data!;
+            var title = lecture.finished
+                ? localizations.sessionSummaryTitle
+                : (lecture.puzzleAnswered
+                    ? localizations.answerRateTitle
+                    : localizations.puzzleTitle);
+            widget = Scaffold(
+              appBar: AppBar(
+                leading: null,
+                title: Text(title),
+                automaticallyImplyLeading: false,
+                actions: createPopupMenuButton(context, bloc),
+              ),
+              body: lecture.finished
+                  ? SessionSummaryWidget(lecture)
+                  : MathPuzzleWidget(lecture),
+            );
+          } else {
+            widget = ProgressIndicatorWidget();
+          }
+          return widget;
         });
   }
 
-  List<Widget> createPopupMenuButton(BuildContext context, MathPuzzleBloc bloc) {
+  List<Widget> createPopupMenuButton(
+      BuildContext context, MathPuzzleBloc bloc) {
     return <Widget>[
       PopupMenuButton<String>(
         onSelected: (value) {
@@ -48,7 +56,8 @@ class MathPuzzleRoute extends StatelessWidget {
             bloc.resetSession();
           } else {
             Navigator.pushNamed(context, value);
-          }},
+          }
+        },
         itemBuilder: (buildContext) {
           return [
             PopupMenuItem<String>(
@@ -71,5 +80,3 @@ class MathPuzzleRoute extends StatelessWidget {
     ];
   }
 }
-
-
