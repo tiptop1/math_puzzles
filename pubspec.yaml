@@ -22,7 +22,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   provider: ^6.0.0
-  decimal: ^2.0.0
   shared_preferences: ^2.0.5
   fl_chart: ^0.55.1
   pedantic: ^1.11.0
