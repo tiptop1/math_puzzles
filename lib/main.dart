@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:math_puzzles/bloc/bloc_provider.dart';
-import 'package:math_puzzles/bloc/math_puzzle_bloc.dart';
 
+import 'bloc/bloc_provider.dart';
+import 'bloc/math_puzzle_bloc.dart';
 import 'bloc/settings_bloc.dart';
 import 'data/config/configuration.dart';
 import 'generated/l10n.dart';
 import 'gui/math_puzzle_route.dart';
+import 'gui/progress_indicator_widget.dart';
 import 'gui/settings_route.dart';
 
 class Route {
@@ -39,32 +40,29 @@ void main() {
           AppLocalizations.of(context).applicationTitle,
       initialRoute: Route.puzzle,
       routes: {
-        Route.puzzle: (context) => BlocProvider<MathPuzzleBloc>(
-              bloc: MathPuzzleBloc(),
-              child: MathPuzzleRoute(),
-            ),
-        Route.settings: (context) => BlocProvider<SettingsBloc>(
-              bloc: SettingsBloc(),
-              child: SettingsRoute(),
-            ),
+        Route.puzzle: (context) => buildMathPuzzleRoute(),
+        Route.settings: (context) => buildSettingsRoute(),
       },
     ),
   );
 }
 
-class BlockProvider {}
-
-Widget buildWidget() {
+Widget buildMathPuzzleRoute() {
   return FutureBuilder(
     future: GetIt.I.allReady(),
     builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return snapshot.hasData ? MathPuzzleRoute() : progressBarWidget();
+      return snapshot.hasData
+          ? BlocProvider<MathPuzzleBloc>(
+              bloc: MathPuzzleBloc(),
+              child: MathPuzzleRoute(),
+            )
+          : ProgressIndicatorWidget();
     },
   );
 }
 
-Widget progressBarWidget() {
-  return Center(
-    child: CircularProgressIndicator(),
-  );
-}
+Widget buildSettingsRoute() => BlocProvider<SettingsBloc>(
+      bloc: SettingsBloc(),
+      child: SettingsRoute(),
+    );
+
