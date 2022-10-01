@@ -21,7 +21,7 @@ class AdditionPuzzleGenerator extends PuzzleGenerator {
         (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
     var a = num.parse(
         (_random.nextDouble() * c.toInt()).toStringAsFixed(fractionDigits));
-    var b = c - a;
+    var b = num.parse((c - a).toStringAsFixed(fractionDigits));
 
     return Puzzle('$a + $b', '$c');
   }

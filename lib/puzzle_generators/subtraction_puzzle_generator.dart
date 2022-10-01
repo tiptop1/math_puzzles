@@ -17,11 +17,11 @@ class SubtractionPuzzleGenerator extends PuzzleGenerator {
         Configuration.subtractionFractionDigitsParam, parameters);
 
     // a - b = c
-    var c = num.parse(
-        (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
     var a = num.parse(
-        (_random.nextDouble() * c.toInt()).toStringAsFixed(fractionDigits));
-    var b = a - c;
+        (_random.nextDouble() * maxResult).toStringAsFixed(fractionDigits));
+    var b = num.parse(
+        (_random.nextDouble() * a.toInt()).toStringAsFixed(fractionDigits));
+    var c = num.parse((a - b).toStringAsFixed(fractionDigits));
 
     return Puzzle('$a - $b', '$c');
   }
