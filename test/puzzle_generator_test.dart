@@ -1,7 +1,9 @@
 import 'dart:math';
 
-import 'package:decimal/decimal.dart';
-import 'package:math_puzzles/utils/puzzle_generator.dart';
+import 'package:math_puzzles/data/config/configuration.dart';
+import 'package:math_puzzles/puzzle_generators/addition_puzzle_generator.dart';
+import 'package:math_puzzles/puzzle_generators/multiplication_table_puzzle_generator.dart';
+import 'package:math_puzzles/puzzle_generators/puzzle_generator.dart';
 import 'package:test/test.dart';
 
 final RegExp operandRegexp = RegExp('\\d+(\.\\d+)?');
@@ -12,8 +14,8 @@ void main() {
     PuzzleGenerator generator = AdditionPuzzleGenerator(_random);
 
     var paramValues = {
-      AdditionPuzzleGenerator.paramMaxResult: 1000,
-      AdditionPuzzleGenerator.paramFractionDigits: 0
+      Configuration.additionMaxResultParam: 1000,
+      Configuration.additionFractionDigits: 0
     };
 
     var puzzle = generator.generate(paramValues);
@@ -30,18 +32,18 @@ void main() {
   test('AdditionPuzzleGenerator_doubleAddition', () {
     PuzzleGenerator generator = AdditionPuzzleGenerator(_random);
 
-    var defaultParams = <String, dynamic>{
-      AdditionPuzzleGenerator.paramMaxResult: 1000,
-      AdditionPuzzleGenerator.paramFractionDigits: 2
+    var defaultParams = <String, Object>{
+      Configuration.additionMaxResultParam: 1000,
+      Configuration.additionFractionDigits: 2
     };
 
     var puzzle = generator.generate(defaultParams);
     var question = puzzle.question;
     expect(question, isNotNull);
 
-    var o1 = Decimal.parse(getOperand(question, 0));
-    var o2 = Decimal.parse(getOperand(question, 1));
-    var result = Decimal.parse(puzzle.answer);
+    var o1 = num.parse(getOperand(question, 0));
+    var o2 = num.parse(getOperand(question, 1));
+    var result = num.parse(puzzle.answer);
 
     expect(result, equals(o1 + o2));
   });
@@ -49,8 +51,8 @@ void main() {
   test('MultiplicationTablePuzzleGenerator', () {
     PuzzleGenerator generator = MultiplicationTablePuzzleGenerator(_random);
 
-    var defaultParams = <String, dynamic>{
-      MultiplicationTablePuzzleGenerator.paramMultiplicationTimes: 10
+    var defaultParams = <String, Object>{
+      Configuration.multiplicationTableTimesParam: 10
     };
 
     var puzzle = generator.generate(defaultParams);
