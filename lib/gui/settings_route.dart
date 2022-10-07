@@ -23,6 +23,7 @@ class SettingsRoute extends StatelessWidget {
         title: Text(AppLocalizations.of(context).settingsMenu),
       ),
       body: ListView.builder(
+        itemCount: paramDefs.length,
         itemBuilder: (context, i) => _buildParameter(context, paramDefs[i]),
       ),
     );
@@ -53,24 +54,74 @@ class SettingsRoute extends StatelessWidget {
     );
   }
 
-  // TODO: How to find translation in dynamic way?
+  // TODO: How to get translation in dynamic way?
   String _translate(BuildContext context, String str) {
     var localizations = AppLocalizations.of(context);
     var translatedStr;
-    if (str == Configuration.sesstionGroup) {
-      translatedStr = localizations.session;
-    } else if (str == Configuration.additionGroup) {
-      translatedStr = localizations.additionGenerator;
-    } else if (str == Configuration.subtractionGroup) {
-      translatedStr = localizations.multiplicationTableGenerator;
-    } else if (str == Configuration.multiplicationTableGroup) {
-      translatedStr = localizations.multiplicationTableGenerator;
-    } else if (str == Configuration.divisionGroup) {
-      translatedStr = localizations.divisionGenerator;
-    } else if (str == Configuration.percentageGroup) {
-      translatedStr = localizations.percentageGenerator;
-    } else {
-      throw UnsupportedError('Could not find translation for "$str".');
+    switch (str) {
+      case Configuration.sessionsPuzzlesCountParam:
+        translatedStr = localizations.session_puzzlesCount;
+        break;
+      case Configuration.sesstionGroup:
+        translatedStr = localizations.session;
+        break;
+      case Configuration.additionGroup:
+        translatedStr = localizations.additionGenerator;
+        break;
+      case Configuration.additionEnabledParam:
+        translatedStr = localizations.additionGenerator_enabled;
+        break;
+      case Configuration.additionMaxResultParam:
+        translatedStr = localizations.additionGenerator_maxResult;
+        break;
+      case Configuration.additionFractionDigits:
+        translatedStr = localizations.additionGenerator_fractionDigits;
+        break;
+      case Configuration.subtractionGroup:
+        translatedStr = localizations.subtractionGenerator;
+        break;
+      case Configuration.subtractionEnabledParam:
+        translatedStr = localizations.subtractionGenerator_enabled;
+        break;
+      case Configuration.subtractionMaxResultParam:
+        translatedStr = localizations.subtractionGenerator_maxResult;
+        break;
+      case Configuration.subtractionFractionDigitsParam:
+        translatedStr = localizations.subtractionGenerator_fractionDigits;
+        break;
+      case Configuration.multiplicationTableGroup:
+        translatedStr = localizations.multiplicationTableGenerator;
+        break;
+      case Configuration.multiplicationTableEnabledParam:
+        translatedStr = localizations.multiplicationTableGenerator_enabled;
+        break;
+      case Configuration.multiplicationTableTimesParam:
+        translatedStr =
+            localizations.multiplicationTableGenerator_multiplicationTimes;
+        break;
+      case Configuration.divisionGroup:
+        translatedStr = localizations.divisionGenerator;
+        break;
+      case Configuration.divisionEnabledParam:
+        translatedStr = localizations.divisionGenerator_enabled;
+        break;
+      case Configuration.divisionMaxResultParam:
+        translatedStr = localizations.divisionGenerator_maxResult;
+        break;
+      case Configuration.percentageGroup:
+        translatedStr = localizations.percentageGenerator;
+        break;
+      case Configuration.percentageEnabledParam:
+        translatedStr = localizations.percentageGenerator_enabled;
+        break;
+      case Configuration.percentageMaxResultParam:
+        translatedStr = localizations.percentageGenerator_maxResult;
+        break;
+      case Configuration.percentageFractionDigitsParam:
+        translatedStr = localizations.percentageGenerator_fractionDigits;
+        break;
+      default:
+        UnsupportedError('Could not find translation for "$str".');
     }
     return translatedStr;
   }
@@ -91,8 +142,6 @@ class SettingsRoute extends StatelessWidget {
       if (isGroup) {
         paramDef.children.forEach((e) => flattenList.add(e));
       }
-
-      return flattenList;
     }
 
     return flattenList;
