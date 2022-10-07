@@ -19,7 +19,7 @@ class Route {
 void main() {
   GetIt.I.registerSingletonAsync<Configuration>(
     () async => Configuration.load(),
-    dispose: (conf) => conf.store(),
+    dispose: (conf) async => await conf.store(),
   );
 
   runApp(
@@ -65,4 +65,3 @@ Widget buildSettingsRoute() => BlocProvider<SettingsBloc>(
       bloc: SettingsBloc(),
       child: SettingsRoute(),
     );
-
