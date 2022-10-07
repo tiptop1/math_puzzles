@@ -22,21 +22,31 @@ class SettingsRoute extends StatelessWidget {
         automaticallyImplyLeading: true,
         title: Text(AppLocalizations.of(context).settingsMenu),
       ),
-      body: ListView.builder(
-        itemCount: paramDefs.length,
-        itemBuilder: (context, i) => _buildParameter(context, paramDefs[i]),
+      body: StreamBuilder<Map<String, Object>>(
+        stream: BlocProvider.of<SettingsBloc>(context).stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemBuilder: (context, index) =>
+                    _createListTile(context, paramDefs[index], snapshot.data!),
+                itemCount: paramDefs.length);
+          } else {
+            return ProgressIndicatorWidget();
+          }
+        },
       ),
     );
   }
 
-  Widget _buildParameter(BuildContext context, ParameterDefinition? paramDef) {
+  Widget _createListTile(BuildContext context, ParameterDefinition? paramDef,
+      Map<String, Object> parameters) {
     var widget;
     if (paramDef == null) {
       widget = Divider(color: Colors.black, thickness: 2);
     } else if (paramDef is GroupParameterDefinition) {
       widget = _buildGroupParameter(context, paramDef);
     } else if (paramDef is ValueParameterDefinition) {
-      widget = _buildValueParameter(context, paramDef);
+      widget = _buildValueParameter(context, paramDef, parameters);
     } else {
       throw UnsupportedError(
           'Parameter definition for "${paramDef.name}" of type ${paramDef.runtimeType} is not supported.');
@@ -148,32 +158,23 @@ class SettingsRoute extends StatelessWidget {
   }
 
   Widget _buildValueParameter(
-      BuildContext context, ValueParameterDefinition<Object> paramDef) {
+      BuildContext context,
+      ValueParameterDefinition<Object> paramDef,
+      Map<String, Object> parameters) {
     var bloc = BlocProvider.of<SettingsBloc>(context);
     var paramName = paramDef.name;
-    return StreamBuilder<Object>(
-        stream: bloc.getParametersValueStream(paramName),
-        builder: (context, snapshot) {
-          var widget;
-          if (snapshot.hasData) {
-            var paramVal = snapshot.data;
-            assert(paramVal != null, 'Parameter "$paramName" has null value');
-            widget = ListTile(
-              title: Text('${_translate(context, paramName)}: $paramVal'),
-              onTap: () {
-                _showEditParameterDialog(context, paramDef, paramVal!)
-                    .then((newParamVal) {
-                  if (newParamVal != paramVal) {
-                    bloc.setParameterValue(paramDef.name, newParamVal);
-                  }
-                });
-              },
-            );
-          } else {
-            widget = ProgressIndicatorWidget();
+    var paramVal = parameters[paramName];
+    return ListTile(
+      title: Text('${_translate(context, paramName)}: $paramVal'),
+      onTap: () {
+        _showEditParameterDialog(context, paramDef, paramVal!)
+            .then((newParamVal) {
+          if (newParamVal != paramVal) {
+            bloc.setParameterValue(paramDef.name, newParamVal);
           }
-          return widget;
         });
+      },
+    );
   }
 
   Future<Object> _showEditParameterDialog(BuildContext context,
