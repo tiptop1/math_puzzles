@@ -16,7 +16,11 @@ class SettingsBloc extends Bloc {
   }
 
   @override
-  void dispose() => _controller.close();
+  void dispose() {
+    // TODO: HACK - it seems that dispose function parameter in GetIt.I.registerSingletonAsync doesn't work
+    _configuration.store();
+    _controller.close();
+  }
 
   void setParameterValue(String name, Object value) {
     var params = _configuration.parameters;

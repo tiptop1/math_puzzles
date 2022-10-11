@@ -17,9 +17,9 @@ class Route {
 }
 
 void main() {
+  // TODO: dispose: (conf) async => await conf.store() - it seems that it doesn't work
   GetIt.I.registerSingletonAsync<Configuration>(
-    () async => Configuration.load(),
-    dispose: (conf) async => await conf.store(),
+    () async => await Configuration.load(),
   );
 
   runApp(
