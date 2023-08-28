@@ -17,6 +17,8 @@ class Route {
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // TODO: dispose: (conf) async => await conf.store() - it seems that it doesn't work
   GetIt.I.registerSingletonAsync<Configuration>(
     () async => await Configuration.load(),
