@@ -158,8 +158,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "multiplicationTableGenerator_multiplicationTimes": "Multiplikationszeiten",
-  "@multiplicationTableGenerator_multiplicationTimes": {
+  "multiplicationTableGenerator_multiplicand": "Multiplikand",
+  "@multiplicationTableGenerator_multiplicand": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator_multiplier": "Multiplikator",
+  "@multiplicationTableGenerator_multiplier": {
     "type": "text",
     "placeholders": {}
   },

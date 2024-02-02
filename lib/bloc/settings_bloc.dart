@@ -27,7 +27,7 @@ class SettingsBloc extends Bloc {
     if (params.containsKey(name)) {
       // TODO: Protect Configuration against put parameters without notification the BLoC.
       _configuration.putParameter(name, value);
-      _controller.sink.add((_configuration.parameters));
+      _controller.sink.add(_configuration.parameters);
     } else {
       throw UnsupportedError(
           'Parameter "$name" is not supported - could not set its value.');

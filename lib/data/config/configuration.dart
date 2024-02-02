@@ -16,7 +16,8 @@ class Configuration {
 
   static const multiplicationTableGroup = 'multiplicationTable';
   static const multiplicationTableEnabledParam = 'multiplicationTableEnabled';
-  static const multiplicationTableTimesParam = 'multiplicationTableTimes';
+  static const multiplicationTableMultiplierParam = 'multiplicationTableMultiplier';
+  static const multiplicationTableMultiplicandParam = 'multiplicationTableMultiplicand';
 
   static const divisionGroup = 'division';
   static const divisionEnabledParam = 'divisionGeneratorEnabled';
@@ -36,7 +37,8 @@ class Configuration {
     subtractionMaxResultParam: 100,
     subtractionFractionDigitsParam: 2,
     multiplicationTableEnabledParam: true,
-    multiplicationTableTimesParam: 10,
+    multiplicationTableMultiplicandParam: 10,
+    multiplicationTableMultiplierParam: 10,
     divisionEnabledParam: true,
     divisionMaxResultParam: 100,
     percentageEnabledParam: true,

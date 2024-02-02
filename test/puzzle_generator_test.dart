@@ -52,7 +52,8 @@ void main() {
     PuzzleGenerator generator = MultiplicationTablePuzzleGenerator(_random);
 
     var defaultParams = <String, Object>{
-      Configuration.multiplicationTableTimesParam: 10
+      Configuration.multiplicationTableMultiplicandParam: 10,
+      Configuration.multiplicationTableMultiplierParam: 10,
     };
 
     var puzzle = generator.generate(defaultParams);

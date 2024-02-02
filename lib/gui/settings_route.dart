@@ -105,9 +105,11 @@ class SettingsRoute extends StatelessWidget {
       case Configuration.multiplicationTableEnabledParam:
         translatedStr = localizations.multiplicationTableGenerator_enabled;
         break;
-      case Configuration.multiplicationTableTimesParam:
-        translatedStr =
-            localizations.multiplicationTableGenerator_multiplicationTimes;
+      case Configuration.multiplicationTableMultiplierParam:
+        translatedStr = localizations.multiplicationTableGenerator_multiplier;
+        break;
+      case Configuration.multiplicationTableMultiplicandParam:
+        translatedStr = localizations.multiplicationTableGenerator_multiplicand;
         break;
       case Configuration.divisionGroup:
         translatedStr = localizations.divisionGenerator;
@@ -188,7 +190,7 @@ class SettingsRoute extends StatelessWidget {
       throw UnsupportedError('Dialogs not supported for parameter of type '
           '${paramVal.runtimeType}.');
     }
-    return showDialog(
+    return await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => SimpleDialog(

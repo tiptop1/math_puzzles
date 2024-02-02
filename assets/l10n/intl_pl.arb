@@ -158,8 +158,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "multiplicationTableGenerator_multiplicationTimes": "Rozmiar tabliczki mno\u017cenia",
-  "@multiplicationTableGenerator_multiplicationTimes": {
+  "multiplicationTableGenerator_multiplicand": "Mno\u017Cna",
+  "@multiplicationTableGenerator_multiplicand": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator_multiplier": "Mno\u017Cnik",
+  "@multiplicationTableGenerator_multiplier": {
     "type": "text",
     "placeholders": {}
   },

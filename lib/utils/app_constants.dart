@@ -52,9 +52,14 @@ class AppConstants {
       ValueParameterDefinition(
           Configuration.multiplicationTableEnabledParam, BoolValueConverter()),
       ValueParameterDefinition(
-        Configuration.multiplicationTableTimesParam,
+        Configuration.multiplicationTableMultiplicandParam,
         IntValueConverter(),
-        validators: [IntParameterScopeValidator(10, 1000)],
+        validators: [IntParameterScopeValidator(1, 1000)],
+      ),
+      ValueParameterDefinition(
+        Configuration.multiplicationTableMultiplierParam,
+        IntValueConverter(),
+        validators: [IntParameterScopeValidator(1, 1000)],
       ),
     ]),
     GroupParameterDefinition(Configuration.divisionGroup, [

@@ -163,6 +163,16 @@
     "type": "text",
     "placeholders": {}
   },
+  "multiplicationTableGenerator_multiplicand": "Multiplicand",
+  "@multiplicationTableGenerator_multiplicand": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiplicationTableGenerator_multiplier": "Multiplier",
+  "@multiplicationTableGenerator_multiplier": {
+    "type": "text",
+    "placeholders": {}
+  },
   "divisionGenerator": "Division",
   "@divisionGenerator": {
     "type": "text",

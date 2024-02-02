@@ -11,10 +11,12 @@ class MultiplicationTablePuzzleGenerator extends PuzzleGenerator {
 
   @override
   Puzzle generate(Map<String, Object> parameters) {
-    var multiplicationTimes = getRequiredParameter(
-        Configuration.multiplicationTableTimesParam, parameters) as int;
-    var a = _random.nextInt(multiplicationTimes + 1);
-    var b = _random.nextInt(multiplicationTimes + 1);
+    var multiplicand = getRequiredParameter(
+        Configuration.multiplicationTableMultiplicandParam, parameters) as int;
+    var multiplier = getRequiredParameter(
+        Configuration.multiplicationTableMultiplierParam, parameters) as int;
+    var a = _random.nextInt(multiplicand) + 1;
+    var b = _random.nextInt(multiplier) + 1;
     return Puzzle('$a \u00D7 $b', '${a * b}');
   }
 

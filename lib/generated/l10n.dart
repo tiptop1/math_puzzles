@@ -370,6 +370,26 @@ class AppLocalizations {
     );
   }
 
+  /// `Multiplicand`
+  String get multiplicationTableGenerator_multiplicand {
+    return Intl.message(
+      'Multiplicand',
+      name: 'multiplicationTableGenerator_multiplicand',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Multiplier`
+  String get multiplicationTableGenerator_multiplier {
+    return Intl.message(
+      'Multiplier',
+      name: 'multiplicationTableGenerator_multiplier',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Division`
   String get divisionGenerator {
     return Intl.message(
