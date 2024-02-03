@@ -30,7 +30,7 @@ class PuzzleGeneratorManager {
 
   PuzzleGenerator findNextEnabledGenerator(Map<String, Object> parameters) {
     var i = findNextEnabledGeneratorIndex(_enabledGeneratorIndex + 1, generators.length - 1, parameters);
-    i ??= findNextEnabledGeneratorIndex(0, _enabledGeneratorIndex - 1, parameters);
+    i ??= findNextEnabledGeneratorIndex(0, _enabledGeneratorIndex, parameters);
 
     if (i == null) {
       throw Exception('Could not find any enabled puzzle generator.');
