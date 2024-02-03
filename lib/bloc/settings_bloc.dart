@@ -25,9 +25,14 @@ class SettingsBloc extends Bloc {
   void setParameterValue(String name, Object value) {
     var params = _configuration.parameters;
     if (params.containsKey(name)) {
-      // TODO: Protect Configuration against put parameters without notification the BLoC.
-      _configuration.putParameter(name, value);
-      _controller.sink.add(_configuration.parameters);
+      // TODO: Temporary protection against disabling all generators
+      if (!name.endsWith('Enabled')
+          || (name.endsWith('Enabled') && value == true)
+          || (name.endsWith('Enabled') && value == false && params.entries.where((e) => e.key.endsWith('Enabled') && e.value == true).length > 1)) {
+        // TODO: Protect Configuration against put parameters without notification the BLoC.
+        _configuration.putParameter(name, value);
+        _controller.sink.add(_configuration.parameters);
+      }
     } else {
       throw UnsupportedError(
           'Parameter "$name" is not supported - could not set its value.');
