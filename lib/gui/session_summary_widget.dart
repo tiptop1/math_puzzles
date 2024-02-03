@@ -46,8 +46,8 @@ class SessionSummaryWidget extends StatelessWidget {
 
   List<PieChartSectionData> _createSections(BuildContext context) {
     var sessionAnswersCount = GetIt.I.get<Configuration>().parameters[Configuration.sessionsPuzzlesCountParam] as int;
-    var correctAnswersCount = _lecture.correctAnswersCount as double;
-    var incorrectAnswersCount = _lecture.incorrectAnswersCount as double;
+    var correctAnswersCount = _lecture.correctAnswersCount.toDouble();
+    var incorrectAnswersCount = _lecture.incorrectAnswersCount.toDouble();
     return List.generate(2, (i) {
       switch (i) {
         case 0:
