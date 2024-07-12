@@ -102,7 +102,7 @@ class LegendItem extends StatelessWidget {
   const LegendItem(this._text, this._color);
 
   @override
-  Widget build(BuildContext buildContext) {
+  Widget build(BuildContext context) {
     return Row(children: [
       Container(
         color: _color,

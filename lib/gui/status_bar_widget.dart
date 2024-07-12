@@ -19,7 +19,7 @@ class StatusBarWidget extends StatelessWidget {
         .parameters[Configuration.sessionsPuzzlesCountParam] as int;
     var correctAnswersCount = _lecture.correctAnswersCount;
     var incorrectAnswersCount = _lecture.incorrectAnswersCount;
-    var textStyle = Theme.of(context).textTheme.headline6;
+    var textStyle = Theme.of(context).textTheme.headlineMedium;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[

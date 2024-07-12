@@ -10,13 +10,13 @@ class PuzzleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var answerTheme = Theme.of(context).textTheme.headline5;
+    var answerTheme = Theme.of(context).textTheme.headlineMedium;
     return Text.rich(
       TextSpan(
         text: '${_lecture.puzzle.question} = ',
         children: <TextSpan>[
           TextSpan(
-            text: _lecture.puzzleAnswered ? '${_lecture.puzzle.answer}' : '?',
+            text: _lecture.puzzleAnswered ? _lecture.puzzle.answer : '?',
             style: answerTheme?.apply(color: AppConstants.answerColor),
           ),
         ],

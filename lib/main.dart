@@ -52,7 +52,7 @@ void main() {
 Widget buildMathPuzzleRoute() {
   return FutureBuilder(
     future: GetIt.I.allReady(),
-    builder: (BuildContext context, AsyncSnapshot snapshot) {
+    builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
       return snapshot.hasData
           ? BlocProvider<MathPuzzleBloc>(
               bloc: MathPuzzleBloc(),

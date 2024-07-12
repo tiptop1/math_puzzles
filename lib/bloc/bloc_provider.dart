@@ -6,7 +6,7 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
   final T bloc;
   final Widget child;
 
-  const BlocProvider({Key? key, required this.bloc, required this.child}) : super(key: key);
+  const BlocProvider({super.key, required this.bloc, required this.child});
 
   static T of<T extends Bloc>(BuildContext context) {
     BlocProvider<T> provider;

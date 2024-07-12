@@ -20,7 +20,7 @@ class MathPuzzleRoute extends StatelessWidget {
     return StreamBuilder<Lecture>(
         stream: bloc.stream,
         builder: (context, snapshot) {
-          var widget;
+          Widget widget;
           if (snapshot.hasData) {
             var localizations = AppLocalizations.of(context);
             var lecture = snapshot.data!;

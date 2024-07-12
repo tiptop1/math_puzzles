@@ -41,7 +41,7 @@ class PuzzleGeneratorManager {
   }
 
   int? findNextEnabledGeneratorIndex(int startIndex, int endIndex, Map<String, Object> parameters) {
-    var enabledIndex;
+    int? enabledIndex;
     if (startIndex < generators.length && endIndex < generators.length) {
       for (var i = startIndex; i <= endIndex; i++) {
         if (generators[i].isEnabled(parameters)) {

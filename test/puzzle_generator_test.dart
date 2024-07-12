@@ -6,12 +6,12 @@ import 'package:math_puzzles/puzzle_generators/multiplication_table_puzzle_gener
 import 'package:math_puzzles/puzzle_generators/puzzle_generator.dart';
 import 'package:test/test.dart';
 
-final RegExp operandRegexp = RegExp('\\d+(\.\\d+)?');
+final RegExp operandRegexp = RegExp('\\d+(.\\d+)?');
 
 void main() {
-  var _random = Random();
+  var random = Random();
   test('AdditionPuzzleGenerator_integerAddition', () {
-    PuzzleGenerator generator = AdditionPuzzleGenerator(_random);
+    PuzzleGenerator generator = AdditionPuzzleGenerator(random);
 
     var paramValues = {
       Configuration.additionMaxResultParam: 1000,
@@ -30,7 +30,7 @@ void main() {
   });
 
   test('AdditionPuzzleGenerator_doubleAddition', () {
-    PuzzleGenerator generator = AdditionPuzzleGenerator(_random);
+    PuzzleGenerator generator = AdditionPuzzleGenerator(random);
 
     var defaultParams = <String, Object>{
       Configuration.additionMaxResultParam: 1000,
@@ -49,7 +49,7 @@ void main() {
   });
 
   test('MultiplicationTablePuzzleGenerator', () {
-    PuzzleGenerator generator = MultiplicationTablePuzzleGenerator(_random);
+    PuzzleGenerator generator = MultiplicationTablePuzzleGenerator(random);
 
     var defaultParams = <String, Object>{
       Configuration.multiplicationTableMultiplicandParam: 10,

@@ -46,17 +46,17 @@ class _EditBoolParameterWidgetState extends State<EditBoolParameterWidget> {
       ),
     ];
 
-    var divider;
-    var text;
+    Divider divider;
+    Text? text;
 
     if (_validationMsg != null) {
       var theme = Theme.of(context);
       divider = Divider(
-        color: theme.errorColor,
+        color: Colors.red,
         thickness: 1.0,
       );
       text = Text(_validationMsg!,
-          style: theme.textTheme.overline!.apply(color: theme.errorColor));
+          style: theme.textTheme.displaySmall!.apply(color: Colors.red));
     } else {
       divider = Divider(
         color: Colors.grey,

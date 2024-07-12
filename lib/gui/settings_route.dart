@@ -11,7 +11,7 @@ import 'parameter_definition/parameter_definition.dart';
 import 'progress_indicator_widget.dart';
 
 class SettingsRoute extends StatelessWidget {
-  const SettingsRoute({Key? key}) : super(key: key);
+  const SettingsRoute({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class SettingsRoute extends StatelessWidget {
 
   Widget _createListTile(BuildContext context, ParameterDefinition? paramDef,
       Map<String, Object> parameters) {
-    var widget;
+    Widget widget;
     if (paramDef == null) {
       widget = Divider(color: Colors.black, thickness: 2);
     } else if (paramDef is GroupParameterDefinition) {
@@ -67,7 +67,7 @@ class SettingsRoute extends StatelessWidget {
   // TODO: How to get translation in dynamic way?
   String _translate(BuildContext context, String str) {
     var localizations = AppLocalizations.of(context);
-    var translatedStr;
+    String translatedStr = '???';
     switch (str) {
       case Configuration.sessionsPuzzlesCountParam:
         translatedStr = localizations.session_puzzlesCount;
@@ -152,7 +152,9 @@ class SettingsRoute extends StatelessWidget {
       flattenList.add(paramDef);
 
       if (isGroup) {
-        paramDef.children.forEach((e) => flattenList.add(e));
+        for (var child in paramDef.children) {
+          flattenList.add(child);
+        }
       }
     }
 
@@ -171,7 +173,7 @@ class SettingsRoute extends StatelessWidget {
       onTap: () {
         _showEditParameterDialog(context, paramDef, paramVal!)
             .then((newParamVal) {
-          if (newParamVal != paramVal) {
+          if (newParamVal != null && newParamVal != paramVal) {
             bloc.setParameterValue(paramDef.name, newParamVal);
           }
         });
@@ -179,9 +181,9 @@ class SettingsRoute extends StatelessWidget {
     );
   }
 
-  Future<Object> _showEditParameterDialog(BuildContext context,
+  Future<Object?> _showEditParameterDialog(BuildContext context,
       ValueParameterDefinition paramDef, Object paramVal) async {
-    var dialogChildren;
+    List<Widget> dialogChildren;
     if (paramVal is bool) {
       dialogChildren = [EditBoolParameterWidget(paramDef, paramVal)];
     } else if (paramVal is int) {
@@ -190,7 +192,7 @@ class SettingsRoute extends StatelessWidget {
       throw UnsupportedError('Dialogs not supported for parameter of type '
           '${paramVal.runtimeType}.');
     }
-    return await showDialog(
+    return await showDialog<Object>(
       context: context,
       barrierDismissible: false,
       builder: (context) => SimpleDialog(

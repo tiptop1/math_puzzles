@@ -17,7 +17,6 @@ class ButtonsWidget extends StatelessWidget {
     var bloc = BlocProvider.of<MathPuzzleBloc>(context);
     if (!_lecture.puzzleAnswered) {
       widget = ElevatedButton.icon(
-        // TODO: Try to find better icon - something like question mark should be OK
         icon: Icon(Icons.help_outline),
         label: Text(AppLocalizations.of(context).showAnswerButton),
         style: ElevatedButton.styleFrom(backgroundColor: AppConstants.answerColor),

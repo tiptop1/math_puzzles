@@ -12,16 +12,15 @@ abstract class ParameterDefinition {
 class GroupParameterDefinition extends ParameterDefinition {
   final List<ValueParameterDefinition> children;
 
-  const GroupParameterDefinition(String name, this.children) : super(name);
+  const GroupParameterDefinition(super.name, this.children);
 }
 
 class ValueParameterDefinition<T extends Object> extends ParameterDefinition {
   final ValueConverter<T> converter;
   final List<ParameterValidator<T>> validators;
 
-  const ValueParameterDefinition(String name, this.converter,
-      {this.validators = const []})
-      : super(name);
+  const ValueParameterDefinition(super.name, this.converter,
+      {this.validators = const []});
 
   /// If returns null, conversion from string failed.
   T? convertValue(String? strValue) => converter.convertValue(strValue);
@@ -29,7 +28,7 @@ class ValueParameterDefinition<T extends Object> extends ParameterDefinition {
   Type getExpectedType() => T.runtimeType;
 
   String? validateValue(BuildContext context, T value) {
-    var validationMsg;
+    String? validationMsg;
     for (var v in validators) {
       validationMsg = v.validate(context, value);
       if (validationMsg != null) {

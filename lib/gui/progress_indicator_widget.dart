@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProgressIndicatorWidget extends StatelessWidget {
-  const ProgressIndicatorWidget({Key? key}) : super(key: key);
+  const ProgressIndicatorWidget({super.key});
 
   @override
   Widget build(BuildContext context) => Center(

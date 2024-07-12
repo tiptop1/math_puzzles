@@ -18,7 +18,7 @@ class BoolValueConverter extends ValueConverter<bool> {
   @override
   bool? convertValue(String? strValue) {
     var lowerStrValue = strValue?.toLowerCase();
-    var value;
+    bool? value;
     if (lowerStrValue == true.toString()) {
       value = true;
     } else if (lowerStrValue == false.toString()) {
